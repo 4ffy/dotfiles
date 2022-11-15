@@ -1,0 +1,48 @@
+* {
+    font: 12px Cantarell;
+    color: white;
+}
+
+window#waybar {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+tooltip {
+  background: rgba(120, 120, 120, 0.2);
+}
+
+tooltip label {
+  color: white;
+}
+
+#taskbar button {
+    background: rgba(120, 120, 120, 0.2);
+    border: 1px solid rgba(120, 120, 120, 0);
+    min-width: 200px;
+}
+
+#taskbar button:hover {
+    background: rgba(170, 170, 170, 0.2);
+    border: 1px solid rgba(234, 234, 234, 0.44);
+}
+
+#taskbar button.active {
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+#clock {
+    font: 14px bold Cantarell;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#pulseaudio {
+    font: 14px bold Cantarell;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#tray {
+    padding-left: 10px;
+    padding-right: 10px;
+}

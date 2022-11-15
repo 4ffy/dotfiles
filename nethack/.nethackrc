@@ -1,0 +1,8 @@
+OPTIONS=autodescribe
+OPTIONS=autopickup,pickup_types:$"?!=/
+OPTIONS=hilite_pet
+OPTIONS=hitpointbar
+OPTIONS=nomail
+OPTIONS=number_pad:0
+OPTIONS=statushilites
+OPTIONS=symset:DECgraphics

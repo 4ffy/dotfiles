@@ -1,0 +1,27 @@
+# Name: Min Large
+# Author: Cameron Norton <cameron.norton@gmail.com>
+
+# Global settings
+*.bg: Flat Solid
+*.color: #101010
+*.image.color: #eeeeee
+*.text.color: #eeeeee
+*.width: 0
+
+# Menu Settings
+menu.items.active.bg.color: #303030
+menu.items.bg.color: #000000
+menu.items.disabled.text.color: #808080
+menu.separator.color: #303030
+menu.title.bg.color: #303030
+
+# Window Settings
+border.width: 4
+padding.width: 6
+window.inactive.button.*.image.color: #303030
+window.inactive.label.text.color: #808080
+
+# OSD Settings
+osd.border.width: 1
+osd.hilight.bg.color: #3399dd
+osd.unhilight.bg.color: #eeeeee

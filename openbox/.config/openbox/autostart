@@ -1,0 +1,17 @@
+xrandr --output DisplayPort-0 --mode 1920x1080 --rate 240
+
+# basic applications
+xset -b        &
+~/.fehbg       &
+picom -b       &
+tint2          &
+opensnap -d    &
+lxqt-policykit-agent    &
+
+(mpc clear && mpc load Main && mpc shuffle) &
+
+# tray applications
+(sleep 1s && volumeicon)    &
+(sleep 1s && nm-applet)     &
+(sleep 1s && steam -silent) &
+(sleep 1s && discord --start-minimized) &

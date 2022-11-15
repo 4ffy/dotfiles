@@ -1,0 +1,24 @@
+{
+    "layer": "top",
+    "height": 40,
+    "modules-left": ["wlr/taskbar"],
+    "modules-right": ["tray", "pulseaudio", "clock"],
+    "mode": "dock",
+    "wlr/taskbar": {
+        "format": "{icon} {name}",
+        "icon-size": 30,
+        "on-click": "minimize-raise",
+        "on-click-middle": "close"
+    },
+    "tray": {
+        "icon-size": 24
+    },
+    "pulseaudio": {
+        "format-muted": "0%",
+        "on-click": "pamixer -t",
+        "on-click-right": "pavucontrol-qt"
+    },
+    "clock": {
+        "format": "{:%a %b %d %R}"
+    }
+}

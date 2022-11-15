@@ -1,0 +1,22 @@
+#!/bin/sh
+#
+# fluxbox startup-script:
+#
+# Lines starting with a '#' are ignored.
+
+xmodmap "$HOME/.Xmodmap"
+
+xset -b        &
+~/.fehbg       &
+lxqt-policykit-agent &
+volumeicon &
+nm-applet  &
+
+mpc clear
+mpc load Main
+mpc shuffle
+
+(sleep 1s && steam -silent) &
+(sleep 1s && discord --start-minimized) &
+
+exec fluxbox

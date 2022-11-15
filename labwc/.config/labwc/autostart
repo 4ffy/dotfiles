@@ -1,0 +1,12 @@
+gsettings set org.gnome.desktop.interface gtk-theme 'Materia-dark-compact' &
+gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark' &
+gsettings set org.gnome.desktop.interface cursor-theme 'Adwaita' &
+gsettings set org.gnome.desktop.interface font-name 'Cantarell 11' &
+
+xset -b        &
+waybar         &
+lxqt-policykit-agent  &
+nm-applet --indicator &
+swaybg -i /usr/share/backgrounds/wallpaper.jpg -m stretch &
+
+(mpc clear && mpc load Main && mpc shuffle) &

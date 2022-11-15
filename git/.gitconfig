@@ -1,0 +1,7 @@
+[user]
+	name = Cameron Norton
+	email = cameron.norton@gmail.com
+[init]
+	defaultBranch = main
+[pull]
+	rebase = false
