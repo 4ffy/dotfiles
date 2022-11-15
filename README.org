@@ -1,0 +1,37 @@
+#+title: Dotfile README
+#+author: Cameron Norton
+#+options: date
+#+options: toc:nil
+
+* Dotfiles
+
+This repository contains dotfiles so that I can more easily manage various
+programs that I use regularly across machines. This repository is intended to be
+used with [[https://www.gnu.org/software/stow/][GNU Stow]]. There are certainly dedicated dotfile managers that also use
+this directory structure, but I wouldn't know anything about that.
+
+I keep my Emacs config in a [[https://github.com/4ffy/emacs-config][separate repository]].
+
+* Programs
+
+** Window Managers
+ - [[https://openbox.org/][openbox]]
+ - [[http://fluxbox.org/][fluxbox]]
+ - [[https://labwc.github.io/][labwc]] for the inevitable Wayland future
+
+** Taskbars
+ - [[https://gitlab.com/o9000/tint2][tint2]] for Openbox
+ - [[https://github.com/Alexays/Waybar][waybar]] for labwc
+
+** Other Desktop
+ - [[https://github.com/trizen/obmenu-generator][obmenu-generator]] for Openbox
+ - [[https://github.com/yshui/picom][picom]]
+ - [[https://github.com/davatorium/rofi][rofi]]
+ - [[https://hg.sr.ht/~scoopta/wofi][wofi]] for labwc
+
+** Other stuff
+ - [[https://www.gnu.org/software/bash/][bash]]
+ - [[https://git-scm.com/][git]]
+ - [[https://www.musicpd.org/][mpd]] for use with [[https://www.musicpd.org/clients/mpc/][mpc]]
+ - [[https://nethack.org/][nethack]] (though I could just play on a server)
+ - x11 so I can version control ~.Xresources~ and the like
