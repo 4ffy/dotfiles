@@ -23,7 +23,7 @@
     </font>
     <font place="MenuItem">
       <name>Cantarell</name>
-      <size>12</size>
+      <size>14</size>
     </font>
     <font place="OSD">
       <name>Cantarell</name>
@@ -296,7 +296,7 @@
     </keybind>
     <keybind key="XF86Calculator">
       <action name="Execute">
-        <command>idle -s</command>
+        <command>emacsclient -cn -a '' --eval '(calc-full-window)'</command>
       </action>
     </keybind>
 
@@ -345,31 +345,26 @@
     Currently, the only openbox-action not supported is "Unshade"
   -->
   <mouse>
-
     <!-- time is in ms -->
     <doubleClickTime>500</doubleClickTime>
-
+    <default/>
     <context name="Frame">
-      <mousebind button="A-Left" action="Press">
-        <action name="Focus"/>
-        <action name="Raise"/>
-      </mousebind>
-      <mousebind button="A-Left" action="Drag">
-        <action name="Move"/>
-      </mousebind>
-      <mousebind button="A-Right" action="Press">
-        <action name="Focus"/>
-        <action name="Raise"/>
-      </mousebind>
-      <mousebind button="A-Right" action="Drag">
-        <action name="Resize"/>
-      </mousebind>
       <mousebind button="W-Up" action="Click">
         <action name="GoToDesktop">
           <to>left</to>
         </action>
       </mousebind>
       <mousebind button="W-Down" action="Click">
+        <action name="GoToDesktop">
+          <to>right</to>
+        </action>
+      </mousebind>
+      <mousebind button="C-W-Up" action="Click">
+        <action name="GoToDesktop">
+          <to>left</to>
+        </action>
+      </mousebind>
+      <mousebind button="C-W-Down" action="Click">
         <action name="GoToDesktop">
           <to>right</to>
         </action>
@@ -385,130 +380,6 @@
         </action>
       </mousebind>
     </context>
-
-    <context name="Top">
-      <mousebind button="Left" action="Drag">
-        <action name="Resize"/>
-      </mousebind>
-    </context>
-    <context name="Left">
-      <mousebind button="Left" action="Drag">
-        <action name="Resize"/>
-      </mousebind>
-    </context>
-    <context name="Right">
-      <mousebind button="Left" action="Drag">
-        <action name="Resize"/>
-      </mousebind>
-    </context>
-    <context name="Bottom">
-      <mousebind button="Left" action="Drag">
-        <action name="Resize"/>
-      </mousebind>
-    </context>
-
-    <context name="TRCorner">
-      <mousebind button="Left" action="Drag">
-        <action name="Resize"/>
-      </mousebind>
-    </context>
-    <context name="BRCorner">
-      <mousebind button="Left" action="Drag">
-        <action name="Resize"/>
-      </mousebind>
-    </context>
-    <context name="TLCorner">
-      <mousebind button="Left" action="Drag">
-        <action name="Resize"/>
-      </mousebind>
-    </context>
-    <context name="BLCorner">
-      <mousebind button="Left" action="Drag">
-        <action name="Resize"/>
-      </mousebind>
-    </context>
-
-    <context name="TitleBar">
-      <mousebind button="Left" action="Press">
-        <action name="Focus"/>
-        <action name="Raise"/>
-      </mousebind>
-      <mousebind button="Left" action="Drag">
-        <action name="Move"/>
-      </mousebind>
-      <mousebind button="Right" action="Click">
-        <action name="Focus"/>
-        <action name="Raise"/>
-        <action name="ShowMenu">
-          <menu>client-menu</menu>
-        </action>
-      </mousebind>
-      <mousebind button="Left" action="DoubleClick">
-        <action name="Focus"/>
-        <action name="Raise"/>
-        <action name="ToggleMaximize"/>
-      </mousebind>
-    </context>
-
-    <context name="Maximize">
-      <mousebind button="Left" action="Click">
-        <action name="Focus"/>
-        <action name="Raise"/>
-        <action name="ToggleMaximize"/>
-      </mousebind>
-    </context>
-
-    <context name="WindowMenu">
-      <mousebind button="Left" action="Click">
-        <action name="ShowMenu">
-          <menu>client-menu</menu>
-        </action>
-      </mousebind>
-    </context>
-
-    <context name="Iconify">
-      <mousebind button="left" action="Click">
-        <action name="Iconify"/>
-      </mousebind>
-    </context>
-
-    <context name="Close">
-      <mousebind button="Left" action="Click">
-        <action name="Close"/>
-      </mousebind>
-    </context>
-
-    <context name="Client">
-      <mousebind button="Left" action="Press">
-        <action name="Focus"/>
-        <action name="Raise"/>
-      </mousebind>
-      <mousebind button="Middle" action="Press">
-        <action name="Focus"/>
-        <action name="Raise"/>
-      </mousebind>
-      <mousebind button="Right" action="Press">
-        <action name="Focus"/>
-        <action name="Raise"/>
-      </mousebind>
-    </context>
-
-    <context name="Root">
-      <mousebind button="Right" action="Press">
-        <action name="ShowMenu"><menu>root-menu</menu></action>
-      </mousebind>
-      <mousebind button="Up" action="Click">
-        <action name="GoToDesktop">
-          <to>left</to>
-        </action>
-      </mousebind>
-      <mousebind button="Down" action="Click">
-        <action name="GoToDesktop">
-          <to>right</to>
-        </action>
-      </mousebind>
-    </context>
-
   </mouse>
 
   <!--
