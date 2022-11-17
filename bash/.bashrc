@@ -25,6 +25,14 @@ dired() {
     emacsclient -t -a '' --eval "(dired \"$PWD\")"
 }
 
+fixaudio () {
+    systemctl --user restart pipewire.service
+    sleep 1
+    systemctl --user restart pipewire-pulse.service
+    sleep 1
+    systemctl --user restart wireplumber.service
+}
+
 cmake-build () {
     if [[ -f CMakeLists.txt ]]; then
         cmake -B build && make -C build -j 5 -k
