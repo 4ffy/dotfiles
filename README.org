@@ -19,7 +19,7 @@ I keep my Emacs config in a [[https://github.com/4ffy/emacs-config][separate rep
 
 *** Taskbars
  - [[https://gitlab.com/o9000/tint2][tint2]] for Openbox
- - [[https://github.com/Alexays/Waybar][waybar]] for labwc
+ - [[https://github.com/Alexays/Waybar][waybar]] for labwc (WIP)
 
 *** Other Desktop
  - [[https://github.com/trizen/obmenu-generator][obmenu-generator]] for Openbox
@@ -32,4 +32,5 @@ I keep my Emacs config in a [[https://github.com/4ffy/emacs-config][separate rep
  - [[https://git-scm.com/][git]]
  - [[https://www.musicpd.org/][mpd]] for use with [[https://www.musicpd.org/clients/mpc/][mpc]]
  - [[https://nethack.org/][nethack]] (though I could just play on a server)
+ - themes for Openbox and labwc
  - x11 so I can version control ~.Xresources~ and the like
