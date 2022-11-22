@@ -266,7 +266,7 @@
     </keybind>
     <keybind key="W-d">
       <action name="Execute">
-        <command>discord</command>
+        <command>emacsclient -cn -a '' --eval '(dired "~")'</command>
       </action>
     </keybind>
     <keybind key="W-s">
