@@ -22,7 +22,11 @@ mem () {
 }
 
 dired() {
-    emacsclient -t -a '' --eval "(dired \"$PWD\")"
+    if [[ -n "$1" && -d "$1" ]]; then
+        emacsclient -t -a '' --eval "(dired \"$1\")"
+    else
+        emacsclient -t -a '' --eval "(dired \"$PWD\")"
+    fi
 }
 
 fixaudio () {
