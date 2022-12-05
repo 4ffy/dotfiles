@@ -49,7 +49,7 @@ cmake-build () {
 # Environment Variables
 PATH="$PATH:$HOME/.local/bin"
 export LESS='-R --use-color -Dd+C$Du+W'
-export EDITOR='emacsclient -t -a ""'
+export EDITOR='vi'
 
 # Emacs vterm integration
 vterm_printf() {
