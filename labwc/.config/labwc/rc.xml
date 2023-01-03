@@ -236,7 +236,7 @@
     <!-- Keybindings for running applications -->
     <keybind key="W-Return">
       <action name="Execute">
-        <command>emacsclient -cn -a '' --eval '(vterm-create-new-buffer)'</command>
+        <command>emacsclient -cn --eval '(vterm-create-new-buffer)'</command>
       </action>
     </keybind>
     <keybind key="C-S-Escape">
@@ -251,7 +251,7 @@
     </keybind>
     <keybind key="W-e">
       <action name="Execute">
-        <command>emacsclient -cn -a ''</command>
+        <command>emacsclient -cn</command>
       </action>
     </keybind>
     <keybind key="W-r">
@@ -261,12 +261,12 @@
     </keybind>
     <keybind key="W-t">
       <action name="Execute">
-        <command>emacsclient -cn -a '' --eval '(eshell)'</command>
+        <command>emacsclient -cn --eval '(eshell)'</command>
       </action>
     </keybind>
     <keybind key="W-d">
       <action name="Execute">
-        <command>emacsclient -cn -a '' --eval '(dired "~")'</command>
+        <command>emacsclient -cn --eval '(dired "~")'</command>
       </action>
     </keybind>
     <keybind key="W-s">
@@ -296,7 +296,7 @@
     </keybind>
     <keybind key="XF86Calculator">
       <action name="Execute">
-        <command>emacsclient -cn -a '' --eval '(calc-full-window)'</command>
+        <command>emacsclient -cn --eval '(calc-full-window)'</command>
       </action>
     </keybind>
 
