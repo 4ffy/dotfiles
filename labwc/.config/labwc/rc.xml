@@ -48,26 +48,7 @@
     <topMaximize>yes</topMaximize>
   </snapping>
 
-  <!--
-    Use GoToDesktop left | right to switch workspaces.
-    Use SendToDesktop left | right to move windows.
-    See man labwc-actions for futher information.
-
-    Workspaces can be configured like this:
-    <desktops>
-      <popupTime>1000</popupTime>
-      <names>
-        <name>Workspace 1</name>
-        <name>Workspace 2</name>
-        <name>Workspace 3</name>
-      </names>
-    </desktops>
-  -->
   <desktops>
-    <!--
-      popupTime defaults to 1000 so could be left out.
-      Set to 0 to completely disable the workspace OSD.
-    -->
     <popupTime>1000</popupTime>
     <names>
       <name>w1</name>
