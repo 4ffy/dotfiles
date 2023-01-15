@@ -50,6 +50,7 @@ cmake-build () {
 PATH="$PATH:$HOME/.local/bin"
 export LESS='-R --use-color -Dd+C$Du+W'
 export EDITOR='vi'
+export DEBUGINFOD_URLS="https://debuginfod.archlinux.org/"
 
 # Emacs vterm integration
 vterm_printf() {
