@@ -58,6 +58,13 @@
     </names>
   </desktops>
 
+  <regions>
+    <region name="top_left" x="0%" y="0%" width="50%" height="50%"/>
+    <region name="top_right" x="50%" y="0%" width="50%" height="50%"/>
+    <region name="bottom_left" x="0%" y="50%" width="50%" height="50%"/>
+    <region name="bottom_right" x="50%" y="50%" width="50%" height="50%"/>
+  </regions>
+
   <!--
     Keybind actions are specified in labwc-actions(5)
     The following keybind modifiers are supported:
@@ -155,26 +162,10 @@
 
     <!-- Keybinds for snapping/tiling -->
     <keybind key="W-y">
-      <action name="Unmaximize">
-        <direction>both</direction>
-      </action>
-      <action name="MoveResizeTo">
-        <x>0</x>
-        <y>0</y>
-        <width>50%</width>
-        <height>50%</height>
-      </action>
+      <action name="SnapToRegion" region="top_left"/>
     </keybind>
     <keybind key="W-u">
-      <action name="Unmaximize">
-        <direction>both</direction>
-      </action>
-      <action name="MoveResizeTo">
-        <x>-0</x>
-        <y>0</y>
-        <width>50%</width>
-        <height>50%</height>
-      </action>
+      <action name="SnapToRegion" region="top_right"/>
     </keybind>
     <keybind key="W-h">
       <action name="SnapToEdge">
@@ -193,26 +184,10 @@
       </action>
     </keybind>
     <keybind key="W-b">
-      <action name="Unmaximize">
-        <direction>both</direction>
-      </action>
-      <action name="MoveResizeTo">
-        <x>0</x>
-        <y>-0</y>
-        <width>50%</width>
-        <height>50%</height>
-      </action>
+      <action name="SnapToRegion" region="bottom_left"/>
     </keybind>
     <keybind key="W-n">
-      <action name="Unmaximize">
-        <direction>both</direction>
-      </action>
-      <action name="MoveResizeTo">
-        <x>-0</x>
-        <y>-0</y>
-        <width>50%</width>
-        <height>50%</height>
-      </action>
+      <action name="SnapToRegion" region="bottom_right"/>
     </keybind>
 
     <!-- Keybindings for running applications -->
