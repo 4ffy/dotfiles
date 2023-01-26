@@ -63,3 +63,9 @@ if [[ "$INSIDE_EMACS" = 'vterm' ]]; then
         tput clear;
     }
 fi
+
+# Basic prompt for dumb terminals
+if [[ "$TERM" == 'dumb' ]]; then
+    unset PROMPT_COMMAND
+    PS1='\n\u@\h \w $ '
+fi
