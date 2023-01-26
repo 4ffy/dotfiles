@@ -54,7 +54,7 @@ export DEBUGINFOD_URLS="https://debuginfod.archlinux.org/"
 
 # Emacs vterm integration
 vterm_printf() {
-        printf "\e]%s\e\\" "$1"
+    printf "\e]%s\e\\" "$1"
 }
 
 if [[ "$INSIDE_EMACS" = 'vterm' ]]; then
