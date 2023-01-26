@@ -1,50 +1,50 @@
+@define-color background    rgba(0, 0, 0, 0.8);
+@define-color button        rgba(120, 120, 120, 0.2);
+@define-color button-hover  rgba(170, 170, 170, 0.2);
+@define-color button-border rgba(255, 255, 255, 0.4);
+@define-color tooltip       rgba(120, 120, 120, 0.4);
+
 * {
-    font: 12px Cantarell;
     color: white;
+    font-family: Cantarell, sans-serif;
+    font-size: 14px;
 }
 
 window#waybar {
-    background: rgba(0, 0, 0, 0.8);
+    background-color: @background;
 }
 
 tooltip {
-  background: rgba(120, 120, 120, 0.2);
-}
-
-tooltip label {
-  color: white;
+    background-color: @tooltip;
 }
 
 #taskbar button {
-    background: rgba(120, 120, 120, 0.2);
-    border: 1px solid rgba(120, 120, 120, 0);
-    min-width:200px;
-    margin-left:1px;
-    margin-right:1px;
+    background-color: @button;
+    border: 1px solid;
+    border-color: @button;
+    margin: 0px 1px;
+    min-width: 200px;
 }
 
 #taskbar button:hover {
-    background: rgba(170, 170, 170, 0.2);
-    border: 1px solid rgba(234, 234, 234, 0.44);
+    background-color: @button-hover;
+    border-color: @button-border;
 }
 
 #taskbar button.active {
-    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-color: @button-border;
 }
 
 #clock {
-    font: 14px bold Cantarell;
-    padding-left: 10px;
-    padding-right: 10px;
+    font-weight: bold;
+    padding: 0px 10px;
 }
 
 #pulseaudio {
-    font: 14px bold Cantarell;
-    padding-left: 10px;
-    padding-right: 10px;
+    font-weight: bold;
+    padding: 0px 10px;
 }
 
 #tray {
-    padding-left: 10px;
-    padding-right: 10px;
+    padding: 0px 10px;
 }
