@@ -4,19 +4,19 @@
 #
 # Lines starting with a '#' are ignored.
 
-xmodmap "$HOME/.Xmodmap"
-
 xset -b        &
-~/.fehbg       &
 lxqt-policykit-agent &
 volumeicon &
 nm-applet  &
+xremap /etc/xremap/default.yml --watch &
 
 mpc clear
 mpc load Main
 mpc shuffle
 
+(sleep 1s && ~/.fehbg) &
 (sleep 1s && steam -silent) &
 (sleep 1s && discord --start-minimized) &
+(sleep 1s && setxkbmap -option "shift:both_capslock") &
 
 exec fluxbox
