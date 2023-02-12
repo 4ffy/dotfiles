@@ -5,7 +5,6 @@ picom -b       &
 tint2          &
 opensnap -d    &
 lxqt-policykit-agent    &
-xremap /etc/xremap/default.yml --watch &
 
 (mpc clear && mpc load Main && mpc shuffle) &
 

@@ -9,7 +9,6 @@ lxqt-policykit-agent &
 volumeicon &
 nm-applet  &
 cbatticon  &
-xremap /etc/xremap/default.yml --watch &
 
 mpc clear
 mpc load Main

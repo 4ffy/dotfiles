@@ -8,7 +8,6 @@ xset -b        &
 lxqt-policykit-agent &
 volumeicon &
 nm-applet  &
-xremap /etc/xremap/default.yml --watch &
 
 mpc clear
 mpc load Main
