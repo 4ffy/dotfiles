@@ -39,7 +39,7 @@ fixaudio () {
 
 cmake-build () {
     if [[ -f CMakeLists.txt ]]; then
-        cmake -B build && make -C build -j 5 -k
+        cmake -B build && make -k -j$(nproc) -C build
     else
         echo "CMakeLists.txt not found."
         return 1
