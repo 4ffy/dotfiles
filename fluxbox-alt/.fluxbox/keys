@@ -1,0 +1,77 @@
+# Esoteric Mousebinds
+Mod4 Mouse4 :PrevWorkspace
+Mod4 Mouse5 :NextWorkspace
+OnDesktop Mouse1 :HideMenus
+OnDesktop Mouse3 :RootMenu
+OnDesktop Mouse4 :PrevWorkspace
+OnDesktop Mouse5 :NextWorkspace
+OnLeftGrip Move1 :StartResizing bottomleft
+OnRightGrip Move1 :StartResizing bottomright
+OnWindow Mod1 Mouse1 :MacroCmd {Raise} {Focus} {StartMoving}
+OnTitlebar Control Mouse1 :StartTabbing
+OnTitlebar Double Mouse1 :Maximize
+OnTitlebar Mouse1 :MacroCmd {Raise} {Focus} {ActivateTab}
+OnTitlebar Mouse3 :WindowMenu
+OnTitlebar Move1  :StartMoving
+OnToolbar Mouse4 :PrevWorkspace
+OnToolbar Mouse5 :NextWorkspace
+OnWindow Mod1 Mouse1 :MacroCmd {Raise} {Focus} {StartMoving}
+OnWindow Mod1 Mouse3 :MacroCmd {Raise} {Focus} {StartResizing NearestCorner}
+OnWindow Mod4 Shift Mouse4 :TakeToPrevWorkspace
+OnWindow Mod4 Shift Mouse5 :TakeToNextWorkspace
+OnWindowBorder Move1 :StartResizing NearestEdge
+
+# Reconfigure fluxbox
+Mod4 Shift R :Reconfigure
+
+# Switch to a given desktop
+Mod4 1 :Workspace 1
+Mod4 2 :Workspace 2
+Mod4 3 :Workspace 3
+Mod4 4 :Workspace 4
+Mod4 Shift 1 :TakeToWorkspace 1
+Mod4 Shift 2 :TakeToWorkspace 2
+Mod4 Shift 3 :TakeToWorkspace 3
+Mod4 Shift 4 :TakeToWorkspace 4
+Mod4 Shift Tab :PrevWorkspace
+Mod4 Tab :NextWorkspace
+
+# Window keybinds
+Mod1 F4 :Close
+Mod1 Shift Tab :PrevWindow {groups} (workspace=[current])
+Mod1 Tab :NextWindow {groups} (workspace=[current])
+Mod4 f :Fullscreen
+Mod4 q :Close
+Mod4 z :ShowDesktop
+
+
+# Launch various applications
+Mod4 Return :Exec emacsclient -cn --eval '(vterm-create-new-buffer)'
+Mod4 d :Exec emacsclient -cn --eval '(dired "~")'
+Mod4 e :Exec emacsclient -cn
+Mod4 r :Exec rofi -show-icons -show drun
+Mod4 s :Exec steam
+Mod4 t :Exec emacsclient -cn --eval '(eshell)'
+Mod4 w :Exec librewolf
+Mod4 x :Exec pcmanfm-qt
+Mod4 v :Exec freetube
+Print :Exec gnome-screenshot
+Shift Control Escape :exec lxtask
+XF86Calculator :Exec emacsclient -cn --eval '(calc-full-window)'
+
+# mpc controls
+Mod4 m :exec mpc toggle
+Mod4 Up :exec mpc volume +10
+Mod4 Down :exec mpc volume -10
+Mod4 Left :exec mpc prev
+Mod4 Right :exec mpc next
+
+# Snap windows
+Mod4 y :MacroCmd {MoveTo 0% 0%} {ResizeTo 50% 50%}
+Mod4 u :MacroCmd {MoveTo 50% 0%} {ResizeTo 50% 50%}
+Mod4 h :MacroCmd {MoveTo 0% 0%} {ResizeTo 50% 100%}
+Mod4 j :Minimize
+Mod4 k :Maximize
+Mod4 l :MacroCmd {MoveTo 50% 0%} {ResizeTo 50% 100%}
+Mod4 b :MacroCmd {MoveTo 0% 50%} {ResizeTo 50% 50%}
+Mod4 n :MacroCmd {MoveTo 50% 50%} {ResizeTo 50% 50%}

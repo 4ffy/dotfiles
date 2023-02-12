@@ -1,0 +1,21 @@
+#!/bin/sh
+#
+# fluxbox startup-script:
+#
+# Lines starting with a '#' are ignored.
+
+xset -b        &
+lxqt-policykit-agent &
+volumeicon &
+nm-applet  &
+cbatticon  &
+xremap /etc/xremap/default.yml --watch &
+
+mpc clear
+mpc load Main
+mpc shuffle
+
+(sleep 1s && ~/.fehbg) &
+(sleep 1s && setxkbmap -option "shift:both_capslock") &
+
+exec fluxbox

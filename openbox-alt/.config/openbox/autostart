@@ -1,0 +1,16 @@
+# basic applications
+xset -b        &
+~/.fehbg       &
+picom -b       &
+tint2          &
+opensnap -d    &
+lxqt-policykit-agent    &
+xremap /etc/xremap/default.yml --watch &
+
+(mpc clear && mpc load Main && mpc shuffle) &
+
+# tray applications
+(sleep 1s && volumeicon) &
+(sleep 1s && nm-applet)  &
+(sleep 1s && cbatticon)  &
+(sleep 1s && setxkbmap -option "shift:both_capslock") &
