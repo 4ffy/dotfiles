@@ -7,6 +7,7 @@ picom -b       &
 tint2          &
 opensnap -d    &
 lxqt-policykit-agent    &
+xremap /etc/xremap/default.yml --watch &
 
 (mpc clear && mpc load Main && mpc shuffle) &
 
@@ -15,3 +16,4 @@ lxqt-policykit-agent    &
 (sleep 1s && nm-applet)     &
 (sleep 1s && steam -silent) &
 (sleep 1s && discord --start-minimized) &
+(sleep 1s && setxkbmap -option "shift:both_capslock") &
