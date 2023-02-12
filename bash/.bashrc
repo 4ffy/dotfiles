@@ -47,10 +47,11 @@ cmake-build () {
 }
 
 # Environment Variables
-PATH="$PATH:$HOME/.local/bin"
+export PATH="$PATH:$HOME/.local/bin"
 export LESS='-R --use-color -Dd+C$Du+W'
 export EDITOR='vi'
 export DEBUGINFOD_URLS="https://debuginfod.archlinux.org/"
+export DOOMWADDIR="$HOME/Documents/Doom/pwad"
 
 # Emacs vterm integration
 vterm_printf() {
