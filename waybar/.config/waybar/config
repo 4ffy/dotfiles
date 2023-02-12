@@ -5,7 +5,7 @@
     "modules-right": ["tray", "pulseaudio", "clock"],
     "mode": "dock",
     "wlr/taskbar": {
-        "format": "{icon} {name}",
+        "format": "{icon} {title}",
         "icon-size": 30,
         "on-click": "minimize-raise",
         "on-click-middle": "close"
