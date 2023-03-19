@@ -47,7 +47,7 @@ Mod4 z :ShowDesktop
 
 # Launch various applications
 Mod4 Return :Exec emacsclient -cn --eval '(vterm-create-new-buffer)'
-Mod4 d :Exec emacsclient -cn --eval '(dired "~")'
+Mod4 d :Exec discord
 Mod4 e :Exec emacsclient -cn
 Mod4 r :Exec rofi -show-icons -show drun
 Mod4 s :Exec steam
