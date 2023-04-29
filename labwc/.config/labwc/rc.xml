@@ -1,55 +1,6 @@
 <?xml version="1.0"?>
-<!--
-  This file contains all supported config elements & attributes with
-  default values.
--->
 <labwc_config>
-
-  <core>
-    <decoration>server</decoration>
-    <gap>0</gap>
-    <adaptiveSync>no</adaptiveSync>
-    <cycleViewPreview>yes</cycleViewPreview>
-    <cycleViewOutline>yes</cycleViewOutline>
-  </core>
-
-  <!-- <font><theme> can be defined without an attribute to set all places -->
-  <theme>
-    <name>min-medium</name>
-    <cornerRadius>0</cornerRadius>
-    <font place="ActiveWindow">
-      <name>Cantarell</name>
-      <size>10</size>
-      <weight>Bold</weight>
-    </font>
-    <font place="MenuItem">
-      <name>Cantarell</name>
-      <size>14</size>
-    </font>
-    <font place="OSD">
-      <name>Cantarell</name>
-      <size>10</size>
-    </font>
-  </theme>
-
-  <!-- edge strength is in pixels -->
-  <resistance>
-    <screenEdgeStrength>50</screenEdgeStrength>
-  </resistance>
-
-  <focus>
-    <followMouse>no</followMouse>
-    <raiseOnFocus>no</raiseOnFocus>
-  </focus>
-
-  <!-- Set range to 0 to disable window snapping completely -->
-  <snapping>
-    <range>1</range>
-    <topMaximize>yes</topMaximize>
-  </snapping>
-
   <desktops>
-    <popupTime>1000</popupTime>
     <names>
       <name>w1</name>
       <name>w2</name>
@@ -65,24 +16,29 @@
     <region name="bottom_right" x="50%" y="50%" width="50%" height="50%"/>
   </regions>
 
-  <!--
-    Keybind actions are specified in labwc-actions(5)
-    The following keybind modifiers are supported:
-      W - window/super/logo
-      A - alt
-      C - ctrl
-      S - shift
+  <resistance>
+    <screenEdgeStrength>50</screenEdgeStrength>
+  </resistance>
 
-    Use <keyboard><default /> to load all the default keybinds (those listed
-    below). If the default keybinds are largely what you want, a sensible
-    approach could be to start the <keyboard> section with a <default />
-    element, and then (re-)define any special binds you need such as launching
-    your favourite terminal or application launcher.
-  -->
+  <theme>
+    <name>min-medium</name>
+    <cornerRadius>0</cornerRadius>
+    <font place="ActiveWindow">
+      <name>Cantarell</name>
+      <size>11</size>
+      <weight>Bold</weight>
+    </font>
+    <font place="MenuItem">
+      <name>Cantarell</name>
+      <size>14</size>
+    </font>
+    <font place="OSD">
+      <name>Cantarell</name>
+      <size>11</size>
+    </font>
+  </theme>
+
   <keyboard>
-    <repeatRate>25</repeatRate>
-    <repeatDelay>600</repeatDelay>
-
     <!-- Keybinds for controlling labwc -->
     <keybind key="W-S-r">
       <action name="Reconfigure"/>
@@ -296,14 +252,7 @@
     </keybind>
   </keyboard>
 
-  <!--
-    Multiple <mousebind> can exist within one <context>
-    Multiple <actions> can exist within one <mousebind>
-    Currently, the only openbox-action not supported is "Unshade"
-  -->
   <mouse>
-    <!-- time is in ms -->
-    <doubleClickTime>500</doubleClickTime>
     <default/>
     <context name="Frame">
       <mousebind button="W-Up" action="Click">
@@ -312,16 +261,6 @@
         </action>
       </mousebind>
       <mousebind button="W-Down" action="Click">
-        <action name="GoToDesktop">
-          <to>right</to>
-        </action>
-      </mousebind>
-      <mousebind button="C-W-Up" action="Click">
-        <action name="GoToDesktop">
-          <to>left</to>
-        </action>
-      </mousebind>
-      <mousebind button="C-W-Down" action="Click">
         <action name="GoToDesktop">
           <to>right</to>
         </action>
@@ -338,31 +277,5 @@
       </mousebind>
     </context>
   </mouse>
-
-  <!--
-    The *category* element can be set to touch, non-touch, default or the name
-    of a device. You can obtain device names by running *libinput list-devices*
-    as root or member of the input group.
-
-    Tap is set to *yes* be default. All others are left blank in order to use
-    device defaults.
-
-    All values are [yes|no] except for:
-      - pointerSpeed [-1.0 to 1.0]
-      - accelProfile [flat|adaptive]
-      - tapButtonMap [lrm|lmr]
-  -->
-  <libinput>
-    <device category="">
-      <naturalScroll/>
-      <leftHanded/>
-      <pointerSpeed/>
-      <accelProfile/>
-      <tap>yes</tap>
-      <tapButtonMap/>
-      <middleEmulation/>
-      <disableWhileTyping/>
-    </device>
-  </libinput>
 
 </labwc_config>
