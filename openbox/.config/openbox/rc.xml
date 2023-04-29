@@ -288,7 +288,7 @@
     </keybind>
     <keybind key="W-t">
       <action name="Execute">
-        <command>emacsclient -cn --eval '(eshell)'</command>
+        <command>emacsclient --eval '(emacs-everywhere)'</command>
       </action>
     </keybind>
     <keybind key="W-d">
