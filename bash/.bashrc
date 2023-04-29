@@ -49,6 +49,7 @@ cmake-build () {
 # Environment Variables
 export PATH="$PATH:$HOME/.local/bin"
 export DOOMWADDIR="$HOME/Documents/Doom/pwad"
+export LESS='-R --use-color -Dd+C$Du+W'
 
 # Emacs vterm integration
 vterm_printf() {
