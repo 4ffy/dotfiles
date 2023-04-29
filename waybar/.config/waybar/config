@@ -1,11 +1,11 @@
 {
-    "layer": "top",
     "height": 40,
+    "layer": "top",
+    "mode": "dock",
     "modules-left": ["wlr/taskbar"],
     "modules-right": ["tray", "pulseaudio", "clock"],
-    "mode": "dock",
     "wlr/taskbar": {
-        "format": "{icon} {title}",
+        "format": "{icon} {title:.25}",
         "icon-size": 30,
         "on-click": "minimize-raise",
         "on-click-middle": "close"
