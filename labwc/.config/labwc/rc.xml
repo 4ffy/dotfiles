@@ -209,7 +209,7 @@
     </keybind>
     <keybind key="XF86Calculator">
       <action name="Execute">
-        <command>emacsclient -cn --eval '(calc-full-window)'</command>
+        <command>emacsclient -cn --eval '(full-calc)'</command>
       </action>
     </keybind>
 
