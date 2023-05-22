@@ -1,6 +1,7 @@
 [[ $- != *i* ]] && return
 
 # Aliases
+alias ec='emacsclient -t'
 alias ip='ip -color=auto'
 alias ls='ls --color=auto --group-directories-first'
 alias la='ls --color=auto --group-directories-first -a'
