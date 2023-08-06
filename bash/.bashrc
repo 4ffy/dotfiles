@@ -23,28 +23,11 @@ mem () {
     ps huxk-rss | awk '{printf("%5.1fM\t%5d\t%s\n",$6/1024,$2,$11)}'
 }
 
-dired() {
+dired () {
     if [[ -n "$1" && -d "$1" ]]; then
         emacsclient -t -a '' --eval "(dired \"$1\")"
     else
         emacsclient -t -a '' --eval "(dired \"$PWD\")"
-    fi
-}
-
-fixaudio () {
-    systemctl --user restart pipewire.service
-    sleep 1
-    systemctl --user restart pipewire-pulse.service
-    sleep 1
-    systemctl --user restart wireplumber.service
-}
-
-cmake-build () {
-    if [[ -f CMakeLists.txt ]]; then
-        cmake -B build && make -k -j$(nproc) -C build
-    else
-        echo "CMakeLists.txt not found."
-        return 1
     fi
 }
 
