@@ -4,9 +4,9 @@ xrandr --output DisplayPort-0 --mode 1920x1080 --rate 240
 xset -b        &
 ~/.fehbg       &
 picom -b       &
-tint2          &
 opensnap -d    &
-lxqt-policykit-agent    &
+lxqt-policykit-agent        &
+G_SLICE=always-malloc tint2 &
 
 (mpc clear && mpc load main && mpc shuffle) &
 
