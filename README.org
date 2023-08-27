@@ -16,10 +16,12 @@ I keep my Emacs config in a [[https://github.com/4ffy/emacs-config][separate rep
  - [[https://openbox.org/][openbox]]
  - [[http://fluxbox.org/][fluxbox]]
  - [[https://labwc.github.io/][labwc]] for the inevitable Wayland future
+ - Alternate versions for Openbox and Fluxbox using larger sizes for laptop use
 
 *** Taskbars
+ - [[https://github.com/LBCrion/sfwbar][sfwbar]] for labwc (WIP)
  - [[https://gitlab.com/o9000/tint2][tint2]] for Openbox
- - [[https://github.com/Alexays/Waybar][waybar]] for labwc (WIP)
+ - Alternate larger-size tint2
 
 *** Other Desktop
  - [[https://github.com/trizen/obmenu-generator][obmenu-generator]] for Openbox
