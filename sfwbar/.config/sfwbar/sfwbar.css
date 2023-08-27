@@ -1,0 +1,68 @@
+@define-color background    #000000;
+@define-color button        #202020;
+@define-color button-hover  #404040;
+@define-color button-border #606060;
+
+/* Global settings */
+* {
+    -GtkWidget-vexpand: true;
+    background-color: @background;
+    border-radius: 4px;
+    color: #ffffff;
+    font: 10pt Cantarell;
+    margin: 0px;
+    padding: 0px;
+    border: 0px;
+}
+
+#layout {
+    min-height: 40px;
+}
+
+
+/* Window button settings */
+#taskbar_normal,
+#taskbar_active,
+#taskbar_normal *,
+#taskbar_active * {
+    -GtkWidget-hexpand: false;
+    -GtkWidget-max-width: 200px;
+    background-color: @button;
+    border: 1px solid @button;
+    margin-left: 1px;
+}
+
+#taskbar_normal image,
+#taskbar_active image,
+#taskbar_normal:hover image {
+    min-width: 32px;
+    padding-left: 2px;
+    padding-right: 2px;
+}
+
+#taskbar_active,
+#taskbar_normal:hover {
+    border: 1px solid @button-border;
+}
+
+
+/* Tray settings */
+#tray {
+    padding: 2px;
+}
+
+#tray:hover,
+#tray:hover * {
+    background-color: @button-hover;
+}
+
+#tray_active image,
+#tray_passive image {
+    min-width: 24px;
+}
+
+
+/* Clock settings */
+#time {
+    font-weight: bold;
+}
