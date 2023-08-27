@@ -25,3 +25,4 @@ window.inactive.label.text.color: #808080
 osd.border.width: 1
 osd.hilight.bg.color: #3399dd
 osd.unhilight.bg.color: #eeeeee
+osd.window-switcher.width: 600
