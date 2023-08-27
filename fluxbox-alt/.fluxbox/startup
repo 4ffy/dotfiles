@@ -11,7 +11,7 @@ nm-applet  &
 cbatticon  &
 
 mpc clear
-mpc load Main
+mpc load main
 mpc shuffle
 
 (sleep 1s && ~/.fehbg) &

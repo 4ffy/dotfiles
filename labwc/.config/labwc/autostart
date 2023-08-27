@@ -9,4 +9,4 @@ lxqt-policykit-agent  &
 nm-applet --indicator &
 swaybg -i /usr/share/backgrounds/wallpaper.jpg -m stretch &
 
-(mpc clear && mpc load Main && mpc shuffle) &
+(mpc clear && mpc load main && mpc shuffle) &

@@ -6,7 +6,7 @@ tint2          &
 opensnap -d    &
 lxqt-policykit-agent    &
 
-(mpc clear && mpc load Main && mpc shuffle) &
+(mpc clear && mpc load main && mpc shuffle) &
 
 # tray applications
 (sleep 1s && volumeicon) &

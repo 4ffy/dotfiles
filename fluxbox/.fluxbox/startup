@@ -10,7 +10,7 @@ volumeicon &
 nm-applet  &
 
 mpc clear
-mpc load Main
+mpc load main
 mpc shuffle
 
 (sleep 1s && ~/.fehbg) &
