@@ -47,7 +47,7 @@
 =cut
 
 our $CONFIG = {
-    "editor"              => "emacsclient -nc -a ''",
+    "editor"              => "emacsclient -cn",
         "force_icon_size"     => 0,
         "generic_fallback"    => 0,
         "gtk_rc_filename"     => "$ENV{HOME}/.config/gtk-3.0/settings.ini",
@@ -74,6 +74,6 @@ our $CONFIG = {
     },
         "locale_support"      => 1,
         "missing_icon"        => "gtk-missing-image",
-        "terminal"            => "lxterminal",
-        "VERSION"             => 0.91,
+        "terminal"            => "xterm",
+        "VERSION"             => 0.93,
 }
