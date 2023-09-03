@@ -2,9 +2,10 @@
 xset -b        &
 ~/.fehbg       &
 picom -b       &
-tint2          &
 opensnap -d    &
 lxqt-policykit-agent    &
+G_SLICE=always-malloc \
+    tint2 -c "${XDG_CONFIG_HOME:-$HOME/.config}/openbox/tint2rc" &
 
 (mpc clear && mpc load main && mpc shuffle) &
 
