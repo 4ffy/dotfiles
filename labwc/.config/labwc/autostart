@@ -4,9 +4,11 @@ gsettings set org.gnome.desktop.interface cursor-theme 'Adwaita' &
 gsettings set org.gnome.desktop.interface font-name 'Cantarell 11' &
 
 xset -b &
-sfwbar  &
 lxqt-policykit-agent  &
 nm-applet --indicator &
 swaybg -i /usr/share/backgrounds/wallpaper.jpg -m stretch &
+sfwbar \
+    -f ${XDG_CONFIG_HOME:-$HOME/.config}/labwc/sfwbar.config \
+    -c ${XDG_CONFIG_HOME:-$HOME/.config}/labwc/sfwbar.css    &
 
 (mpc clear && mpc load main && mpc shuffle) &
