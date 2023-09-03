@@ -1,0 +1,36 @@
+#!/bin/sh
+
+start() {
+    pgrep -x "$1" > /dev/null || "$@" &
+}
+
+# Set up 10 workspaces.
+bspc monitor -d 1 2 3 4 5 6 7 8 9 0
+
+# Split nodes based on the longest side.
+bspc config automatic_scheme longest_side
+
+# Use monocle view if there is only one window.
+bspc config single_monocle true
+
+# bspc config window_gap 15
+bspc config window_gap 0
+
+# Remove borders and gaps during monocle view.
+bspc config borderless_monocle true
+bspc config gapless_monocle true
+
+# Emacs renders floating by default for some reason.
+bspc rule -a Emacs state=tiled
+
+# Launch/run various applications
+~/.fehbg &
+xsetroot -cursor_name left_ptr &
+setxkbmap -option 'shift:both_capslock' &
+(mpc clear && mpc load main && mpc shuffle) &
+
+start nm-applet
+start picom -b
+start sxhkd -c "${XDG_CONFIG_HOME:-$HOME/.config}/bspwm/sxhkdrc"
+start tint2 -c "${XDG_CONFIG_HOME:-$HOME/.config}/bspwm/tint2rc"
+start volumeicon

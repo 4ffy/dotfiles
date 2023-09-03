@@ -1,0 +1,79 @@
+# Quit bspwm.
+super + shift + e
+    bspc quit
+
+# Reload bspwm and sxhkd configuration.
+super + shift + r
+    bspc wm -r
+super + shift + t
+    pkill -USR1 -x sxhkd
+
+# Close or kill an application.
+super + {q,k}
+    bspc node -{c,k}
+alt + F4
+    bspc node -c
+
+# Toggle fullscreen
+super + f
+    bspc node -t ~fullscreen
+
+# Swap window focus.
+super + {_,shift + }o
+    bspc node -f {next,prev}.local.!hidden.window
+alt + {_,shift + }Tab
+    bspc node -f {next,prev}.local.!hidden.window
+
+# Swap desktops
+super + {_, shift +}Tab
+    bspc desktop -f {next,prev}
+
+# focus or send to the given desktop
+super + {_,shift + }{1-9,0}
+    bspc {desktop -f,node -d} '^{1-9,10}'
+
+# Resize windows. for some reason, I can't splice in the + or -.
+super + bracketleft
+    bspc node @parent -r -0.1
+super + bracketright
+    bspc node @parent -r +0.1
+super + plus
+    bspc node @parent -E
+
+# Launch various applications.
+super + Return
+    emacsclient -cn --eval '(cn/vterm-create-new-buffer)'
+super + d
+    discord
+super + e
+    emacsclient -cn
+super + r
+    rofi -show-icons -show drun
+super + s
+    steam
+super + t
+    emacsclient --eval '(emacs-everywhere)'
+super + w
+    librewolf
+super + v
+    freetube
+super + x
+    pcmanfm-qt
+ctrl + shift + Escape
+    lxtask
+XF86Calculator
+    emacsclient -cn --eval '(full-calc)'
+Print
+    gnome-screenshot
+
+# MPC Controls
+super + m
+    mpc toggle
+super + Up
+    mpc volume +10
+super + Down
+    mpc volume -10
+super + Left
+    mpc prev
+super + Right
+    mpc next
