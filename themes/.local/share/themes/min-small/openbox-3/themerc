@@ -26,3 +26,4 @@ osd.border.width: 1
 osd.hilight.bg.color: #3399dd
 osd.unhilight.bg.color: #eeeeee
 osd.window-switcher.width: 600
+osd.window-switcher.item.active.border.width: 1
