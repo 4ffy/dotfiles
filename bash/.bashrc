@@ -17,7 +17,6 @@ alias winejp='LANG=ja_JP.UTF-8 wine'
 alias wine64='WINEPREFIX=$HOME/.wine64 wine'
 alias yt-mp3='yt-dlp -xf bestaudio --audio-format mp3 --audio-quality 192k'
 alias fixdisplay='xrandr --output DisplayPort-0 --mode 1920x1080 --rate 240'
-alias clearworkspace='find . -type d -name "[Ww]orkspace" -exec rm -r "{}" \;'
 
 # Functions
 mem () {
