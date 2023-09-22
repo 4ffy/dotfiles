@@ -5,3 +5,5 @@
 	defaultBranch = main
 [pull]
 	rebase = false
+[protocol "file"]
+	allow = always
