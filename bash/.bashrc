@@ -34,7 +34,7 @@ dired () {
 
 # Environment Variables
 export PATH="$PATH:$HOME/.local/bin"
-export DOOMWADDIR="$HOME/Documents/Doom/wads"
+export DOOMWADDIR="$HOME/Documents/Doom/wads/all"
 export LESS='-R --use-color -Dd+C$Du+W'
 
 # Emacs vterm integration
