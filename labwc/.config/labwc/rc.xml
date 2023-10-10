@@ -43,6 +43,9 @@
     <keybind key="W-S-r">
       <action name="Reconfigure"/>
     </keybind>
+    <keybind key="W-S-e">
+      <action name="Exit"/>
+    </keybind>
 
     <!-- Keybinds for desktop switching -->
     <keybind key="W-1">
