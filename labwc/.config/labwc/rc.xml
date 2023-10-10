@@ -46,6 +46,9 @@
     <keybind key="W-S-e">
       <action name="Exit"/>
     </keybind>
+    <keybind key="W-KP_0">
+      <action name="ShowMenu" menu="root-menu"/>
+    </keybind>
 
     <!-- Keybinds for desktop switching -->
     <keybind key="W-1">
