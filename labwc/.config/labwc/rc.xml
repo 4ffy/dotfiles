@@ -17,7 +17,7 @@
   </regions>
 
   <resistance>
-    <screenEdgeStrength>50</screenEdgeStrength>
+    <screenEdgeStrength>0</screenEdgeStrength>
   </resistance>
 
   <theme>
