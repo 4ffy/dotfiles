@@ -254,28 +254,6 @@
 
   <mouse>
     <default/>
-    <context name="Frame">
-      <mousebind button="W-Up" action="Click">
-        <action name="GoToDesktop">
-          <to>left</to>
-        </action>
-      </mousebind>
-      <mousebind button="W-Down" action="Click">
-        <action name="GoToDesktop">
-          <to>right</to>
-        </action>
-      </mousebind>
-      <mousebind button="W-S-Up" action="Click">
-        <action name="SendToDesktop">
-          <to>left</to>
-        </action>
-      </mousebind>
-      <mousebind button="W-S-Down" action="Click">
-        <action name="SendToDesktop">
-          <to>right</to>
-        </action>
-      </mousebind>
-    </context>
   </mouse>
 
 </labwc_config>
