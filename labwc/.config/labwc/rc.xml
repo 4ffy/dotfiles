@@ -1,13 +1,6 @@
 <?xml version="1.0"?>
 <labwc_config>
-  <desktops>
-    <names>
-      <name>w1</name>
-      <name>w2</name>
-      <name>w3</name>
-      <name>w4</name>
-    </names>
-  </desktops>
+  <desktops number="4"/>
 
   <regions>
     <region name="top_left" x="0%" y="0%" width="50%" height="50%"/>
@@ -53,42 +46,42 @@
     <!-- Keybinds for desktop switching -->
     <keybind key="W-1">
       <action name="GoToDesktop">
-        <to>w1</to>
+        <to>1</to>
       </action>
     </keybind>
     <keybind key="W-2">
       <action name="GoToDesktop">
-        <to>w2</to>
+        <to>2</to>
       </action>
     </keybind>
     <keybind key="W-3">
       <action name="GoToDesktop">
-        <to>w3</to>
+        <to>3</to>
       </action>
     </keybind>
     <keybind key="W-4">
       <action name="GoToDesktop">
-        <to>w4</to>
+        <to>4</to>
       </action>
     </keybind>
     <keybind key="W-S-1">
       <action name="SendToDesktop">
-        <to>w1</to>
+        <to>1</to>
       </action>
     </keybind>
     <keybind key="W-S-2">
       <action name="SendToDesktop">
-        <to>w2</to>
+        <to>2</to>
       </action>
     </keybind>
     <keybind key="W-S-3">
       <action name="SendToDesktop">
-        <to>w3</to>
+        <to>3</to>
       </action>
     </keybind>
     <keybind key="W-S-4">
       <action name="SendToDesktop">
-        <to>w4</to>
+        <to>4</to>
       </action>
     </keybind>
     <keybind key="W-Tab">
