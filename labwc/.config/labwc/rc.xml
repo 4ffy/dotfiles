@@ -9,26 +9,12 @@
     <region name="bottom_right" x="50%" y="50%" width="50%" height="50%"/>
   </regions>
 
-  <resistance>
-    <screenEdgeStrength>0</screenEdgeStrength>
-  </resistance>
+  <resistance screenEdgeStrength="0"/>
 
-  <theme>
-    <name>min-medium</name>
-    <cornerRadius>0</cornerRadius>
-    <font place="ActiveWindow">
-      <name>Cantarell</name>
-      <size>11</size>
-      <weight>Bold</weight>
-    </font>
-    <font place="MenuItem">
-      <name>Cantarell</name>
-      <size>11</size>
-    </font>
-    <font place="OSD">
-      <name>Cantarell</name>
-      <size>11</size>
-    </font>
+  <theme name="min-medium" cornerRadius="0">
+    <font place="ActiveWindow" name="Cantarell" size="11" weight="Bold"/>
+    <font place="MenuItem" name="Cantarell" size="11"/>
+    <font place="OSD" name="Cantarell" size="11"/>
   </theme>
 
   <keyboard>
@@ -45,54 +31,34 @@
 
     <!-- Keybinds for desktop switching -->
     <keybind key="W-1">
-      <action name="GoToDesktop">
-        <to>1</to>
-      </action>
+      <action name="GoToDesktop" to="1"/>
     </keybind>
     <keybind key="W-2">
-      <action name="GoToDesktop">
-        <to>2</to>
-      </action>
+      <action name="GoToDesktop" to="2"/>
     </keybind>
     <keybind key="W-3">
-      <action name="GoToDesktop">
-        <to>3</to>
-      </action>
+      <action name="GoToDesktop" to="3"/>
     </keybind>
     <keybind key="W-4">
-      <action name="GoToDesktop">
-        <to>4</to>
-      </action>
+      <action name="GoToDesktop" to="4"/>
     </keybind>
     <keybind key="W-S-1">
-      <action name="SendToDesktop">
-        <to>1</to>
-      </action>
+      <action name="SendToDesktop" to="1"/>
     </keybind>
     <keybind key="W-S-2">
-      <action name="SendToDesktop">
-        <to>2</to>
-      </action>
+      <action name="SendToDesktop" to="2"/>
     </keybind>
     <keybind key="W-S-3">
-      <action name="SendToDesktop">
-        <to>3</to>
-      </action>
+      <action name="SendToDesktop" to="3"/>
     </keybind>
     <keybind key="W-S-4">
-      <action name="SendToDesktop">
-        <to>4</to>
-      </action>
+      <action name="SendToDesktop" to="4"/>
     </keybind>
     <keybind key="W-Tab">
-      <action name="GoToDesktop">
-        <to>right</to>
-      </action>
+      <action name="GoToDesktop" to="right"/>
     </keybind>
     <keybind key="W-S-Tab">
-      <action name="GoToDesktop">
-        <to>left</to>
-      </action>
+      <action name="GoToDesktop" to="left"/>
     </keybind>
 
     <!-- Keybinds for window actions -->
@@ -123,9 +89,7 @@
       <action name="SnapToRegion" region="top_right"/>
     </keybind>
     <keybind key="W-h">
-      <action name="SnapToEdge">
-        <direction>left</direction>
-      </action>
+      <action name="SnapToEdge" direction="left"/>
     </keybind>
     <keybind key="W-j">
       <action name="Iconify"/>
@@ -134,9 +98,7 @@
       <action name="ToggleMaximize"/>
     </keybind>
     <keybind key="W-l">
-      <action name="SnapToEdge">
-        <direction>right</direction>
-      </action>
+      <action name="SnapToEdge" direction="right"/>
     </keybind>
     <keybind key="W-b">
       <action name="SnapToRegion" region="bottom_left"/>
@@ -241,13 +203,19 @@
 
     <!-- Keybindings for media keys -->
     <keybind key="XF86_AudioLowerVolume">
-      <action name="Execute"><command>pamixer -d 5</command></action>
+      <action name="Execute">
+        <command>pamixer -d 5</command>
+      </action>
     </keybind>
     <keybind key="XF86_AudioRaiseVolume">
-      <action name="Execute"><command>pamixer -i 5</command></action>
+      <action name="Execute">
+        <command>pamixer -i 5</command>
+      </action>
     </keybind>
     <keybind key="XF86_AudioMute">
-      <action name="Execute"><command>pamixer -t</command></action>
+      <action name="Execute">
+        <command>pamixer -t</command>
+      </action>
     </keybind>
   </keyboard>
 
