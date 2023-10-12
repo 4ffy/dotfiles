@@ -130,7 +130,7 @@
     </keybind>
     <keybind key="W-r">
       <action name="Execute">
-        <command>wofi -Ii --show drun</command>
+        <command>rofi -show-icons -show drun</command>
       </action>
     </keybind>
     <keybind key="W-t">
