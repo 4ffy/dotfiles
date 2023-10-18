@@ -109,113 +109,71 @@
 
     <!-- Keybindings for running applications -->
     <keybind key="W-Return">
-      <action name="Execute">
-        <command>emacsclient -cn --eval '(cn/vterm-create-new-buffer)'</command>
-      </action>
+      <action name="Execute" command="emacsclient -cn --eval '(cn/vterm-create-new-buffer)'"/>
     </keybind>
     <keybind key="C-S-Escape">
-      <action name="Execute">
-        <command>lxtask</command>
-      </action>
+      <action name="Execute" command="lxtask"/>
     </keybind>
     <keybind key="W-w">
-      <action name="Execute">
-        <command>librewolf</command>
-      </action>
+      <action name="Execute" command="librewolf"/>
     </keybind>
     <keybind key="W-e">
-      <action name="Execute">
-        <command>emacsclient -cn</command>
-      </action>
+      <action name="Execute" command="emacsclient -cn"/>
     </keybind>
     <keybind key="W-r">
-      <action name="Execute">
-        <command>rofi -show-icons -show drun</command>
-      </action>
+      <action name="Execute" command="rofi -show-icons -show drun"/>
     </keybind>
     <keybind key="W-t">
-      <action name="Execute">
-        <command>emacsclient -cn --eval '(eshell)'</command>
-      </action>
+      <action name="Execute" command="emacsclient -cn --eval '(eshell)'"/>
     </keybind>
     <keybind key="W-d">
-      <action name="Execute">
-        <command>discord</command>
-      </action>
+      <action name="Execute" command="discord"/>
     </keybind>
     <keybind key="W-s">
-      <action name="Execute">
-        <command>steam</command>
-      </action>
+      <action name="Execute" command="steam"/>
     </keybind>
     <keybind key="W-x">
-      <action name="Execute">
-        <command>pcmanfm-qt</command>
-      </action>
+      <action name="Execute" command="pcmanfm-qt"/>
     </keybind>
     <keybind key="W-v">
-      <action name="Execute">
-        <command>freetube</command>
-      </action>
+      <action name="Execute" command="freetube"/>
     </keybind>
     <keybind key="Print">
-      <action name="Execute">
-        <command>gnome-screenshot</command>
-      </action>
+      <action name="Execute" command="gnome-screenshot"/>
     </keybind>
     <keybind key="A-Print">
-      <action name="Execute">
-        <command>gnome-screenshot -w</command>
-      </action>
+      <action name="Execute" command="gnome-screenshot -w"/>
     </keybind>
     <keybind key="XF86Calculator">
-      <action name="Execute">
-        <command>emacsclient -cn --eval '(full-calc)'</command>
-      </action>
+      <action name="Execute" command="emacsclient -cn --eval '(full-calc)'"/>
     </keybind>
 
     <!-- Keybindings for mpc controls -->
     <keybind key="W-m">
-      <action name="Execute">
-        <command>mpc toggle</command>
-      </action>
+      <action name="Execute" command="mpc toggle"/>
     </keybind>
     <keybind key="W-Up">
-      <action name="Execute">
-        <command>mpc volume +10</command>
-      </action>
+      <action name="Execute" command="mpc volume +10"/>
     </keybind>
     <keybind key="W-Down">
-      <action name="Execute">
-        <command>mpc volume -10</command>
-      </action>
+      <action name="Execute" command="mpc volume -10"/>
     </keybind>
     <keybind key="W-Left">
-      <action name="Execute">
-        <command>mpc prev</command>
-      </action>
+      <action name="Execute" command="mpc prev"/>
     </keybind>
     <keybind key="W-Right">
-      <action name="Execute">
-        <command>mpc next</command>
-      </action>
+      <action name="Execute" command="mpc next"/>
     </keybind>
 
     <!-- Keybindings for media keys -->
     <keybind key="XF86_AudioLowerVolume">
-      <action name="Execute">
-        <command>pamixer -d 5</command>
-      </action>
+      <action name="Execute" command="pamixer -d 5"/>
     </keybind>
     <keybind key="XF86_AudioRaiseVolume">
-      <action name="Execute">
-        <command>pamixer -i 5</command>
-      </action>
+      <action name="Execute" command="pamixer -i 5"/>
     </keybind>
     <keybind key="XF86_AudioMute">
-      <action name="Execute">
-        <command>pamixer -t</command>
-      </action>
+      <action name="Execute" command="pamixer -t"/>
     </keybind>
   </keyboard>
 
