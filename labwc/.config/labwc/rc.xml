@@ -124,9 +124,6 @@
     <keybind key="W-r">
       <action name="Execute" command="rofi -show-icons -show drun"/>
     </keybind>
-    <keybind key="W-t">
-      <action name="Execute" command="emacsclient -cn --eval '(eshell)'"/>
-    </keybind>
     <keybind key="W-d">
       <action name="Execute" command="discord"/>
     </keybind>

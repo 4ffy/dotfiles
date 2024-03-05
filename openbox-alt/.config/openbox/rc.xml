@@ -286,11 +286,6 @@
         <command>rofi -show-icons -show drun</command>
       </action>
     </keybind>
-    <keybind key="W-t">
-      <action name="Execute">
-        <command>emacsclient -cn --eval '(eshell)'</command>
-      </action>
-    </keybind>
     <keybind key="W-d">
       <action name="Execute">
         <command>discord</command>

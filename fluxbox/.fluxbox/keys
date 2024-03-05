@@ -51,7 +51,6 @@ Mod4 d :Exec discord
 Mod4 e :Exec emacsclient -cn
 Mod4 r :Exec rofi -show-icons -show drun
 Mod4 s :Exec steam
-Mod4 t :Exec emacsclient -cn --eval '(eshell)'
 Mod4 w :Exec librewolf
 Mod4 x :Exec pcmanfm-qt
 Mod4 v :Exec freetube

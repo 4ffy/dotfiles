@@ -51,8 +51,6 @@ super + r
     rofi -show-icons -show drun
 super + s
     steam
-super + t
-    emacsclient --eval '(emacs-everywhere)'
 super + w
     librewolf
 super + v
