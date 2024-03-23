@@ -42,7 +42,7 @@ super + plus
 
 # Launch various applications.
 super + Return
-    emacsclient -cn --eval '(cn/vterm-create-new-buffer)'
+    emacsclient -cn --eval '(cn/eat-create-new-buffer)'
 super + d
     discord
 super + e

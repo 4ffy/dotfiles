@@ -37,20 +37,11 @@ export PATH="$PATH:$HOME/.local/bin"
 export DOOMWADDIR="$HOME/Documents/Doom/wads/all"
 export LESS='-R --use-color -Dd+C$Du+W'
 
-# Emacs vterm integration
-vterm_printf() {
-    printf "\e]%s\e\\" "$1"
-}
-
-if [[ "$INSIDE_EMACS" = 'vterm' ]]; then
-    function clear() {
-        vterm_printf "51;Evterm-clear-scrollback";
-        tput clear;
-    }
-fi
-
 # Basic prompt for dumb terminals
 if [[ "$TERM" == 'dumb' ]]; then
     unset PROMPT_COMMAND
     PS1='\n\u@\h \w $ '
 fi
+
+# Eat integration
+[ -n "$EAT_SHELL_INTEGRATION_DIR" ] && source "$EAT_SHELL_INTEGRATION_DIR/bash"

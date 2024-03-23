@@ -31,7 +31,7 @@ our $SCHEMA = [
 
     #          COMMAND            LABEL           ICON
     {item => ['fsearch',         'Find Files',   'system-search']},
-    {item => ['emacsclient -cn --eval \'(cn/vterm-create-new-buffer)\'',           'Terminal',     'lxterminal']},
+    {item => ['emacsclient -cn --eval \'(cn/eat-create-new-buffer)\'',           'Terminal',     'lxterminal']},
     {item => ['pcmanfm-qt',      'File Manager', 'system-file-manager']},
     {item => ['emacsclient -cn', 'Text Editor',  'emacs']},
     {item => ['librewolf',       'Web Browser',  'librewolf']},

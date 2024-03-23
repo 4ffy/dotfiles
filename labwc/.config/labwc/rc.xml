@@ -110,7 +110,7 @@
 
     <!-- Keybindings for running applications -->
     <keybind key="W-Return">
-      <action name="Execute" command="emacsclient -cn --eval '(cn/vterm-create-new-buffer)'"/>
+      <action name="Execute" command="emacsclient -cn --eval '(cn/eat-create-new-buffer)'"/>
     </keybind>
     <keybind key="C-S-Escape">
       <action name="Execute" command="lxtask"/>

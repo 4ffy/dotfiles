@@ -263,7 +263,7 @@
     <!-- Keybindings for running applications -->
     <keybind key="W-Return">
       <action name="Execute">
-        <command>emacsclient -cn --eval '(cn/vterm-create-new-buffer)'</command>
+        <command>emacsclient -cn --eval '(cn/eat-create-new-buffer)'</command>
       </action>
     </keybind>
     <keybind key="C-S-Escape">
