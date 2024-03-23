@@ -55,7 +55,7 @@ Mod4 w :Exec librewolf
 Mod4 x :Exec pcmanfm-qt
 Mod4 v :Exec freetube
 Print :Exec gnome-screenshot
-Shift Control Escape :exec lxtask
+Shift Control Escape :exec qps
 XF86Calculator :Exec emacsclient -cn --eval '(full-calc)'
 
 # mpc controls

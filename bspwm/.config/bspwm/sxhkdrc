@@ -58,7 +58,7 @@ super + v
 super + x
     pcmanfm-qt
 ctrl + shift + Escape
-    lxtask
+    qps
 XF86Calculator
     emacsclient -cn --eval '(full-calc)'
 Print

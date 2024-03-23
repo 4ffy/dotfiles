@@ -113,7 +113,7 @@
       <action name="Execute" command="emacsclient -cn --eval '(cn/eat-create-new-buffer)'"/>
     </keybind>
     <keybind key="C-S-Escape">
-      <action name="Execute" command="lxtask"/>
+      <action name="Execute" command="qps"/>
     </keybind>
     <keybind key="W-w">
       <action name="Execute" command="librewolf"/>
