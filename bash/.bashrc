@@ -11,7 +11,6 @@ alias la='ls --color=auto --group-directories-first -a'
 alias ll='ls --color=auto --group-directories-first -hl'
 alias lla='ls --color=auto --group-directories-first -ahl'
 alias ls='ls --color=auto --group-directories-first'
-alias magit='emacsclient -t --eval "(magit)"'
 alias make='make -j$(nproc)'
 alias runjp='LANG=ja_JP.UTF-8'
 alias wine64='WINEPREFIX=$HOME/.wine64 wine'
@@ -19,17 +18,45 @@ alias wine64cfg='WINEPREFIX=$HOME/.wine64 winecfg'
 alias winejp='LANG=ja_JP.UTF-8 wine'
 alias yt-mp3='yt-dlp -xf bestaudio --audio-format mp3 --audio-quality 192k'
 
-# Functions
-mem () {
-    ps huxk-rss | awk '{printf("%5.1fM\t%5d\t%s\n",$6/1024,$2,$11)}'
-}
+# Functions. These should only be suitable for interactive use of Bash.
+# Otherwise, it is better to create a proper shell script and put it on $PATH.
 
 dired () {
-    if [[ -n "$1" && -d "$1" ]]; then
-        emacsclient -t -a '' --eval "(dired \"$1\")"
-    else
-        emacsclient -t -a '' --eval "(dired \"$PWD\")"
+    target=${1:-$PWD}
+    if [ ! -d "$target" ]; then
+        echo "Not a directory: '$target'" >&2
+        return 1
     fi
+    if [[ "$INSIDE_EMACS" == *eat* ]]; then
+        _eat_msg dired "$target"
+    else
+        emacsclient -t --eval "(dired \"$target\")"
+    fi
+}
+
+magit () {
+    target=${1:-$PWD}
+    if [ ! -d "$target/.git" ]; then
+        echo "Not a git repository: '$target'" >&2
+        return 1
+    fi
+    if [[ "$INSIDE_EMACS" == *eat* ]]; then
+        _eat_msg magit "${1:-$PWD}"
+    else
+        emacsclient -t --eval "(magit-status-setup-buffer \"${1:-$PWD}\")"
+    fi
+}
+
+man () {
+    if [[ "$INSIDE_EMACS" == *eat* ]]; then
+        _eat_msg man "$@"
+    else
+        command man "$@"
+    fi
+}
+
+mem () {
+    ps huxk-rss | awk '{printf("%5.1fM\t%5d\t%s\n",$6/1024,$2,$11)}'
 }
 
 # Environment Variables
