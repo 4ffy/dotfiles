@@ -1,19 +1,25 @@
-xrandr --output DisplayPort-0 --mode 1920x1080 --rate 240
+#!/bin/bash
 
-# basic applications
-xset -b        &
-~/.fehbg       &
-picom -b       &
-opensnap -d    &
-lxqt-policykit-agent        &
-G_SLICE=always-malloc \
-    tint2 -c "${XDG_CONFIG_HOME:-$HOME/.config}/openbox/tint2rc" &
+# Vars
+config_home="${XDG_CONFIG_HOME:-$HOME/.config}"
 
-(mpc clear && mpc load main && mpc shuffle) &
+# Functions
+is_laptop() {
+    [ "$(uname -n)" == 'Renda' ]
+}
 
-# tray applications
-(sleep 1s && volumeicon)    &
-(sleep 1s && nm-applet)     &
-(sleep 1s && steam -silent) &
-(sleep 1s && discord --start-minimized) &
-(sleep 1s && setxkbmap -option "shift:both_capslock") &
+# Background applications
+lxqt-policykit-agent &
+nm-applet &
+opensnap -d &
+picom -b &
+tint2 -c "$config_home/openbox/tint2rc" &
+volumeicon &
+(is_laptop || discord --start-minimized) &
+(is_laptop || steam -silent) &
+
+# Other stuff
+mpc clear && mpc load main && mpc shuffle
+setxkbmap -option "shift:both_capslock"
+xset -b
+~/.fehbg
