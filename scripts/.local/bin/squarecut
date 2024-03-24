@@ -1,0 +1,11 @@
+#!/bin/bash
+set -euo pipefail
+
+inf=${1:-}
+if [ -z "$inf" ] || [ ! -e "$inf" ]; then
+    echo "File '$inf' not found." >&2
+    exit 1
+fi
+out="${2:-$inf}"
+
+magick "$inf" -gravity center -extent "%[fx:h<w?h:w]x%[fx:h<w?h:w]" "$out"

@@ -1,0 +1,27 @@
+#!/bin/bash
+set -euo pipefail
+
+# Check input.
+inf=${1:-}
+if [[ -z "$inf" || ! -e "$inf" ]]
+then
+    echo "File not found."
+    exit 1
+fi
+inf=$(realpath "$inf")
+
+# Get bitrate.
+cd "$(dirname "$inf")" || exit 1
+avg_bitrate=$(ogginfo "$inf" | awk '/Average bitrate/ {print $3}')
+avg_bitrate=${avg_bitrate%.*}  # Removes decimal part.
+
+# Reduce bitrate if over 192k.
+if [[ "$avg_bitrate" -gt 192 ]]
+then
+    wav="${inf::-4}.wav"
+    echo "${avg_bitrate}k $inf"
+
+    oggdec --quiet "$inf"
+    oggenc --quiet --quality 5 "$wav"
+    rm "$wav"
+fi

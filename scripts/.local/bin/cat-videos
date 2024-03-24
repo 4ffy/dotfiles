@@ -1,0 +1,19 @@
+#!/bin/bash
+set -euo pipefail
+
+tmpfile=$(mktemp)
+
+if [ "$#" -lt 2 ]; then
+    echo "Need at least two arguments." >&2
+    exit 1
+fi
+
+for arg in "$@"; do
+    if [ ! -f "$arg" ]; then
+        echo "'$arg' is not a file." >&2
+        exit 1
+    fi
+    printf "file '%s'\n" "$(realpath "$arg")" >> "$tmpfile"
+done
+
+ffmpeg -f concat -safe 0 -i "$tmpfile" -c copy out.mp4

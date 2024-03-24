@@ -1,0 +1,30 @@
+#!/bin/bash
+set -euo pipefail
+
+abort() {
+    if [ -n "${1:-}" ]; then
+        echo "$1" 1>&2
+    fi
+    exit 1
+}
+
+convert() {
+    vgm2wav "$1" &>/dev/null >(lame --quiet -b 192k - "$2")
+}
+export -f convert
+
+for arg in "$@"; do
+    # Combining these if statements is a headache.
+    if [ ! -f "$arg" ]; then
+        abort "File '$arg' does not exist."
+    fi
+    if file "$arg" | grep -q 'gzip compressed'; then
+        if [ "$(gzip -cd "$arg" | head -c 4)" != "Vgm " ]; then
+            abort "'$arg' is not a VGM file."
+        fi
+    elif [ "$(head -c 4 "$arg")" != "Vgm " ]; then
+        abort "'$arg' is not a VGM file."
+    fi
+done
+
+parallel convert "{}" "{.}.mp3" ::: "$@"

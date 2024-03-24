@@ -1,0 +1,12 @@
+#!/bin/bash
+set -euo pipefail
+
+dir=${1:-}
+if [ -z "$dir" ] || [ ! -d "$dir" ]; then
+    echo "Directory '$dir' not found." >&2
+    exit 1
+fi
+
+cd "$dir"
+find . -name "*.[Ww][Aa][Vv]" | parallel oggenc --quiet -q 5 "{}"
+find . -name "*.ogg" | parallel rm -f "{.}.[Ww][Aa][Vv]"

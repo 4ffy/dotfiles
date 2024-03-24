@@ -1,0 +1,35 @@
+#!/bin/bash
+set -euo pipefail
+
+dir=${1:-}
+if [ -z "$dir" ] || [ ! -d "$dir" ]
+then
+    echo "Directory '$dir' not found."
+    exit 1
+fi
+
+cd "$dir"
+find . -name "*\(Alt*"             -print -delete
+find . -name "*\(Australia*"       -print -delete
+find . -name "*\(Beta*"            -print -delete
+find . -name "*\(Brazil*"          -print -delete
+find . -name "*\(Canada*"          -print -delete
+find . -name "*\(China*"           -print -delete
+find . -name "*\(Demo*"            -print -delete
+find . -name "*\(Europe*"          -print -delete
+find . -name "*\(France*"          -print -delete
+find . -name "*\(Germany*"         -print -delete
+find . -name "*\(Hong\ Kong*"      -print -delete
+find . -name "*\(Italy*"           -print -delete
+find . -name "*\(Korea*"           -print -delete
+find . -name "*\(Netherlands*"     -print -delete
+find . -name "*\(Pirate*"          -print -delete
+find . -name "*\(Possible\ Proto*" -print -delete
+find . -name "*\(Proto*"           -print -delete
+find . -name "*\(Sample*"          -print -delete
+find . -name "*\(Spain*"           -print -delete
+find . -name "*\(Sweden*"          -print -delete
+find . -name "*\(Taiwan*"          -print -delete
+find . -name "*\(Test*"            -print -delete
+find . -name "*\(United\ Kingdom*" -print -delete
+find . -name "*\(Vietnam*"         -print -delete

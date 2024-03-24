@@ -1,0 +1,7 @@
+#!/bin/bash
+set -euxo pipefail
+rm -f "$HOME/.local/share/mpd/playlists/main.m3u"
+mpc update --wait
+mpc clear
+mpc add Sync
+mpc save main

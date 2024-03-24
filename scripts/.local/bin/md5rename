@@ -1,0 +1,24 @@
+#!/bin/bash
+set -euo pipefail
+
+inf=${1:-}
+if [ -z "$inf" ] || [ ! -e "$inf" ]
+then
+    echo "File \"$inf\" not found."
+    exit 1
+fi
+
+ext=$(basename "$inf" | awk -F. 'NF > 1 && $1 != "" { print $NF }')
+
+# get file md5
+md5=$(md5sum "$inf" | awk '{ print $1 }')
+
+# construct new filename
+if [ -n "$ext" ]; then
+    fout="$md5.$ext"
+else
+    fout="$md5"
+fi
+
+#rename file
+mv -v "$inf" "$fout"

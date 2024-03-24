@@ -1,0 +1,25 @@
+#!/bin/env python
+
+import random
+import webbrowser
+from datetime import date, timedelta
+
+
+def random_date(start: date, end: date) -> date:
+    if end < start:
+        raise ValueError("End is before start.")
+    if end == start:
+        return start
+
+    dt = end - start
+    days = int(dt / timedelta(days=1))
+    random_days = timedelta(days=random.randint(0, days))
+    new_date = start + random_days
+    return new_date
+
+
+if __name__ == '__main__':
+    start = date(2007, 2, 19)
+    day = random_date(start, date.today())
+    url = f'https://news.ycombinator.com/front?day={day.isoformat()}'
+    webbrowser.open(url)

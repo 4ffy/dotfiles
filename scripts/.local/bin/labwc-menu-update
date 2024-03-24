@@ -1,0 +1,28 @@
+#!/bin/bash
+set -euo pipefail
+
+labwc_dir="${XDG_CONFIG_HOME:-$HOME/.config}/labwc"
+if [ ! -d "$labwc_dir" ]; then
+    echo "labwc config directory not found." 1>&2
+    exit 1
+fi
+menu_file="${labwc_dir}/menu.xml"
+
+cat << EOF > "$menu_file"
+<?xml version="1.0" encoding="UTF-8"?>
+<openbox_menu>
+<menu id="root-menu" label="root-menu">
+EOF
+
+labwc-menu-generator -b >> "$menu_file"
+
+cat << EOF >> "$menu_file"
+  <item label="Reconfigure">
+    <action name="Reconfigure"/>
+  </item>
+  <item label="Exit">
+    <action name="Exit"/>
+  </item>
+</menu>
+</openbox_menu>
+EOF

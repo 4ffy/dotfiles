@@ -1,0 +1,302 @@
+#!/bin/env python
+from PIL import Image, ImageFilter, ImageTk
+from argparse import ArgumentParser
+from collections import UserDict
+from multiprocessing import Pool
+from send2trash import send2trash
+from tkinter import ttk
+import imagehash as ih
+import itertools as it
+import os
+import pickle
+import sys
+import zlib
+
+DISTANCE_THRESHOLD = 15
+DUMMY_IMAGE = Image.new("RGB", (512, 512))
+IMAGE_SUFFIXES = ('.bmp', '.gif', '.jpeg', '.jpg',
+                  '.jxl', '.png', '.tga', '.webp')
+THUMB_SIZE = 512
+
+
+class GUI(ttk.Frame):
+    def __init__(self, image_pairs):
+        if len(image_pairs) == 0:
+            raise ValueError('duplicate list is empty')
+        self.pairs = iter(image_pairs)
+        self.image_l, self.image_r = None, None
+
+        ttk.Frame.__init__(self)
+        self.master.title('Image Duplicates')
+        self.master.geometry('1067x600')
+        self.master.rowconfigure(0, weight=1)
+        self.master.columnconfigure(0, weight=1)
+        self.frame_l = ttk.Labelframe(self.master)
+        self.frame_r = ttk.Labelframe(self.master)
+        self.thumb_l = ImageTk.PhotoImage(DUMMY_IMAGE)
+        self.thumb_r = ImageTk.PhotoImage(DUMMY_IMAGE)
+        self.thumb_l_embed = ttk.Label(self.frame_l, image=self.thumb_l)
+        self.thumb_r_embed = ttk.Label(self.frame_r, image=self.thumb_r)
+        self.button_l = ttk.Button(self.master, text='Keep Left',
+                                   command=self.keep_left)
+        self.button_c = ttk.Button(self.master, text='Keep Both',
+                                   command=self.keep_both)
+        self.button_r = ttk.Button(self.master, text='Keep Right',
+                                   command=self.keep_right)
+        self.grid_widgets()
+        self.configure_grid()
+        self.next_pair()
+
+    def grid_widgets(self):
+        self.frame_l.grid(column=0, row=0, columnspan=3, sticky='nsew')
+        self.frame_r.grid(column=3, row=0, columnspan=3, sticky='nsew')
+        self.thumb_l_embed.grid(column=0, row=0, sticky='nsew')
+        self.thumb_r_embed.grid(column=0, row=0, sticky='nsew')
+        self.button_l.grid(column=0, row=1, pady=10, columnspan=2)
+        self.button_c.grid(column=2, row=1, pady=10, columnspan=2)
+        self.button_r.grid(column=4, row=1, pady=10, columnspan=2)
+
+    def configure_grid(self):
+        for col in range(6):
+            self.master.columnconfigure(col, weight=1)
+        self.master.rowconfigure(0, weight=1)
+        self.master.rowconfigure(1, weight=0)
+
+    def resize_image(self, img):
+        '''Load an image file embedded into a THUMB_SIZExTHUMB_SIZE region.'''
+        result = Image.new("RGB", (THUMB_SIZE, THUMB_SIZE))
+        aspect = img.width / img.height
+        if img.width > img.height:
+            new_size = (THUMB_SIZE, int(THUMB_SIZE / aspect))
+            bounds = (0, int(THUMB_SIZE / 2 - new_size[1] / 2))
+        elif img.width < img.height:
+            new_size = (int(THUMB_SIZE * aspect), THUMB_SIZE)
+            bounds = (int(THUMB_SIZE / 2 - new_size[0] / 2), 0)
+        else:
+            new_size = (THUMB_SIZE, THUMB_SIZE)
+            bounds = (0, 0)
+        result.paste(img.resize(new_size), bounds)
+        return result
+
+    def display_left(self, filename):
+        '''Display an image on the left pane.'''
+        with Image.open(filename) as img:
+            self.frame_l.configure(
+                text=f'{os.path.basename(filename)} - {img.size}')
+            self.thumb_l.paste(self.resize_image(img))
+
+    def display_right(self, filename):
+        '''Display an image on the right pane.'''
+        with Image.open(filename) as img:
+            self.frame_r.configure(
+                text=f'{os.path.basename(filename)} - {img.size}')
+            self.thumb_r.paste(self.resize_image(img))
+
+    def keep_left(self):
+        '''Send the image on the right pane to the trash and load next pair.'''
+        print(f'Trashing \'{self.image_r}\'.')
+        try:
+            send2trash(self.image_r)
+        except Exception as e:
+            print(f'Could not trash \'{self.image_r}\': {e}',
+                  file=sys.stderr)
+        self.next_pair()
+
+    def keep_right(self):
+        '''Send the image on the left pane to the trash and load next pair.'''
+        print(f'Trashing \'{self.image_l}\'.')
+        try:
+            send2trash(self.image_l)
+        except Exception as e:
+            print(f'Could not trash \'{self.image_l}\': {e}',
+                  file=sys.stderr)
+        self.next_pair()
+
+    def keep_both(self):
+        '''Keep both images (do nothing) and load next pair.'''
+        print('Keeping both images.')
+        self.next_pair()
+
+    def next_pair(self):
+        '''Load the next pair of images passed to the program. If all image
+        pairs are exhausted, display the dummy image.'''
+        try:
+            self.image_l, self.image_r = next(self.pairs)
+            # It's possible one image in the pair has already. been deleted.
+            # Continue loading pairs until one with both images is found.
+            while not os.path.exists(self.image_l) \
+                    or not os.path.exists(self.image_r):
+                self.image_l, self.image_r = next(self.pairs)
+            self.display_left(self.image_l)
+            self.display_right(self.image_r)
+        except StopIteration:
+            self.done()
+
+    def done(self):
+        self.thumb_l.paste(DUMMY_IMAGE)
+        self.thumb_r.paste(DUMMY_IMAGE)
+        self.frame_l.configure(text="DONE")
+        self.frame_r.configure(text="DONE")
+        self.button_l.configure(state="disabled")
+        self.button_c.configure(state="disabled")
+        self.button_r.configure(state="disabled")
+
+
+class HashDB(UserDict):
+    @staticmethod
+    def get_images(directory):
+        '''Get a list of image files from the given directory.'''
+        return [os.path.join(directory, x) for x in os.listdir(directory)
+                if x.lower().endswith(IMAGE_SUFFIXES)]
+
+    @staticmethod
+    def hash_image(filename):
+        '''Calculate the perceptual and average hash of an image.'''
+        img = Image.open(filename)     \
+                   .convert('RGB')     \
+                   .resize((256, 256)) \
+                   .filter(ImageFilter.GaussianBlur(radius=3))
+        phash = ih.phash(img)
+        ahash = ih.average_hash(img)
+        return phash, ahash
+
+    @classmethod
+    def hash_directory(cls, directory):
+        '''Create a HashDB from all images in a directory.'''
+        imagefiles = cls.get_images(directory)
+        with Pool() as p:
+            temp = zip(map(os.path.basename, imagefiles),
+                       p.map(cls.hash_image, imagefiles))
+            db = dict(temp)
+        return cls(db)
+
+    @classmethod
+    def read_db(cls, filename):
+        '''Read a HashDB from a file.'''
+        with open(filename, 'rb') as f:
+            return cls(pickle.loads(zlib.decompress(f.read())))
+
+    def update_db(self, directory):
+        hash_files = set(self.keys())
+        dir_files = set([os.path.basename(x)
+                         for x in self.get_images(directory)])
+        old_files = hash_files.intersection(dir_files)
+        new_db = dict([x for x in self.items() if x[0] in old_files])
+        new_files = [os.path.join(directory, x)
+                     for x in (dir_files - hash_files)]
+        with Pool() as p:
+            temp = zip(map(os.path.basename, new_files),
+                       p.map(self.hash_image, new_files))
+        new_db.update(dict(temp))
+        self.data = new_db
+
+    def dump_db(self, filename):
+        '''Write a HashDB to a file.'''
+        with open(filename, 'wb') as f:
+            f.write(zlib.compress(pickle.dumps(db)))
+
+    def find_duplicates(self):
+        '''Find similar images in a HashDB.'''
+        result = []
+        for file_1, file_2 in it.combinations(self.keys(), 2):
+            phash_1, ahash_1 = db[file_1]
+            phash_2, ahash_2 = db[file_2]
+            distance = (phash_1 - phash_2) + (ahash_1 - ahash_2)
+            if distance < DISTANCE_THRESHOLD:
+                result.append((file_1, file_2))
+        return result
+
+
+if __name__ == '__main__':
+    def abort(message):
+        print(message, file=sys.stderr)
+        exit(1)
+
+    def parse_args():
+        parser = ArgumentParser(description="GUI to remove image duplicates")
+        parser.add_argument('directory',
+                            help='input directory')
+        parser.add_argument('-d', '--nodump', action='store_true',
+                            help='do not dump hash database')
+        parser.add_argument('-g', '--nogui', action='store_true',
+                            help='do not find duplicates and start GUI')
+        parser.add_argument('-r', '--rebuild', action='store_true',
+                            help='force rebuild hash database')
+        parser.add_argument('-u', '--noupdate', action='store_true',
+                            help='do not update hash database')
+        try:
+            args = parser.parse_args()
+            args.directory = os.path.abspath(args.directory)
+            if not os.path.isdir(args.directory):
+                raise ValueError(
+                    f'path \'{args.directory}\' is not a directory')
+            return args
+        except Exception as e:
+            abort(f'Error parsing args: {e}')
+
+    def make_hash_db():
+        print(f'Hashing image set \'{args.directory}\'...')
+        try:
+            db = HashDB.hash_directory(args.directory)
+            return db
+        except Exception as e:
+            abort(f'Error hashing images: {e}')
+
+    def read_hash_db():
+        print('Reading cached database...')
+        try:
+            db = HashDB.read_db(cachefile)
+            return db
+        except Exception as e:
+            abort(f'Error reading database: {e}')
+
+    def dump_hash_db():
+        print('Dumping hash database...')
+        try:
+            db.dump_db(cachefile)
+        except Exception as e:
+            abort(f'Error dumping database: {e}')
+
+    def update_hash_db():
+        print('Updating hash database...')
+        try:
+            db.update_db(args.directory)
+        except Exception as e:
+            abort(f'Error updating database: {e}')
+
+    def find_duplicates():
+        print('Finding duplicates...')
+        try:
+            duplicates = db.find_duplicates()
+            duplicates = list(
+                map(lambda x: (os.path.join(args.directory, x[0]),
+                               os.path.join(args.directory, x[1])),
+                    duplicates)
+            )
+            return duplicates
+        except Exception as e:
+            abort(f'Error finding duplicates: {e}')
+
+    def start_gui():
+        print('Starting GUI...')
+        try:
+            GUI(duplicates).mainloop()
+        except Exception as e:
+            print(e, file=sys.stderr)
+            exit(1)
+
+    # MAIN FUNCTION
+    args = parse_args()
+    cachefile = os.path.join(args.directory, '.hash.dat')
+    if args.rebuild or not os.path.exists(cachefile):
+        db = make_hash_db()
+    else:
+        db = read_hash_db()
+        if not args.noupdate:
+            update_hash_db()
+    if not args.nodump:
+        dump_hash_db()
+    if not args.nogui:
+        duplicates = find_duplicates()
+        start_gui()
+    print("Done.")
