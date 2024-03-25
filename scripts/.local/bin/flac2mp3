@@ -1,0 +1,16 @@
+#!/bin/bash
+set -euo pipefail
+
+convert() {
+    flac -cds "$1" | lame --quiet -b 320k - "$2"
+}
+export -f convert
+
+for arg in "$@"; do
+    if [ ! -f "$arg" ] || [ "$(head -c 4 "$arg")" != "fLaC" ]; then
+        echo "Not a FLAC file: '$arg'" >&2
+        exit 1
+    fi
+done
+
+parallel convert "{}" "{.}.mp3" ::: "$@"
