@@ -26,10 +26,11 @@
 #taskbar_normal *,
 #taskbar_active * {
     -GtkWidget-hexpand: false;
-    -GtkWidget-max-width: 200px;
+    -GtkWidget-max-width: 150px;
     background-color: @button;
     border: 1px solid @button;
     margin-left: 1px;
+    min-width: 150px;
 }
 
 #taskbar_normal image,
