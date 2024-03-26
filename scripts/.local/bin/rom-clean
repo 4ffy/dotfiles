@@ -4,7 +4,7 @@ set -euo pipefail
 dir=${1:-}
 if [ -z "$dir" ] || [ ! -d "$dir" ]
 then
-    echo "Directory '$dir' not found."
+    echo "Directory not found: '$dir'"
     exit 1
 fi
 

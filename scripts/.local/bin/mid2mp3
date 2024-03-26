@@ -8,7 +8,7 @@ export -f convert
 
 for arg in "$@"; do
     if [ ! -f "$arg" ] || [ "$(head -c 4 "$arg")" != "MThd" ]; then
-        echo "'$arg' is not a MIDI file." >&2
+        echo "Not a MIDI file: '$arg'" >&2
         exit 1
     fi
 done

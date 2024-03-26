@@ -3,7 +3,7 @@ set -euo pipefail
 
 inf=${1:-}
 if [ -z "$inf" ] || [ ! -e "$inf" ]; then
-    echo "File '$inf' not found." >&2
+    echo "File not found: '$inf'" >&2
     exit 1
 fi
 out="${2:-$inf}"
