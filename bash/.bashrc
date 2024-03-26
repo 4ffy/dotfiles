@@ -34,6 +34,14 @@ dired () {
     fi
 }
 
+eww () {
+    if [[ "$INSIDE_EMACS" == *eat* ]]; then
+        _eat_msg eww "$*"
+    else
+        emacsclient -t --eval "(eww \"$*\")"
+    fi
+}
+
 magit () {
     target=${1:-$PWD}
     if [ ! -d "$target/.git" ]; then
