@@ -57,7 +57,7 @@ magit () {
 
 man () {
     if [[ "$INSIDE_EMACS" == *eat* ]]; then
-        _eat_msg man "$@"
+        _eat_msg man "$*"
     else
         command man "$@"
     fi
