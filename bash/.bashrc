@@ -21,6 +21,14 @@ alias yt-mp3='yt-dlp -xf bestaudio --audio-format mp3 --audio-quality 192k'
 # Functions. These should only be suitable for interactive use of Bash.
 # Otherwise, it is better to create a proper shell script and put it on $PATH.
 
+compile () {
+    if [[ "$INSIDE_EMACS" == *eat* ]]; then
+        _eat_msg compile "$*"
+    else
+        emacsclient -t --eval "(compile \"$*\")"
+    fi
+}
+
 dired () {
     target=${1:-$PWD}
     if [ ! -d "$target" ]; then
