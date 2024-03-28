@@ -1,6 +1,5 @@
 #!/bin/bash
 set -euo pipefail
-trap 'pactl unload-module "$module"' EXIT
 module=$(pactl load-module module-loopback)
-echo "$module"
+trap 'pactl unload-module "$module"' EXIT
 sleep infinity
