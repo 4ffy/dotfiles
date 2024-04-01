@@ -7,7 +7,7 @@ if [ -z "$inf" ] || [ ! -e "$inf" ]; then
     exit 1
 fi
 
-ext=$(basename "$inf" | awk -F. 'NF > 1 && $1 != "" { print $NF }')
+ext=$(basename "$1" | awk -F. '$1 != "" && NF > 1 || $1 == "" && NF > 2 { print $NF }')
 
 # get file md5
 md5=$(md5sum "$inf" | awk '{ print $1 }')
