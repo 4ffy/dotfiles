@@ -59,9 +59,9 @@ magit () {
         return 1
     fi
     if [[ "$INSIDE_EMACS" == *eat* ]]; then
-        _eat_msg magit "${1:-$PWD}"
+        _eat_msg magit "$target"
     else
-        emacsclient -t --eval "(magit-status-setup-buffer \"${1:-$PWD}\")"
+        emacsclient -t --eval "(magit-status-setup-buffer \"$target\")"
     fi
 }
 
