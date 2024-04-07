@@ -1,6 +1,6 @@
 #!/bin/bash
 set -euo pipefail
-port=${1:-'28:0'}
+port=${1:-$(aplaymidi -l | grep 'CH345' | awk '{print $1}')}
 aplaymidi -p "$port" <(base64 -di << EOF
 TVRoZAAAAAYAAQABAGBNVHJrAAAARACwewAAsXsAALJ7AACzewAAtHsAALV7AAC2ewAAt3sAALh7
 AAC5ewAAunsAALt7AAC8ewAAvXsAAL57AAC/ewAA/y8A
