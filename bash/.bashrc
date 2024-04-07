@@ -22,10 +22,12 @@ alias yt-mp3='yt-dlp -xf bestaudio --audio-format mp3 --audio-quality 192k'
 # Otherwise, it is better to create a proper shell script and put it on $PATH.
 
 compile () {
+    args="${*:-$(emacsclient --eval '(print compile-command nil)' \
+                 | sed 's/^.//;s/.$//')}"  # strip outer quotes
     if [[ "$INSIDE_EMACS" == *eat* ]]; then
-        _eat_msg compile "$*"
+        _eat_msg compile "$args"
     else
-        emacsclient -t --eval "(compile \"$*\")"
+        emacsclient -t --eval "(compile \"$args\")"
     fi
 }
 
