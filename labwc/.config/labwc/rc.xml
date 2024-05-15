@@ -11,7 +11,7 @@
 
   <resistance screenEdgeStrength="0"/>
 
-  <theme name="min-medium" cornerRadius="0">
+  <theme name="min-medium" cornerRadius="0" dropShadows="yes">
     <font place="ActiveWindow" name="Cantarell" size="11" weight="Bold"/>
     <font place="InactiveWindow" name="Cantarell" size="11" weight="Bold"/>
     <font place="MenuItem" name="Cantarell" size="11"/>
