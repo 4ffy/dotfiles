@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <labwc_config>
-  <desktops number="4"/>
+  <desktops number="4" prefix="Desktop "/>
 
   <regions>
     <region name="top_left" x="0%" y="0%" width="50%" height="50%"/>
