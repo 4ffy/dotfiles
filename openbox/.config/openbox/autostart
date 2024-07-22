@@ -9,6 +9,7 @@ is_laptop() {
 }
 
 # Background applications
+dunst -conf "$config_home/openbox/dunstrc" &
 lxqt-policykit-agent &
 nm-applet &
 opensnap -d &

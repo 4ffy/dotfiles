@@ -24,6 +24,7 @@ set_gtk_setting gtk-theme
 set_gtk_setting icon-theme
 
 # Background applications
+dunst -conf "$config_home/labwc/dunstrc" &
 swaybg -i /usr/share/backgrounds/wallpaper.jpg -m stretch &
 lxqt-policykit-agent  &
 sfwbar \
