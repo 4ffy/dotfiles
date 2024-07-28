@@ -6,6 +6,10 @@
 
   <desktops number="4" prefix="Desktop "/>
 
+  <snapping>
+    <overlay enabled="no"/>
+  </snapping>
+
   <regions>
     <region name="top_left" x="0%" y="0%" width="50%" height="50%"/>
     <region name="top_right" x="50%" y="0%" width="50%" height="50%"/>
