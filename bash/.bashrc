@@ -13,8 +13,6 @@ alias lla='ls --color=auto --group-directories-first -ahl'
 alias ls='ls --color=auto --group-directories-first'
 alias make='make -j$(nproc)'
 alias runjp='LANG=ja_JP.UTF-8'
-alias wine64='WINEPREFIX=$HOME/.wine64 wine'
-alias wine64cfg='WINEPREFIX=$HOME/.wine64 winecfg'
 alias winejp='LANG=ja_JP.UTF-8 wine'
 alias yt-mp3='yt-dlp -xf bestaudio --audio-format mp3 --audio-quality 192k'
 
