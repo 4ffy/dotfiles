@@ -77,7 +77,7 @@ mem () {
 }
 
 # Environment Variables
-export PATH="$PATH:$HOME/.local/bin"
+export PATH="$HOME/.local/bin:$PATH"
 export DOOMWADDIR="$HOME/Documents/Doom/wads/all"
 export LESS='-R --use-color -Dd+C$Du+W'
 
