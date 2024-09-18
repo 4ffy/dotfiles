@@ -1,4 +1,4 @@
-#!/bin/env python
+#!/usr/bin/env python
 from PIL import Image, ImageFilter, ImageTk
 from argparse import ArgumentParser
 from collections import UserDict
