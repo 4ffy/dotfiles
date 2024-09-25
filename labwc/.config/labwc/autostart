@@ -25,11 +25,12 @@ set_gtk_setting icon-theme
 
 # Background applications
 dunst -conf "$config_home/labwc/dunstrc" &
-swaybg -i /usr/share/backgrounds/wallpaper.jpg -m stretch &
+gammastep &
 lxqt-policykit-agent  &
-sfwbar \
-    -f "$config_home/labwc/sfwbar.config" \
-    -c "$config_home/labwc/sfwbar.css"    &
+swaybg -i /usr/share/backgrounds/wallpaper.jpg -m stretch &
+
+# Taskbar
+sfwbar -f "$config_home/labwc/sfwbar.config" &
 nm-applet --indicator &
 (is_laptop && cbatticon) &
 

@@ -14,6 +14,7 @@ lxqt-policykit-agent &
 nm-applet &
 opensnap -d &
 picom -b &
+redshift &
 tint2 -c "$config_home/openbox/tint2rc" &
 volumeicon &
 (is_laptop || discord --start-minimized) &
