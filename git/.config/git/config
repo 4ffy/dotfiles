@@ -7,3 +7,5 @@
 	rebase = false
 [protocol "file"]
 	allow = always
+[advice]
+	detachedHead = false
