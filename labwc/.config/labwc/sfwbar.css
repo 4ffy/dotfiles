@@ -6,16 +6,14 @@
 /* Global settings */
 * {
     -GtkWidget-vexpand: true;
-    background-color: @background;
     border-radius: 4px;
     color: #ffffff;
     font: 10pt Cantarell;
-    margin: 0px;
-    padding: 0px;
     border: 0px;
 }
 
 #layout {
+    background-color: @background;
     min-height: 40px;
 }
 
@@ -31,6 +29,7 @@
     border: 1px solid @button;
     margin-left: 1px;
     min-width: 150px;
+    padding: 0px;
 }
 
 #taskbar_normal image,
@@ -48,8 +47,17 @@
 
 
 /* Tray settings */
-#tray {
-    padding: 2px;
+#tray_active,
+#tray_passive {
+    background-color: @background;
+    margin-left: 2px;
+    margin-right: 2px;
+    padding: 0px;
+}
+
+#tray_active image,
+#tray_passive image {
+    min-width: 24px;
 }
 
 #tray:hover,
@@ -57,8 +65,16 @@
     background-color: @button-hover;
 }
 
-#tray_active image,
-#tray_passive image {
+
+/* "Tray" widgets */
+#module {
+    background-color: @background;
+    margin-left: 2px;
+    margin-right: 2px;
+    padding: 0px;
+}
+
+#module button {
     min-width: 24px;
 }
 
