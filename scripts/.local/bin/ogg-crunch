@@ -1,6 +1,13 @@
 #!/bin/bash
 set -euo pipefail
 
+for arg in "$@"; do
+    [[ "$arg" == '-h' || "$arg" == '--help' ]] && cat << EOF && exit
+Usage: ogg-crunch FILE
+Compress an OGG file if it exceeds a bitrate of 192k.
+EOF
+done
+
 # Check input.
 inf=${1:-}
 if [[ -z "$inf" || ! -e "$inf" ]]

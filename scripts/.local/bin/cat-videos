@@ -1,6 +1,14 @@
 #!/bin/bash
 set -euo pipefail
 
+for arg in "$@"; do
+    [[ "$arg" == '-h' || "$arg" == '--help' ]] && cat << EOF && exit
+Usage: cat-videos FILE...
+Concatenate videos using ffmpeg. The videos must have the same
+encoding.
+EOF
+done
+
 tmpfile=$(mktemp)
 
 if [ "$#" -lt 2 ]; then

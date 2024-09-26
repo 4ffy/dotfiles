@@ -1,6 +1,13 @@
 #!/bin/bash
 set -euo pipefail
 
+for arg in "$@"; do
+    [[ "$arg" == '-h' || "$arg" == '--help' ]] && cat << EOF && exit
+Usage: md5rename FILE
+Rename a file to its md5 hash followed by its extension.
+EOF
+done
+
 inf=${1:-}
 if [ -z "$inf" ] || [ ! -e "$inf" ]; then
     echo "File not found: '$inf'" >&2

@@ -1,6 +1,14 @@
 #!/bin/bash
 set -uo pipefail
 
+for arg in "$@"; do
+    [[ "$arg" == '-h' || "$arg" == '--help' ]] && cat << EOF && exit
+Usage: clone-tag REPOSITORY [OUT_DIR]
+Use fzf to select a tag from a git repository, then perform a shallow
+clone.
+EOF
+done
+
 get_tags() {
     git -c 'versionsort.suffix=-' \
         ls-remote --tags --refs --sort='v:refname' "$1" \

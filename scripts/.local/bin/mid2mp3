@@ -1,6 +1,13 @@
 #!/bin/bash
 set -euo pipefail
 
+for arg in "$@"; do
+    [[ "$arg" == '-h' || "$arg" == '--help' ]] && cat << EOF && exit
+Usage: mid2mp3 FILE...
+Convert all input MIDI files to 192k mp3.
+EOF
+done
+
 convert() {
     fluidsynth -q -T raw -F - "$1" | lame --silent -r -b 192k - "$2"
 }

@@ -1,6 +1,13 @@
 #!/bin/bash
 set -euo pipefail
 
+for arg in "$@"; do
+    [[ "$arg" == '-h' || "$arg" == '--help' ]] && cat << EOF && exit
+Usage: wav2ogg DIRECTORY
+Recursively convert all WAV files to OGG in a directory tree.
+EOF
+done
+
 dir=${1:-}
 if [ -z "$dir" ] || [ ! -d "$dir" ]; then
     echo "Directory not found: '$dir'" >&2

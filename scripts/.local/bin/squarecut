@@ -1,6 +1,13 @@
 #!/bin/bash
 set -euo pipefail
 
+for arg in "$@"; do
+    [[ "$arg" == '-h' || "$arg" == '--help' ]] && cat << EOF && exit
+Usage: squarecut FILE
+Crop an image to a square about its center.
+EOF
+done
+
 inf=${1:-}
 if [ -z "$inf" ] || [ ! -e "$inf" ]; then
     echo "File not found: '$inf'" >&2

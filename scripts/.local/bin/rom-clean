@@ -1,6 +1,13 @@
 #!/bin/bash
 set -euo pipefail
 
+for arg in "$@"; do
+    [[ "$arg" == '-h' || "$arg" == '--help' ]] && cat << EOF && exit
+Usage: rom-clean DIRECTORY
+Delete all rom files that match certain patterns.
+EOF
+done
+
 dir=${1:-}
 if [ -z "$dir" ] || [ ! -d "$dir" ]
 then

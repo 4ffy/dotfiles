@@ -1,6 +1,13 @@
 #!/bin/bash
 set -euo pipefail
 
+for arg in "$@"; do
+    [[ "$arg" == '-h' || "$arg" == '--help' ]] && cat << EOF && exit
+Usage: flac2mp3 FILE...
+Convert all input FLAC files to 320k mp3.
+EOF
+done
+
 convert() {
     flac -cds "$1" | lame --quiet -b 320k - "$2"
 }
