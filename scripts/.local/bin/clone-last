@@ -1,0 +1,41 @@
+#!/bin/bash
+set -uo pipefail
+
+get_tags() {
+    git -c 'versionsort.suffix=-' \
+        ls-remote --tags --refs --sort='v:refname' "$1" \
+        | cut -d'/' -f3
+}
+
+repo=${1:-}
+if [ -z "$repo" ]; then
+    echo 'No repository given.' >&2
+    exit 1
+fi
+
+tags="$(get_tags "$repo")"
+if [ -z "$tags" ]; then
+    echo "Could not find any tags for '$repo'" >&2
+    exit 1
+fi
+
+tag="$(echo "$tags" | tail -n 1)"
+read -rp "Using tag '$tag'. Proceed? (y/n/q): " inp
+case "$inp" in
+    [Yy]* ) ;;
+    [Qq]* )
+        tag="$(echo "$tags" | fzf --tac --header='Select a tag:')"
+        if [ -z "$tag" ]; then
+            echo 'No tag selected.' >&2
+            exit 1
+        fi ;;
+    * ) exit 0;;
+esac
+echo "Continuing with tag '$tag'."
+
+out_dir=${2:-}
+if [ -n "$out_dir" ]; then
+    git clone --branch "$tag" --depth 1 "$repo" "$out_dir"
+else
+    git clone --branch "$tag" --depth 1 "$repo"
+fi

@@ -1,0 +1,12 @@
+#!/bin/bash
+target=${1:-$PWD}
+curr="$target"
+prev="$target/asdfasdf"
+while [ "$(realpath "$curr")" != "$(realpath "$prev")" ]; do
+    if [ -d "$curr/.git" ]; then
+        exit 0
+    fi
+    prev="$curr"
+    curr="$curr/.."
+done
+exit 1
