@@ -3,24 +3,28 @@ set -euo pipefail
 
 for arg in "$@"; do
     [[ "$arg" == '-h' || "$arg" == '--help' ]] && cat << EOF && exit
-Usage: md5rename FILE
-Rename a file to its md5 hash followed by its extension.
+Usage: md5rename FILE...
+Rename input files to their filename followed by their extension.
 EOF
 done
 
-inf=${1:-}
-if [ -z "$inf" ] || [ ! -e "$inf" ]; then
-    echo "File not found: '$inf'" >&2
-    exit 1
-fi
+for arg in "$@"; do
+    if [ ! -f "$arg" ]; then
+        echo "File not found: '$arg'" >&2
+        exit 1
+    fi
+done
 
-md5=$(md5sum "$inf" | awk '{print $1}')
-ext=$(basename "$inf" | awk -F. '$1 != "" && NF > 1 || $1 == "" && NF > 2 {print $NF}')
+for file in "$@"; do
+    md5=$(md5sum "$file" | awk '{print $1}')
+    ext=$(basename "$file" \
+              | awk -F. '$1 != "" && NF > 1 || $1 == "" && NF > 2 {print $NF}')
 
-if [ -n "$ext" ]; then
-    fout="$md5.$ext"
-else
-    fout="$md5"
-fi
+    if [ -n "$ext" ]; then
+        new_name="$md5.$ext"
+    else
+        new_name="$md5"
+    fi
 
-mv -v "$inf" "$fout"
+    mv -v "$file" "$new_name"
+done
