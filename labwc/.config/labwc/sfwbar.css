@@ -50,8 +50,8 @@
 #tray_active,
 #tray_passive {
     background-color: @background;
-    margin-left: 2px;
-    margin-right: 2px;
+    margin-left: 1px;
+    margin-right: 1px;
     padding: 0px;
 }
 
@@ -69,8 +69,8 @@
 /* "Tray" widgets */
 #module {
     background-color: @background;
-    margin-left: 2px;
-    margin-right: 2px;
+    margin-left: 1px;
+    margin-right: 1px;
     padding: 0px;
 }
 
