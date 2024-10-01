@@ -2,7 +2,7 @@
 set -uo pipefail
 
 for arg in "$@"; do
-    [[ "$arg" == '-h' || "$arg" == '--help' ]] && cat << EOF && exit
+    [[ "$arg" == '-h' || "$arg" == '--help' ]] && cat << EOF >&2 && exit
 Usage: clone-last REPOSITORY [OUT_DIR]
 Try to find the most recent tag of a git repository. Prompt the user
 to perform a shallow clone of the selected tag or use fzf to select

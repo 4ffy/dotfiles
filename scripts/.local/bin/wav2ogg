@@ -2,7 +2,7 @@
 set -euo pipefail
 
 for arg in "$@"; do
-    [[ "$arg" == '-h' || "$arg" == '--help' ]] && cat << EOF && exit
+    [[ "$arg" == '-h' || "$arg" == '--help' ]] && cat << EOF >&2 && exit
 Usage: wav2ogg DIRECTORY
 Recursively convert all WAV files to OGG in a directory tree.
 EOF

@@ -2,7 +2,7 @@
 set -uo pipefail
 
 for arg in "$@"; do
-    [[ "$arg" == '-h' || "$arg" == '--help' ]] && cat << EOF && exit
+    [[ "$arg" == '-h' || "$arg" == '--help' ]] && cat << EOF >&2 && exit
 Usage: clone-tag REPOSITORY [OUT_DIR]
 Use fzf to select a tag from a git repository, then perform a shallow
 clone.

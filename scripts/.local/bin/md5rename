@@ -2,7 +2,7 @@
 set -euo pipefail
 
 for arg in "$@"; do
-    [[ "$arg" == '-h' || "$arg" == '--help' ]] && cat << EOF && exit
+    [[ "$arg" == '-h' || "$arg" == '--help' ]] && cat << EOF >&2 && exit
 Usage: md5rename FILE...
 Rename input files to their filename followed by their extension.
 EOF

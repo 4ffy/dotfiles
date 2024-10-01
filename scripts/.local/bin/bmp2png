@@ -2,7 +2,7 @@
 set -euo pipefail
 
 for arg in "$@"; do
-    [[ "$arg" == '-h' || "$arg" == '--help' ]] && cat << EOF && exit
+    [[ "$arg" == '-h' || "$arg" == '--help' ]] && cat << EOF >&2 && exit
 Usage: bmp2png DIRECTORY
 Recursively convert all BMP images to PNG in a directory tree.
 EOF

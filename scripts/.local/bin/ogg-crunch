@@ -2,7 +2,7 @@
 set -euo pipefail
 
 for arg in "$@"; do
-    [[ "$arg" == '-h' || "$arg" == '--help' ]] && cat << EOF && exit
+    [[ "$arg" == '-h' || "$arg" == '--help' ]] && cat << EOF >&2 && exit
 Usage: ogg-crunch FILE
 Compress an OGG file if it exceeds a bitrate of 192k.
 EOF

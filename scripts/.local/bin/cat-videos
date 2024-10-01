@@ -2,7 +2,7 @@
 set -euo pipefail
 
 for arg in "$@"; do
-    [[ "$arg" == '-h' || "$arg" == '--help' ]] && cat << EOF && exit
+    [[ "$arg" == '-h' || "$arg" == '--help' ]] && cat << EOF >&2 && exit
 Usage: cat-videos FILE...
 Concatenate videos using ffmpeg. The videos must have the same
 encoding.
