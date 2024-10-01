@@ -18,7 +18,9 @@ menu.title.bg.color: #303030
 # Window Settings
 border.width: 4
 padding.width: 6
-window.button.width: 24
+titlebar.height: 32
+window.button.width: 21
+window.label.text.justify: Left
 window.inactive.button.*.image.color: #303030
 window.inactive.label.text.color: #808080
 
