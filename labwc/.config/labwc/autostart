@@ -23,16 +23,17 @@ set_gtk_setting font-name
 set_gtk_setting gtk-theme
 set_gtk_setting icon-theme
 
-# Background applications
+# Applications
 dunst -conf "$config_home/labwc/dunstrc" &
 gammastep &
 lxqt-policykit-agent  &
+sfwbar -f "$config_home/labwc/sfwbar.config" &
 swaybg -i /usr/share/backgrounds/wallpaper.jpg -m stretch &
 
-# Taskbar
-sfwbar -f "$config_home/labwc/sfwbar.config" &
-nm-applet --indicator &
-(is_laptop && cbatticon) &
+# Applications with tray icons should wait a moment to ensure sfwbar is ready.
+(sleep 2; nm-applet --indicator) &
+(is_laptop || sleep 2; discord --start-minimized) &
+(is_laptop || sleep 2; steam -silent) &
 
 # Other stuff
-mpc clear && mpc load main && mpc shuffle
+(mpc clear && mpc load main && mpc shuffle) &
