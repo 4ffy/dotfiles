@@ -12,6 +12,7 @@
     border: 0px;
 }
 
+/* Main bar */
 #layout {
     background-color: @background;
     min-height: 40px;
@@ -19,6 +20,8 @@
 
 
 /* Window button settings */
+
+/* Window buttons */
 #taskbar_normal,
 #taskbar_active,
 #taskbar_normal *,
@@ -32,6 +35,7 @@
     padding: 0px;
 }
 
+/* Window button icons */
 #taskbar_normal image,
 #taskbar_active image,
 #taskbar_normal:hover image {
@@ -40,6 +44,7 @@
     padding-right: 2px;
 }
 
+/* Border around active and hovered window button */
 #taskbar_active,
 #taskbar_normal:hover {
     border: 1px solid @button-border;
@@ -47,6 +52,13 @@
 
 
 /* Tray settings */
+
+/* Tray menus */
+tray {
+    background-color: @button;
+}
+
+/* Tray icon area */
 #tray_active,
 #tray_passive {
     background-color: @background;
@@ -55,18 +67,21 @@
     padding: 0px;
 }
 
+/* Tray icons */
 #tray_active image,
 #tray_passive image {
     min-width: 24px;
 }
 
-#tray:hover,
-#tray:hover * {
+/* Hover over tray menu items */
+#tray:hover {
     background-color: @button-hover;
 }
 
 
 /* "Tray" widgets */
+
+/* Widget menu */
 #module {
     background-color: @background;
     margin-left: 1px;
@@ -74,12 +89,22 @@
     padding: 0px;
 }
 
+/* Widget icon */
 #module button {
     min-width: 24px;
 }
 
 
-/* Clock settings */
+/* Other settings */
+
 #time {
     font-weight: bold;
+}
+
+menu {
+    background-color: @button;
+}
+
+#menu_item:hover {
+    background-color: @button-hover
 }
