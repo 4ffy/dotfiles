@@ -23,7 +23,7 @@ set -gx DOOMWADDIR "$HOME/Documents/Doom/wads/all"
 set -gx LESS '-R --use-color -Dd+C$Du+w'
 
 # Eat integration
-if test -n "$EAT_SHELL_INTEGRATION_DIR"
+if test -n "$EAT_SHELL_INTEGRATION_DIR"; and test -f $EAT_SHELL_INTEGRATION_DIR/fish
     source $EAT_SHELL_INTEGRATION_DIR/fish
 end
 
