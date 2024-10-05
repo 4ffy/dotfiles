@@ -28,7 +28,9 @@ if test -n "$EAT_SHELL_INTEGRATION_DIR"
 end
 
 # Fzf integration
-fzf --fish | source
+if command -v fzf >/dev/null 2>&1
+    fzf --fish | source
+end
 
 # Eat-integrated commands. Note that "$argv" behaves like "$*", and unquoted
 # $argv behaves like "$@".

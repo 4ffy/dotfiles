@@ -89,3 +89,8 @@ fi
 
 # Eat integration
 [ -n "$EAT_SHELL_INTEGRATION_DIR" ] && source "$EAT_SHELL_INTEGRATION_DIR/bash"
+
+# fzf integration
+if command -v fzf >/dev/null 2>&1; then
+    . <(fzf --bash)
+fi
