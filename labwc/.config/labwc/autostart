@@ -31,9 +31,9 @@ sfwbar -f "$config_home/labwc/sfwbar.config" &
 swaybg -i /usr/share/backgrounds/wallpaper.jpg -m stretch &
 
 # Applications with tray icons should wait a moment to ensure sfwbar is ready.
-(sleep 2; nm-applet --indicator) &
-(is_laptop || sleep 2; discord --start-minimized) &
-(is_laptop || sleep 2; steam -silent) &
+{ sleep 2; nm-applet --indicator; } &
+{ is_laptop || { sleep 2; discord --start-minimized; } } &
+{ is_laptop || { sleep 2; steam -silent; } } &
 
 # Other stuff
-(mpc clear && mpc load main && mpc shuffle) &
+{ mpc clear && mpc load main && mpc shuffle; } &
