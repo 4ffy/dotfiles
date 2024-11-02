@@ -1,0 +1,63 @@
+#!/usr/bin/env python
+from argparse import ArgumentParser
+import os
+import subprocess as sp
+import sys
+
+
+def cflow(file: str) -> str:
+    """Run cflow on a file in dot format and return the result."""
+    out = sp.run(
+        ["cflow", "--format=dot", "--include=_", file],
+        capture_output=True,
+        encoding="utf8",
+    )
+    if out.returncode != 0:
+        raise RuntimeError(out.stderr)
+    return out.stdout
+
+
+def cflow_to_tsort(data: str) -> str:
+    """Convert dot cflow output to input accepted by tsort."""
+    return "\n".join(
+        [x.strip().replace(" -> ", " ") for x in data.split("\n") if "->" in x]
+    )
+
+
+def tsort(data: str) -> str:
+    """Run tsort on an input string."""
+    tsort = sp.Popen(
+        ["tsort"],
+        stderr=sp.PIPE,
+        stdin=sp.PIPE,
+        stdout=sp.PIPE,
+        encoding="utf8",
+    )
+    out, err = tsort.communicate(input=data)
+    if tsort.returncode != 0:
+        raise RuntimeError(err)
+    return out
+
+
+def tac(data: str):
+    """Print out the lines of data in reverse order."""
+    for line in data.split("\n")[::-1]:
+        print(line)
+
+
+def parse_args():
+    parser = ArgumentParser(description="Sort C function calls in a file.")
+    parser.add_argument("file", help="C source file")
+    args = parser.parse_args()
+    if not os.path.isfile(args.file):
+        raise ValueError(f"No such file: '{args.file}'")
+    return args
+
+
+if __name__ == "__main__":
+    try:
+        args = parse_args()
+        tac(tsort(cflow_to_tsort(cflow(args.file))))
+    except Exception as e:
+        print(f"{e}", file=sys.stderr)
+        exit(1)
