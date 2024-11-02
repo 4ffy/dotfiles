@@ -18,8 +18,8 @@ def random_date(start: date, end: date) -> date:
     return new_date
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     start = date(2007, 2, 19)
     day = random_date(start, date.today())
-    url = f'https://news.ycombinator.com/front?day={day.isoformat()}'
+    url = f"https://news.ycombinator.com/front?day={day.isoformat()}"
     webbrowser.open(url)

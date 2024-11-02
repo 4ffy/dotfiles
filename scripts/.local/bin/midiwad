@@ -10,31 +10,100 @@ import sys
 MIN_SIZE = 5 * 1024
 
 
-DOOM_MUSIC = ('D_E1M1', 'D_E1M2', 'D_E1M3', 'D_E1M4', 'D_E1M5',
-              'D_E1M6', 'D_E1M7', 'D_E1M8', 'D_E1M9', 'D_E2M1',
-              'D_E2M2', 'D_E2M3', 'D_E2M4', 'D_E2M5', 'D_E2M6',
-              'D_E2M7', 'D_E2M8', 'D_E2M9', 'D_E3M1', 'D_E3M2',
-              'D_E3M3', 'D_E3M4', 'D_E3M5', 'D_E3M6', 'D_E3M7',
-              'D_E3M8', 'D_E3M9', 'D_E4M1', 'D_E4M2', 'D_E4M3',
-              'D_E4M4', 'D_E4M5', 'D_E4M6', 'D_E4M7', 'D_E4M8',
-              'D_E4M9', 'D_BUNNY', 'D_INTER', 'D_INTRO', 'D_INTROA',
-              'D_VICTOR')
+DOOM_MUSIC = (
+    "D_E1M1",
+    "D_E1M2",
+    "D_E1M3",
+    "D_E1M4",
+    "D_E1M5",
+    "D_E1M6",
+    "D_E1M7",
+    "D_E1M8",
+    "D_E1M9",
+    "D_E2M1",
+    "D_E2M2",
+    "D_E2M3",
+    "D_E2M4",
+    "D_E2M5",
+    "D_E2M6",
+    "D_E2M7",
+    "D_E2M8",
+    "D_E2M9",
+    "D_E3M1",
+    "D_E3M2",
+    "D_E3M3",
+    "D_E3M4",
+    "D_E3M5",
+    "D_E3M6",
+    "D_E3M7",
+    "D_E3M8",
+    "D_E3M9",
+    "D_E4M1",
+    "D_E4M2",
+    "D_E4M3",
+    "D_E4M4",
+    "D_E4M5",
+    "D_E4M6",
+    "D_E4M7",
+    "D_E4M8",
+    "D_E4M9",
+    "D_BUNNY",
+    "D_INTER",
+    "D_INTRO",
+    "D_INTROA",
+    "D_VICTOR",
+)
 
-DOOM2_MUSIC = ('D_RUNNIN', 'D_STALKS', 'D_COUNTD', 'D_BETWEE', 'D_DOOM',
-               'D_THE_DA', 'D_SHAWN',  'D_DDTBLU', 'D_IN_CIT', 'D_DEAD',
-               'D_STLKS2', 'D_THEDA2', 'D_DOOM2',  'D_DDTBL2', 'D_RUNNI2',
-               'D_DEAD2',  'D_STLKS3', 'D_ROMERO', 'D_SHAWN2', 'D_MESSAG',
-               'D_COUNT2', 'D_DDTBL3', 'D_AMPIE',  'D_THEDA3', 'D_ADRIAN',
-               'D_MESSG2', 'D_ROMER2', 'D_TENSE',  'D_SHAWN3', 'D_OPENIN',
-               'D_EVIL',   'D_ULTIMA', 'D_READ_M', 'D_DM2TTL', 'D_DM2INT')
+DOOM2_MUSIC = (
+    "D_RUNNIN",
+    "D_STALKS",
+    "D_COUNTD",
+    "D_BETWEE",
+    "D_DOOM",
+    "D_THE_DA",
+    "D_SHAWN",
+    "D_DDTBLU",
+    "D_IN_CIT",
+    "D_DEAD",
+    "D_STLKS2",
+    "D_THEDA2",
+    "D_DOOM2",
+    "D_DDTBL2",
+    "D_RUNNI2",
+    "D_DEAD2",
+    "D_STLKS3",
+    "D_ROMERO",
+    "D_SHAWN2",
+    "D_MESSAG",
+    "D_COUNT2",
+    "D_DDTBL3",
+    "D_AMPIE",
+    "D_THEDA3",
+    "D_ADRIAN",
+    "D_MESSG2",
+    "D_ROMER2",
+    "D_TENSE",
+    "D_SHAWN3",
+    "D_OPENIN",
+    "D_EVIL",
+    "D_ULTIMA",
+    "D_READ_M",
+    "D_DM2TTL",
+    "D_DM2INT",
+)
 
 
 def find_midis(directory):
     midis = []
     for path, subdirs, files in os.walk(directory):
-        midis.extend([os.path.join(path, file) for file in files
-                      if file.lower().endswith('.mid')
-                      and os.stat(os.path.join(path, file)).st_size > MIN_SIZE])
+        midis.extend(
+            [
+                os.path.join(path, file)
+                for file in files
+                if file.lower().endswith(".mid")
+                and os.stat(os.path.join(path, file)).st_size > MIN_SIZE
+            ]
+        )
     return midis
 
 
@@ -50,27 +119,33 @@ def make_midi_wad(midi_directory, doom2=True):
 
 def parse_args():
     parser = ArgumentParser(
-        description='Generate a PWAD of random MIDIs for Doom or Doom 2.')
-    parser.add_argument('directory',
-                        help='MIDI directory (searched recursively)')
-    parser.add_argument('out_file',
-                        help='output file (.wad appended if not present)')
-    group = parser.add_argument_group('game', 'game to generate WAD for')
+        description="Generate a PWAD of random MIDIs for Doom or Doom 2."
+    )
+    parser.add_argument(
+        "directory", help="MIDI directory (searched recursively)"
+    )
+    parser.add_argument(
+        "out_file", help="output file (.wad appended if not present)"
+    )
+    group = parser.add_argument_group("game", "game to generate WAD for")
     subgroup = group.add_mutually_exclusive_group()
-    subgroup.add_argument('-1', '--doom1', action='store_true',
-                          help='Doom 1')
+    subgroup.add_argument("-1", "--doom1", action="store_true", help="Doom 1")
     # This is really just a dummy arg.
-    subgroup.add_argument('-2', '--doom2', action='store_true',
-                          help='Doom II or Final Doom (default)')
+    subgroup.add_argument(
+        "-2",
+        "--doom2",
+        action="store_true",
+        help="Doom II or Final Doom (default)",
+    )
     args = parser.parse_args()
     if not os.path.isdir(args.directory):
-        raise ValueError(f'\'{args.directory}\' is not a directory.')
-    if not args.out_file.lower().endswith('.wad'):
-        args.out_file += '.wad'
+        raise ValueError(f"'{args.directory}' is not a directory.")
+    if not args.out_file.lower().endswith(".wad"):
+        args.out_file += ".wad"
     return args
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     args = parse_args()
     try:
         make_midi_wad(args.directory, not args.doom1).to_file(args.out_file)

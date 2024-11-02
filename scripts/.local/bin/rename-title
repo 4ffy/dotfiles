@@ -10,19 +10,23 @@ def filter_title_line(title):
     """Given a BMS #TITLE line, extract the title and try to remove [ANOTHER]
     etc. tags."""
     result = title[7:]
-    result = re.sub(r' ?[-【\[(].*?[-】\])]$', '', result)
-    result = re.sub(r'( - )(dp )?(normal|hyper|another|insane|extra)$', '',
-                    result, flags=re.I)
-    result = re.sub(r'\s+$', '', result)
+    result = re.sub(r" ?[-【\[(].*?[-】\])]$", "", result)
+    result = re.sub(
+        r"( - )(dp )?(normal|hyper|another|insane|extra)$",
+        "",
+        result,
+        flags=re.I,
+    )
+    result = re.sub(r"\s+$", "", result)
     return result
 
 
 def get_title_bms(bms):
     """Open a BMS file and try to extract the title."""
-    data = ''
-    for codec in ['utf-8', 'shift_jis', 'euckr', 'cp1252']:
+    data = ""
+    for codec in ["utf-8", "shift_jis", "euckr", "cp1252"]:
         try:
-            with open(bms, 'rt', encoding=codec) as f:
+            with open(bms, "rt", encoding=codec) as f:
                 data = f.read(500)
                 break
         except UnicodeDecodeError:
@@ -30,7 +34,7 @@ def get_title_bms(bms):
     if not data:
         raise RuntimeError(f'Could not decode BMS file "{bms}".')
 
-    match = re.search(r'^#TITLE .*', data, flags=re.M)
+    match = re.search(r"^#TITLE .*", data, flags=re.M)
     if not match:
         raise RuntimeError(f'Could not extract title from "{bms}".')
 
@@ -40,36 +44,38 @@ def get_title_bms(bms):
 
 def get_title_bmson(bmson):
     """Open a BMSON file and extract the title with jq."""
-    out = sp.run(['jq', '-j', '.info.title', bmson], capture_output=True)
+    out = sp.run(["jq", "-j", ".info.title", bmson], capture_output=True)
     if out.returncode != 0:
-        raise RuntimeError(f'jq returned nonzero exit status:\n{out.stderr}')
+        raise RuntimeError(f"jq returned nonzero exit status:\n{out.stderr}")
     title = out.stdout.decode("utf-8")
     return title
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print(f'Usage: {sys.argv[0]} parent_directory')
+        print(f"Usage: {sys.argv[0]} parent_directory")
         exit(1)
     if not os.path.isdir(sys.argv[1]):
         print(f'"{sys.argv[1]}" is not a directory.')
         exit(1)
 
     for path, subdirs, files in os.walk(os.getcwd()):
-        bms_files = [os.path.join(path, x) for x in files
-                     if x.lower().endswith(('.bms', '.bme', '.bml',
-                                            '.pms', '.bmson'))]
+        bms_files = [
+            os.path.join(path, x)
+            for x in files
+            if x.lower().endswith((".bms", ".bme", ".bml", ".pms", ".bmson"))
+        ]
         if bms_files:
             try:
                 bms = bms_files[0]
-                if bms.lower().endswith('.bmson'):
+                if bms.lower().endswith(".bmson"):
                     title = get_title_bmson(bms)
                 else:
                     title = get_title_bms(bms)
 
                 newname = os.path.join(os.path.dirname(path), title)
                 os.rename(path, newname)
-                print(path, newname, sep='\n')
+                print(path, newname, sep="\n")
                 print()
 
             except Exception as e:
