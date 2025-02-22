@@ -15,9 +15,9 @@ for arg in "$@"; do
     fi
 done
 
-for file in "$@"; do
-    md5=$(md5sum "$file" | awk '{print $1}')
-    ext=$(basename "$file" \
+rename() {
+    md5=$(md5sum -- "$1" | awk '{print $1}')
+    ext=$(basename -- "$1" \
               | awk -F. '$1 != "" && NF > 1 || $1 == "" && NF > 2 {print $NF}')
 
     if [ -n "$ext" ]; then
@@ -26,5 +26,10 @@ for file in "$@"; do
         new_name="$md5"
     fi
 
-    mv -v "$file" "$new_name"
-done
+    if [ "$1" != "$new_name" ]; then
+        mv -fv -- "$1" "$new_name"
+    fi
+}
+export -f rename
+
+parallel rename "{}" ::: "$@"
