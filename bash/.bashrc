@@ -1,6 +1,7 @@
 [[ $- != *i* ]] && return
 
 # Aliases
+alias black='black --line-length 80'
 alias cls='clear'
 alias diff='diff --color=auto'
 alias ec='emacsclient -t'
