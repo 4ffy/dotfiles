@@ -17,10 +17,13 @@ menu.title.bg.color: #303030
 
 # Window Settings
 border.width: 4
-padding.width: 6
-window.button.width: 24
+window.*.border.color: #101010d0
+window.*.title.bg.color: #101010e6
+window.button.spacing: 4
+window.button.width: 21
 window.inactive.button.*.image.color: #303030
 window.inactive.label.text.color: #808080
+window.label.text.justify: Left
 
 # OSD Settings
 osd.border.width: 1
