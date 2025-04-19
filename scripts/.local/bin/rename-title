@@ -21,6 +21,22 @@ def filter_title_line(title):
     return result
 
 
+def filter_title_windows(title):
+    """Replace characters that are invalid in Windows filenames to fullwidth
+    equivalents."""
+    result = title
+    result = re.sub(r"<", "＜", result)
+    result = re.sub(r">", "＞", result)
+    result = re.sub(r":", "：", result)
+    result = re.sub(r'"', "＂", result)
+    result = re.sub(r"/", "／", result)
+    result = re.sub(r"\\", "＼", result)
+    result = re.sub(r"\|", "｜", result)
+    result = re.sub(r"\?", "？", result)
+    result = re.sub(r"\*", "＊", result)
+    return result
+
+
 def get_title_bms(bms):
     """Open a BMS file and try to extract the title."""
     data = ""
@@ -39,7 +55,7 @@ def get_title_bms(bms):
         raise RuntimeError(f'Could not extract title from "{bms}".')
 
     title_line = match.group(0)
-    return filter_title_line(title_line)
+    return filter_title_windows(filter_title_line(title_line))
 
 
 def get_title_bmson(bmson):
@@ -48,7 +64,7 @@ def get_title_bmson(bmson):
     if out.returncode != 0:
         raise RuntimeError(f"jq returned nonzero exit status:\n{out.stderr}")
     title = out.stdout.decode("utf-8")
-    return title
+    return filter_title_windows(title)
 
 
 if __name__ == "__main__":
@@ -58,6 +74,7 @@ if __name__ == "__main__":
     if not os.path.isdir(sys.argv[1]):
         print(f'"{sys.argv[1]}" is not a directory.')
         exit(1)
+    os.chdir(sys.argv[1])
 
     for path, subdirs, files in os.walk(os.getcwd()):
         bms_files = [
