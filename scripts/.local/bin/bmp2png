@@ -15,5 +15,5 @@ if [ -z "$dir" ] || [ ! -d "$dir" ]; then
 fi
 
 cd "$dir"
-find . -name "*.[Bb][Mm][Pp]" | parallel convert "{}" "{.}.png"
-find . -name "*.[Pp][Nn][Gg]" | parallel rm -f "{.}.[Bb][Mm][Pp]"
+find . -name "*.[Bb][Mm][Pp]" | parallel magick "{}" "{.}.png"
+find . -name "*.[Pp][Nn][Gg]" | parallel rm -fv "{.}.[Bb][Mm][Pp]"
