@@ -1,7 +1,7 @@
 not status is-interactive && return
 
 # Aliases
-alias black='black --line-length 80'
+alias black='ruff format --line-length 80'
 alias cls='clear'
 alias diff='diff --color=auto'
 alias ec='emacsclient -t'
