@@ -145,10 +145,14 @@
       <action name="Execute" command="freetube"/>
     </keybind>
     <keybind key="Print">
-      <action name="Execute" command="gnome-screenshot"/>
+      <action name="Execute">
+        <command>sh -c 'grim "$HOME/Pictures/Screenshots/$(date +%Y-%m-%d\ %H-%M-%S).png"'</command>
+      </action>
     </keybind>
     <keybind key="A-Print">
-      <action name="Execute" command="gnome-screenshot -w"/>
+      <action name="Execute">
+        <command>sh -c 'grim -g "$(slurp)" "$HOME/Pictures/Screenshots/$(date +%Y-%m-%d\ %H-%M-%S).png"'</command>
+      </action>
     </keybind>
     <keybind key="XF86Calculator">
       <action name="Execute" command="emacsclient -cn --eval '(full-calc)'"/>
