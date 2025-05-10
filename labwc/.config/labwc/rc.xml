@@ -19,11 +19,11 @@
 
   <resistance screenEdgeStrength="0"/>
 
-  <theme name="min" cornerRadius="0" dropShadows="yes">
-    <font place="ActiveWindow" name="Cantarell" size="11" weight="Bold"/>
-    <font place="InactiveWindow" name="Cantarell" size="11" weight="Bold"/>
-    <font place="MenuItem" name="Cantarell" size="11"/>
-    <font place="OSD" name="Cantarell" size="11"/>
+  <theme name="min" icon="Papirus-Dark" cornerRadius="0" dropShadows="yes">
+    <font place="ActiveWindow" name="Cantarell" size="10" weight="Bold"/>
+    <font place="InactiveWindow" name="Cantarell" size="10" weight="Bold"/>
+    <font place="MenuItem" name="Cantarell" size="12"/>
+    <font place="OSD" name="Cantarell" size="12"/>
   </theme>
 
   <keyboard>
