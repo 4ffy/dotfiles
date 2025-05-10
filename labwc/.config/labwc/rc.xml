@@ -4,7 +4,7 @@
 
   <placement policy="automatic"/>
 
-  <desktops number="4" prefix="Desktop "/>
+  <desktops number="4" prefix="Desktop"/>
 
   <snapping>
     <overlay enabled="no"/>
