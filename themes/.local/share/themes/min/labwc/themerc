@@ -13,6 +13,7 @@ menu.items.active.bg.color: #303030
 menu.items.bg.color: #000000
 menu.items.disabled.text.color: #808080
 menu.separator.color: #303030
+menu.separator.width: 1
 menu.title.bg.color: #303030
 
 # Window Settings
