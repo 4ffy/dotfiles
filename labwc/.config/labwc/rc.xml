@@ -185,6 +185,20 @@
 
   <mouse>
     <default/>
+    <context name="All">
+      <!-- W-scroll to switch desktops -->
+      <mousebind direction="W-Up" action="Scroll">
+        <action name="GoToDesktop" to="left"/>
+      </mousebind>
+      <mousebind direction="W-Down" action="Scroll">
+        <action name="GoToDesktop" to="right"/>
+      </mousebind>
+      <mousebind direction="W-S-Up" action="Scroll">
+        <action name="SendToDesktop" to="left"/>
+      </mousebind>
+      <mousebind direction="W-S-Down" action="Scroll">
+        <action name="SendToDesktop" to="right"/>
+      </mousebind>
+    </context>
   </mouse>
-
 </labwc_config>
