@@ -121,7 +121,7 @@
       <action name="Execute" command="swaylock"/>
     </keybind>
     <keybind key="W-Return">
-      <action name="Execute" command="emacsclient -cn --eval '(cn/eat-create-new-buffer)'"/>
+      <action name="Execute" command="emacsclient -a '' -c --eval '(cn/eat-create-new-buffer)'"/>
     </keybind>
     <keybind key="C-S-Escape">
       <action name="Execute" command="qps"/>
@@ -130,7 +130,7 @@
       <action name="Execute" command="librewolf"/>
     </keybind>
     <keybind key="W-e">
-      <action name="Execute" command="emacsclient -cn"/>
+      <action name="Execute" command="emacsclient -a '' -c"/>
     </keybind>
     <keybind key="W-r">
       <action name="Execute" command="rofi -show-icons -show drun"/>
@@ -158,7 +158,7 @@
       </action>
     </keybind>
     <keybind key="XF86Calculator">
-      <action name="Execute" command="emacsclient -cn --eval '(full-calc)'"/>
+      <action name="Execute" command="emacsclient -a '' -c --eval '(full-calc)'"/>
     </keybind>
 
     <!-- Keybindings for mpc controls -->
