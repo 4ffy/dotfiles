@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <labwc_config>
-  <core allowTearing="yes" xwaylandPersistence="Yes"/>
+  <core allowTearing="yes"/>
 
   <placement policy="automatic"/>
 
