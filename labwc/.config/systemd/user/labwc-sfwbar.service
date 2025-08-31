@@ -1,0 +1,12 @@
+[Unit]
+Description=S* Floating Window Bar
+PartOf=labwc-session.target
+After=labwc-session.target
+
+[Service]
+ExecStart=sfwbar -f "${XDG_CONFIG_HOME}/labwc/sfwbar.config"
+Restart=always
+RestartSec=1
+
+[Install]
+WantedBy=labwc-session.target

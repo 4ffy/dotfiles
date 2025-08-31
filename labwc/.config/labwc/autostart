@@ -29,17 +29,11 @@ set_gtk_setting font-name
 set_gtk_setting gtk-theme
 set_gtk_setting icon-theme
 
-# Applications
-dunst -conf "$config_home/labwc/dunstrc" &
-gammastep &
-lxqt-policykit-agent  &
-sfwbar -f "$config_home/labwc/sfwbar.config" &
-swaybg -i /usr/share/backgrounds/wallpaper.jpg -m stretch &
+# Start systemd services
+systemctl --user start labwc-session.target
 
-# Applications with tray icons should wait a moment to ensure sfwbar is ready.
-wait_start nm-applet --indicator &
+# I don't want to wrap these into Systemd services
+swaybg -i /usr/share/backgrounds/wallpaper.jpg -m stretch &
 is_laptop || wait_start discord --start-minimized &
 is_laptop || wait_start steam -silent &
-
-# Other stuff
 { mpc clear && mpc load main && mpc shuffle; } &
