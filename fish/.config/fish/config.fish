@@ -1,4 +1,4 @@
-not status is-interactive && return
+not status is-interactive; and return
 
 # Aliases
 alias black='ruff format --line-length 80'
