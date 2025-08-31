@@ -11,14 +11,19 @@ alias la='ls --color=auto --group-directories-first -a'
 alias ll='ls --color=auto --group-directories-first -hl'
 alias lla='ls --color=auto --group-directories-first -ahl'
 alias ls='ls --color=auto --group-directories-first'
-alias make='make -j$(nproc)'
 alias mem='ps huxk-rss | awk \'{printf("%5.1fM\t%5d\t%s\n",$6/1024,$2,$11)}\''
-alias runjp='LANG=ja_JP.UTF-8'
-alias sc='systemctl'
-alias scu='systemctl --user'
-alias winejp='LANG=ja_JP.UTF-8 wine'
+alias tm='trash'
 alias xo='xdg-open'
 alias yt-mp3='yt-dlp -xf bestaudio --audio-format mp3 --audio-quality 192k'
+
+abbr -a gcd1 'git clone --depth 1'
+abbr -a jc 'journalctl'
+abbr -a jcu 'journalctl --user'
+abbr -a make "make -j$(nproc)"
+abbr -a sc 'systemctl'
+abbr -a scu 'systemctl --user'
+abbr -a runjp 'LANG=ja_JP.UTF-8'
+abbr -a winejp 'LANG=ja_JP.UTF-8 wine'
 
 # Environment variables
 set -gx PATH "$HOME/.local/bin:$PATH"
