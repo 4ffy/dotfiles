@@ -90,7 +90,10 @@ tray {
 }
 
 /* Widget icon */
+/* As of 2025-09-24, widget icons are affected by global vexpand. */
 #module button {
+    -GtkWidget-vexpand: false;
+    padding-top: 8px; /* center hack */
     min-width: 24px;
 }
 
