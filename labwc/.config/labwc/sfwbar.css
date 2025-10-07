@@ -23,9 +23,7 @@
 
 /* Window buttons */
 #taskbar_normal,
-#taskbar_active,
-#taskbar_normal *,
-#taskbar_active * {
+#taskbar_active {
     -GtkWidget-max-width: 198px;
     background-color: @button;
     border: 1px solid @button;
@@ -36,11 +34,9 @@
 
 /* Window button icons */
 #taskbar_normal image,
-#taskbar_active image,
-#taskbar_normal:hover image {
+#taskbar_active image {
     min-width: 32px;
-    padding-left: 2px;
-    padding-right: 2px;
+    padding: 0px 4px;
 }
 
 /* Border around active and hovered window button */
@@ -61,8 +57,7 @@ tray {
 #tray_active,
 #tray_passive {
     background-color: @background;
-    margin-left: 1px;
-    margin-right: 1px;
+    margin: 0px 1px;
     padding: 0px;
 }
 
@@ -83,8 +78,7 @@ tray {
 /* Widget menu */
 #module {
     background-color: @background;
-    margin-left: 1px;
-    margin-right: 1px;
+    margin: 0px 1px;
     padding: 0px;
 }
 
