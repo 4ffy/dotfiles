@@ -14,7 +14,7 @@ alias ls='ls --color=auto --group-directories-first'
 alias mem='ps huxk-rss | awk \'{printf("%5.1fM\t%5d\t%s\n",$6/1024,$2,$11)}\''
 alias tm='trash'
 alias xo='xdg-open'
-alias yt-mp3='yt-dlp -xf bestaudio --audio-format mp3 --audio-quality 192k'
+alias yt-mp3='yt-dlp -xf bestaudio --audio-format mp3 --audio-quality 0'
 
 abbr -a gcd1 'git clone --depth 1'
 abbr -a jc 'journalctl'

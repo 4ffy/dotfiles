@@ -18,7 +18,7 @@ alias sc='systemctl'
 alias scu='systemctl --user'
 alias winejp='LANG=ja_JP.UTF-8 wine'
 alias xo='xdg-open'
-alias yt-mp3='yt-dlp -xf bestaudio --audio-format mp3 --audio-quality 192k'
+alias yt-mp3='yt-dlp -xf bestaudio --audio-format mp3 --audio-quality 0'
 
 # Functions. These should only be suitable for interactive use of Bash.
 # Otherwise, it is better to create a proper shell script and put it on $PATH.
