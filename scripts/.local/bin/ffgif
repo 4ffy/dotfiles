@@ -1,0 +1,191 @@
+#!/usr/bin/env python
+import json
+import os
+import subprocess as sp
+import sys
+from argparse import ArgumentParser, Namespace
+from dataclasses import dataclass
+from typing import Literal
+
+
+DitherMethod = Literal["ordered", "steinberg", "sierra", "none"]
+
+
+@dataclass
+class Size:
+    """Width and height pair."""
+
+    width: int
+    height: int
+
+
+@dataclass
+class Video:
+    """Video information container class."""
+
+    filename: str
+    resolution: Size
+    framerate: int
+    length: float
+
+    @staticmethod
+    def probe_file(file: str) -> "Video":
+        """Use ffprobe to fetch information about a video file."""
+        ffprobe_out = sp.run(
+            [
+                "ffprobe",
+                "-v",
+                "error",
+                "-print_format",
+                "json",
+                "-show_entries",
+                "stream=width,height,r_frame_rate:format=duration",
+                file,
+            ],
+            capture_output=True,
+            check=True,
+        )
+        info = json.loads(ffprobe_out.stdout.decode("utf8"))
+        width = info["streams"][0]["width"]
+        height = info["streams"][0]["height"]
+        framerate = int(eval(info["streams"][0]["r_frame_rate"]))  # uhh...
+        length = float(info["format"]["duration"])
+        return Video(
+            os.path.abspath(file), Size(width, height), framerate, length
+        )
+
+    def write_gif(
+        self,
+        outfile: str,
+        resolution: Size,
+        framerate: int,
+        dither: DitherMethod,
+    ):
+        if dither == "ordered":
+            method = "bayer"
+        elif dither == "steinberg":
+            method = "floyd_steinberg"
+        elif dither == "sierra":
+            method = "sierra2_4a"
+        else:
+            method = "none"
+
+        sp.run(
+            [
+                "ffmpeg",
+                "-y",
+                "-v",
+                "error",
+                "-i",
+                self.filename,
+                "-filter_complex",
+                f"""fps={framerate},scale={resolution.width}x{resolution.height}:flags=lanczos,split[v1][v2];
+                [v1]palettegen=reserve_transparent=true:stats_mode=diff [palette];
+                [v2][palette]paletteuse=dither={method}:bayer_scale=3""",
+                outfile,
+            ],
+            capture_output=True,
+            check=True,
+        )
+
+
+def positive_int(s: str) -> int:
+    """Convert a string to an integer. Throw if conversion fails or if the
+    resulting integer is not positive. For use with the argument parser."""
+    i = int(s)
+    if i <= 0:
+        raise ValueError
+    return i
+
+
+def positive_float(s: str) -> float:
+    """Convert a string to a float. Throw if conversion fails or if the
+    resulting float is not positive. For use with the argument parser."""
+    f = float(s)
+    if f <= 0.0:
+        raise ValueError
+    return f
+
+
+def parse_args() -> Namespace:
+    parser = ArgumentParser(description="Convert videos to GIFs")
+    parser.register("type", "positive float", positive_float)
+    parser.register("type", "positive integer", positive_float)
+    parser.add_argument(
+        "video", help="input video", metavar="VIDEO", type=os.path.abspath
+    )
+    parser.add_argument(
+        "-f",
+        "--framerate-divisor",
+        help="divide output framerate by an integer factor (e.g. 2)",
+        metavar="DIVISOR",
+        type="positive integer",
+        default=1,
+    )
+    parser.add_argument(
+        "-m",
+        "--dither-method",
+        help="select dithering method (default: ordered)",
+        choices=("ordered", "steinberg", "sierra", "none"),
+        default="ordered",
+    )
+    parser.add_argument(
+        "-o",
+        "--output-file",
+        help="output filename (default: ${VIDEO}.gif)",
+        metavar="FILENAME",
+    )
+    parser.add_argument(
+        "-s",
+        "--scale-output",
+        help="multiply output size by a real factor (e.g. 0.5)",
+        metavar="SCALE",
+        type="positive float",
+        default=1.0,
+    )
+    parser.add_argument(
+        "--force",
+        action="store_true",
+        help="Allow writing large GIFs",
+    )
+    return parser.parse_args()
+
+
+if __name__ == "__main__":
+    args = parse_args()
+    if not os.path.exists(args.video):
+        print(f"file not found: '{args.video}'", file=sys.stderr)
+        exit(1)
+
+    try:
+        video = Video.probe_file(args.video)
+    except sp.CalledProcessError as err:
+        print(f"{err}\n{err.stderr.decode('utf8')}", file=sys.stderr)
+        exit(1)
+
+    frames = int(video.framerate * video.length / args.framerate_divisor)
+    if frames > 250 and not args.force:
+        print(
+            f"Output GIF would have {frames} frames. Pass --force to write anyway.",
+            file=sys.stderr,
+        )
+        exit(1)
+
+    outfile = (
+        args.output_file
+        if args.output_file is not None
+        else args.video + ".gif"
+    )
+    target_resolution = Size(
+        int(round(video.resolution.width * args.scale_output)),
+        int(round(video.resolution.height * args.scale_output)),
+    )
+    target_framerate = video.framerate // args.framerate_divisor
+
+    try:
+        video.write_gif(
+            outfile, target_resolution, target_framerate, args.dither_method
+        )
+    except sp.CalledProcessError as err:
+        print(f"{err}\n{err.stderr.decode('utf8')}", file=sys.stderr)
+        exit(1)
