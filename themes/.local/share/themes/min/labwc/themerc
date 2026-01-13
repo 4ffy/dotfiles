@@ -27,8 +27,6 @@ window.inactive.label.text.color: #808080
 window.label.text.justify: Left
 
 # OSD Settings
-osd.border.width: 1
-osd.hilight.bg.color: #3399dd
-osd.unhilight.bg.color: #eeeeee
 osd.window-switcher.width: 600
-osd.window-switcher.item.active.border.width: 1
+osd.window-switcher.style-classic.item.active.border.width: 1
+osd.window-switcher.style-classic.item.active.border.color: #808080
