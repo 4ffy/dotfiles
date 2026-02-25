@@ -1,35 +1,70 @@
-#!/bin/bash
-set -euo pipefail
+#!/usr/bin/env python
+import os
+import sys
+from argparse import ArgumentParser
+from concurrent.futures import ProcessPoolExecutor
+from hashlib import file_digest
+from pathlib import Path
 
-for arg in "$@"; do
-    [[ "$arg" == '-h' || "$arg" == '--help' ]] && cat << EOF >&2 && exit
-Usage: md5rename FILE...
-Rename input files to their filename followed by their extension.
-EOF
-done
 
-for arg in "$@"; do
-    if [ ! -f "$arg" ]; then
-        echo "File not found: '$arg'" >&2
-        exit 1
-    fi
-done
+def digest(path):
+    with path.open("rb") as f:
+        hash = file_digest(f, "md5")
+        return hash.hexdigest()
 
-rename() {
-    md5=$(md5sum -- "$1" | awk '{print $1}')
-    ext=$(basename -- "$1" \
-              | awk -F. '$1 != "" && NF > 1 || $1 == "" && NF > 2 {print $NF}')
 
-    if [ -n "$ext" ]; then
-        new_name="$md5.$ext"
-    else
-        new_name="$md5"
-    fi
+def rename(path, quiet=False, dry_run=False):
+    newname = (path.parent / digest(path)).with_suffix(path.suffix)
+    if path != newname:
+        if not quiet:
+            print(path, "->", newname)
+        if not dry_run:
+            path.rename(newname)
 
-    if [ "$1" != "$new_name" ]; then
-        mv -fv -- "$1" "$new_name"
-    fi
-}
-export -f rename
 
-parallel rename "{}" ::: "$@"
+if __name__ == "__main__":
+    parser = ArgumentParser(
+        "md5rename",
+        description="Rename files to their md5 hash followed by their extension.",
+    )
+    parser.add_argument(
+        "files", nargs="*", metavar="FILE", help="input file(s)"
+    )
+    parser.add_argument(
+        "-d", "--dry-run", action="store_true", help="do not actually rename files",
+    )
+    parser.add_argument(
+        "-q", "--quiet", action="store_true", help="do not print output"
+    )
+    args = parser.parse_args()
+
+    if args.files is None:
+        exit(0)
+
+    files = [Path(x) for x in args.files]
+    bad = False
+    for file in files:
+        if not file.exists():
+            print(f"file not found: '{file}'")
+            bad = True
+        if not file.is_file():
+            print(f"not a file: '{file}'")
+            bad = True
+        if not os.access(file, os.R_OK):
+            print(f"file not readable: '{file}'")
+            bad = True
+    if bad:
+        exit(1)
+
+    with ProcessPoolExecutor() as p:
+        try:
+            for _ in p.map(
+                rename,
+                files,
+                [args.quiet for x in range(len(files))],
+                [args.dry_run for x in range(len(files))],
+            ):
+                pass
+        except OSError as err:
+            print(err, file=sys.stderr)
+            exit(1)
