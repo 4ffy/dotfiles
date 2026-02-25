@@ -1,8 +1,68 @@
-#!/bin/bash
-set -euo pipefail
-port=${1:-$(aplaymidi -l | grep 'CH345' | awk '{print $1}')}
-aplaymidi -p "$port" <(base64 -di << EOF
-TVRoZAAAAAYAAQABAGBNVHJrAAAARACwewAAsXsAALJ7AACzewAAtHsAALV7AAC2ewAAt3sAALh7
-AAC5ewAAunsAALt7AAC8ewAAvXsAAL57AAC/ewAA/y8A
-EOF
+#!/usr/bin/env python
+import subprocess as sp
+import sys
+from argparse import ArgumentParser
+from concurrent.futures import ThreadPoolExecutor
+from shutil import which
+
+# MIDI sending All Notes Off controller message on all channels.
+shutup = (
+    b""
+    + b"MThd\x00\x00\x00\x06\x00\x01\x00\x01\x00\x60"  # MIDI header
+    + b"MTrk\x00\x00\x00\x44"  # Track header
+    + b"\x00\xb0\x7b\x00"  # 0
+    + b"\x00\xb1\x7b\x00"  # 1
+    + b"\x00\xb2\x7b\x00"  # 2
+    + b"\x00\xb3\x7b\x00"  # 3
+    + b"\x00\xb4\x7b\x00"  # 4
+    + b"\x00\xb5\x7b\x00"  # 5
+    + b"\x00\xb6\x7b\x00"  # 6
+    + b"\x00\xb7\x7b\x00"  # 7
+    + b"\x00\xb8\x7b\x00"  # 8
+    + b"\x00\xb9\x7b\x00"  # 9
+    + b"\x00\xba\x7b\x00"  # 10
+    + b"\x00\xbb\x7b\x00"  # 11
+    + b"\x00\xbc\x7b\x00"  # 12
+    + b"\x00\xbd\x7b\x00"  # 13
+    + b"\x00\xbe\x7b\x00"  # 14
+    + b"\x00\xbf\x7b\x00"  # 15
+    + b"\x00\xff\x2f\x00"  # End
 )
+
+
+def get_midi_ports():
+    out = sp.check_output(["aplaymidi", "-l"]).decode("utf8")
+    return [line.split()[0] for line in out.rstrip().split("\n")[1:]]
+
+
+def stop_output(port):
+    sp.run(["aplaymidi", "-p", port, "-"], input=shutup, check=True)
+
+
+if __name__ == "__main__":
+    parser = ArgumentParser(
+        "midi-shutup",
+        description="Stop all output on specified MIDI ports. Default to all ports if none given.",
+    )
+    parser.add_argument("ports", nargs="*", metavar="PORT", help="MIDI port(s)")
+    args = parser.parse_args()
+
+    if which("aplaymidi") is None:
+        print("aplaymidi not found. Install alsa-utils?", file=sys.stderr)
+        exit(1)
+
+    all_ports = get_midi_ports()
+    if args.ports:
+        bad_ports = False
+        for port in args.ports:
+            if port not in all_ports:
+                print(f"MIDI port not found: '{port}'", file=sys.stderr)
+                bad_ports = True
+        if bad_ports:
+            exit(1)
+        ports = args.ports
+    else:
+        ports = all_ports
+
+    with ThreadPoolExecutor() as p:
+        p.map(stop_output, ports)
