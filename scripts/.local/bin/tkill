@@ -1,0 +1,64 @@
+#!/usr/bin/env python
+import os
+import sys
+from argparse import ArgumentParser
+from signal import *
+
+# Associate PIDs with a list of their children. Childless processes do not
+# appear as keys.
+type ProcessTree = dict[int, list[int]]
+
+
+def get_parent_pid(pid: int) -> int:
+    "Read /proc/pid/stat to find a process's parent PID."
+    with open(f"/proc/{pid}/stat", "rt") as f:
+        data = f.read()
+    return int(data.split(" ")[-49])
+
+
+def build_process_tree() -> ProcessTree:
+    "Read /proc to build the hierarchy of processes running on the system."
+    tree: ProcessTree = {}
+    for entry in os.listdir("/proc"):
+        if entry.isnumeric() and os.path.isdir(f"/proc/{entry}"):
+            pid = int(entry)
+            ppid = get_parent_pid(pid)
+            tree.setdefault(ppid, []).append(pid)
+    return tree
+
+
+def kill_process_tree(tree: ProcessTree, pid: int, sig=SIGTERM):
+    "Kill the process tree rooted at pid."
+    try:
+        os.kill(pid, sig)
+    except (PermissionError, ProcessLookupError) as e:
+        print(f"Could not kill PID {pid}: {e}", file=sys.stderr)
+        return
+    if pid in tree:
+        for child in tree[pid]:
+            kill_process_tree(tree, child, sig)
+
+
+def nonnegative_int(s: str) -> int:
+    "Non-negative int filter for argparse."
+    i = int(s)
+    if i <= 0:
+        raise ValueError
+    return i
+
+
+if __name__ == "__main__":
+    parser = ArgumentParser("tkill", description="Kill a process tree.")
+    parser.register("type", "non-negative integer", nonnegative_int)
+    parser.add_argument(
+        "pid", metavar="PID", type="non-negative integer", help="parent PID"
+    )
+    parser.add_argument(
+        "-t",
+        "--term",
+        action="store_true",
+        help="send SIGTERM instead of SIGKILL",
+    )
+    args = parser.parse_args()
+    tree = build_process_tree()
+    kill_process_tree(tree, args.pid, SIGTERM if args.term else SIGKILL)
