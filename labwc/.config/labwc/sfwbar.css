@@ -1,15 +1,15 @@
-@define-color background    #000000;
-@define-color button        #202020;
-@define-color button-hover  #404040;
-@define-color button-border #606060;
+@define-color background #000000;
+@define-color button     #202020;
+@define-color border     #606060;
+@define-color text       #eeeeee;
 
-/* Global settings */
+/* Global Settings */
 * {
     -GtkWidget-vexpand: true;
-    border-radius: 4px;
-    color: #ffffff;
+    animation: none;
+    color: @text;
     font: 10pt Cantarell;
-    border: 0px;
+    transition: none;
 }
 
 /* Main bar */
@@ -18,88 +18,60 @@
     min-height: 40px;
 }
 
-
-/* Window button settings */
-
-/* Window buttons */
-#taskbar_normal,
-#taskbar_active {
+/* Taskbar buttons */
+#taskbar_item {
     -GtkWidget-max-width: 198px;
     background-color: @button;
     border: 1px solid @button;
+    border-radius: 4px;
     margin-left: 1px;
     min-width: 198px;
     padding: 0px;
 }
 
-/* Window button icons */
-#taskbar_normal image,
-#taskbar_active image {
+#taskbar_item.focused, #taskbar_item:hover {
+    border: 1px solid @border;
+}
+
+/* Taskbar button icons */
+#taskbar_item image {
     min-width: 32px;
     padding: 0px 4px;
 }
 
-/* Border around active and hovered window button */
-#taskbar_active,
-#taskbar_normal:hover {
-    border: 1px solid @button-border;
+/* Taskbar button label */
+#taskbar_item label {
+    padding-right: 4px;
 }
 
-
-/* Tray settings */
-
-/* Tray menus */
-tray {
-    background-color: @button;
+/* Horizontal spacer */
+#spacer {
+    -GtkWidget-hexpand: true;
 }
 
-/* Tray icon area */
-#tray_active,
-#tray_passive {
+/* Tray entries */
+#tray_item, #module {
     background-color: @background;
-    margin: 0px 1px;
     padding: 0px;
+    margin: 0px 1px;
 }
 
 /* Tray icons */
-#tray_active image,
-#tray_passive image {
+#tray_item image, #module image {
     min-width: 24px;
 }
 
-/* Hover over tray menu items */
-#tray:hover {
-    background-color: @button-hover;
-}
-
-
-/* "Tray" widgets */
-
-/* Widget menu */
+/* Hack to center volume icon */
 #module {
-    background-color: @background;
-    margin: 0px 1px;
-    padding: 0px;
-}
-
-/* Widget icon */
-button#module  {
     -GtkWidget-max-height: 24px;
-    min-width: 24px;
     padding-top: 8px;
 }
 
-
-/* Other settings */
+/* Clock */
+#clock {
+    margin: 0px 10px;
+}
 
 #time {
-    font-weight: bold;
-}
-
-menu {
-    background-color: @button;
-}
-
-#menu_item:hover {
-    background-color: @button-hover
+    font-weight: 800; /* extrabold */
 }
