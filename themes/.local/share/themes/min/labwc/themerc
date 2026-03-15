@@ -2,31 +2,25 @@
 # Author: Cameron Norton <cameron.norton@gmail.com>
 
 # Global settings
-*.bg: Flat Solid
-*.color: #101010
 *.image.color: #eeeeee
 *.text.color: #eeeeee
-*.width: 0
 
-# Menu Settings
+# Window settings
+border.width: 4
+window.*.border.color: #101010e6
+window.*.title.bg.color: #101010e6
+window.inactive.button.unpressed.image.color: #303030
+window.inactive.label.text.color: #808080
+window.label.text.justify: Left
+
+# Menu settings
+menu.border.width: 0
 menu.items.active.bg.color: #303030
 menu.items.bg.color: #000000
 menu.items.disabled.text.color: #808080
 menu.separator.color: #303030
-menu.separator.width: 1
 menu.title.bg.color: #303030
 
-# Window Settings
-border.width: 4
-window.*.border.color: #101010d0
-window.*.title.bg.color: #101010e6
-window.button.spacing: 4
-window.button.width: 21
-window.inactive.button.*.image.color: #303030
-window.inactive.label.text.color: #808080
-window.label.text.justify: Left
-
-# OSD Settings
-osd.window-switcher.width: 600
-osd.window-switcher.style-classic.item.active.border.width: 1
-osd.window-switcher.style-classic.item.active.border.color: #808080
+# OSD settings
+osd.border.width: 0
+osd.workspace-switcher.boxes.border.width: 1
