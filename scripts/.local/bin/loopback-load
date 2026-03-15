@@ -2,4 +2,4 @@
 set -euo pipefail
 module=$(pactl load-module module-loopback)
 trap 'pactl unload-module "$module"' EXIT
-sleep infinity
+read
