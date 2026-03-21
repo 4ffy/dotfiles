@@ -57,14 +57,17 @@
 }
 
 /* Tray icons */
-#tray_item image, #module image {
+#tray_item image {
     min-width: 24px;
 }
 
-/* Hack to center volume icon */
-#module {
+/* Volume "tray" icon */
+#volume {
     -GtkWidget-max-height: 24px;
-    padding-top: 8px;
+    background-color: @background;
+    min-width: 24px;
+    padding: 0px;
+    padding-top: 8px; /* hack to center */
 }
 
 /* Clock */
