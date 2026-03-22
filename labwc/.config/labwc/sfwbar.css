@@ -50,7 +50,7 @@
 }
 
 /* Tray entries */
-#tray_item, #module {
+#tray_item {
     background-color: @background;
     padding: 0px;
     margin: 0px 1px;
@@ -61,8 +61,8 @@
     min-width: 24px;
 }
 
-/* Volume "tray" icon */
-#volume {
+/* "tray" icons */
+.module {
     -GtkWidget-max-height: 24px;
     background-color: @background;
     min-width: 24px;
