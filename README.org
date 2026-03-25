@@ -9,30 +9,3 @@ used with [[https://www.gnu.org/software/stow/][GNU Stow]]. There are certainly 
 this directory structure, but I wouldn't know anything about that.
 
 I keep my Emacs config in a [[https://github.com/4ffy/emacs-config][separate repository]].
-
-** Programs
-
-*** Window Managers
- - [[https://openbox.org/][openbox]]
- - [[http://fluxbox.org/][fluxbox]]
- - [[https://labwc.github.io/][labwc]] for the inevitable Wayland future
- - [[https://github.com/baskerville/bspwm][bspwm]]
- - Alternate configs for Openbox and Fluxbox with larger sizes for my laptop
-
-*** Taskbars (in the WM folders)
- - [[https://github.com/LBCrion/sfwbar][sfwbar]] for labwc (WIP)
- - [[https://gitlab.com/o9000/tint2][tint2]] for Openbox and bspwm
-
-*** Other Desktop
- - [[https://github.com/trizen/obmenu-generator][obmenu-generator]] for Openbox
- - [[https://github.com/yshui/picom][picom]]
- - [[https://github.com/davatorium/rofi][rofi]]
- - [[https://hg.sr.ht/~scoopta/wofi][wofi]] for labwc
-
-*** Other stuff
- - [[https://www.gnu.org/software/bash/][bash]]
- - [[https://git-scm.com/][git]]
- - [[https://www.musicpd.org/][mpd]] for use with [[https://www.musicpd.org/clients/mpc/][mpc]]
- - [[https://nethack.org/][nethack]] (though I could just play on a server)
- - themes for Openbox and labwc
- - x11 so I can version control ~.Xresources~ and the like
