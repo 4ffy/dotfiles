@@ -10,7 +10,6 @@
 
 ;;; General settings
 
-(swayimg.enable_antialiasing true)
 (swayimg.on_window_resize #((. (. swayimg (swayimg.get_mode)) :reset)))
 (text.hide)
 
@@ -39,15 +38,18 @@
   "Antialiasing toggle closure."
   (var enabled? true)
 
-  (fn toggle []
-    "Toggle antialiasing."
-    (set enabled? (not enabled?))
+  (fn set-enabled [status]
+    (set enabled? status)
     (swayimg.enable_antialiasing enabled?)
     (text.set_status (.. "Antialiasing: " (tostring enabled?))))
 
-  {: toggle :enabled? #enabled?})
+  {:enabled? #enabled?
+   :enable #(set-enabled true)
+   :disable #(set-enabled false)
+   :toggle #(set-enabled (not enabled?))})
 
 (local antialiasing (make-antialiasing-handler))
+(antialiasing.enable)
 
 (fn make-timeout-handler []
   "Slideshow timeout closure."
