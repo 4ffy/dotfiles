@@ -107,3 +107,6 @@
                       :Shift+s #(swayimg.set_mode :viewer)}]
   (each [key event (pairs extra-bindings)]
     (slideshow.on_key key event)))
+
+;;; Suppress status messages emitted during startup.
+(text.set_status "")
