@@ -10,7 +10,6 @@
 
 ;;; General settings
 
-(imagelist.enable_adjacent true)
 (swayimg.enable_antialiasing true)
 (swayimg.on_window_resize #((. (. swayimg (swayimg.get_mode)) :reset)))
 (text.hide)
