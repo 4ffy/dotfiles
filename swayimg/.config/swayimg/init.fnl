@@ -16,23 +16,31 @@
 ;;; Functions
 
 (fn make-order-handler []
-  "Image sort order switching closure."
+  "Image sort order closure."
+  (var order :none)
   (var orders [:none :alpha :mtime :random])
-  (var order-zero-idx 0)
+  (var orders-idx (collect [k v (pairs orders)] (values v k)))
+
+  (fn set-order [new-order]
+    (when (not (. orders-idx new-order))
+      (error "Invalid order."))
+    (set order new-order)
+    (imagelist.set_order order)
+    (if (= order :mtime)
+        (imagelist.enable_reverse true)
+        (imagelist.enable_reverse false))
+    (text.set_status (.. "Sort: " order)))
 
   (fn next-order []
-    "Move to the next order. Reverse sort for mtime."
-    (set order-zero-idx (% (+ 1 order-zero-idx) (length orders)))
-    (let [order (. orders (+ 1 order-zero-idx))]
-      (imagelist.set_order order)
-      (if (= order :mtime)
-          (imagelist.enable_reverse true)
-          (imagelist.enable_reverse false))
-      (text.set_status (.. "Sort: " order))))
+    (set-order (. orders (+ 1 (% (. orders-idx order) (length orders))))))
 
-  {: next-order :current-order #(. orders (+ 1 order-zero-idx))})
+  {:order #order : set-order : next-order})
 
 (local order (make-order-handler))
+(order.set-order :none)
+;;; I want to be able to set the order on the command line via --execute, and
+;;; exporting order globally seems to be the only way to do this.
+(set _G.order order)
 
 (fn make-antialiasing-handler []
   "Antialiasing toggle closure."
