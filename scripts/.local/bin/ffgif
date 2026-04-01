@@ -172,7 +172,7 @@ if __name__ == "__main__":
         print(f"{err}\n{err.stderr.decode('utf8')}", file=sys.stderr)
         exit(1)
 
-    frames = int(video.framerate * video.length / args.framerate_divisor)
+    frames = video.framerate * video.length // args.framerate_divisor
     if frames > 250 and not args.force:
         print(
             f"Output GIF would have {frames} frames. Pass --force to write anyway.",
