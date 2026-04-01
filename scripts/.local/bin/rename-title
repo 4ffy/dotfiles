@@ -40,7 +40,7 @@ def filter_title_windows(title):
 def get_title_bms(bms):
     """Open a BMS file and try to extract the title."""
     data = ""
-    for codec in ["utf-8", "shift_jis", "euckr", "cp1252"]:
+    for codec in ["shift_jis", "utf-8", "euckr", "cp1252"]:
         try:
             with open(bms, "rt", encoding=codec) as f:
                 data = f.read(500)
