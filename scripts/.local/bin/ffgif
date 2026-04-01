@@ -153,6 +153,15 @@ def parse_args() -> Namespace:
 
 if __name__ == "__main__":
     args = parse_args()
+
+    bad = False
+    for dep in ["ffmpeg", "ffprobe"]:
+        if not which(dep):
+            print(f"required executable not found: '{dep}'", file=sys.stderr)
+            bad = True
+    if bad:
+        exit(1)
+
     if not os.path.exists(args.video):
         print(f"file not found: '{args.video}'", file=sys.stderr)
         exit(1)
