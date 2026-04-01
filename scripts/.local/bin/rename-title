@@ -4,6 +4,7 @@ import os
 import re
 import sys
 import subprocess as sp
+from shutil import which
 
 
 def filter_title_line(title):
@@ -60,7 +61,7 @@ def get_title_bms(bms):
 
 def get_title_bmson(bmson):
     """Open a BMSON file and extract the title with jq."""
-    out = sp.run(["jq", "-j", ".info.title", bmson], capture_output=True)
+    out = sp.run([which("jq"), "-j", ".info.title", bmson], capture_output=True)
     if out.returncode != 0:
         raise RuntimeError(f"jq returned nonzero exit status:\n{out.stderr}")
     title = out.stdout.decode("utf-8")

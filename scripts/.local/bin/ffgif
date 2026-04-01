@@ -5,6 +5,7 @@ import subprocess as sp
 import sys
 from argparse import ArgumentParser, Namespace
 from dataclasses import dataclass
+from shutil import which
 from typing import Literal
 
 
@@ -33,7 +34,7 @@ class Video:
         """Use ffprobe to fetch information about a video file."""
         ffprobe_out = sp.run(
             [
-                "ffprobe",
+                which("ffprobe"),
                 "-v",
                 "error",
                 "-print_format",
@@ -72,7 +73,7 @@ class Video:
 
         sp.run(
             [
-                "ffmpeg",
+                which("ffmpeg"),
                 "-y",
                 "-v",
                 "error",

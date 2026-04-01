@@ -31,12 +31,12 @@ shutup = (
 
 
 def get_midi_ports():
-    out = sp.check_output(["aplaymidi", "-l"]).decode("utf8")
+    out = sp.check_output([which("aplaymidi"), "-l"]).decode("utf8")
     return [line.split()[0] for line in out.rstrip().split("\n")[1:]]
 
 
 def stop_output(port):
-    sp.run(["aplaymidi", "-p", port, "-"], input=shutup, check=True)
+    sp.run([which("aplaymidi"), "-p", port, "-"], input=shutup, check=True)
 
 
 if __name__ == "__main__":
