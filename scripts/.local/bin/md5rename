@@ -31,7 +31,10 @@ if __name__ == "__main__":
         "files", nargs="*", metavar="FILE", help="input file(s)"
     )
     parser.add_argument(
-        "-d", "--dry-run", action="store_true", help="do not actually rename files",
+        "-d",
+        "--dry-run",
+        action="store_true",
+        help="do not actually rename files",
     )
     parser.add_argument(
         "-q", "--quiet", action="store_true", help="do not print output"
@@ -45,14 +48,17 @@ if __name__ == "__main__":
     bad = False
     for file in files:
         if not file.exists():
-            print(f"file not found: '{file}'")
+            print(f"file not found: '{file}'", file=sys.stderr)
             bad = True
+            continue
         if not file.is_file():
-            print(f"not a file: '{file}'")
+            print(f"not a file: '{file}'", file=sys.stderr)
             bad = True
+            continue
         if not os.access(file, os.R_OK):
-            print(f"file not readable: '{file}'")
+            print(f"file not readable: '{file}'", file=sys.stderr)
             bad = True
+            continue
     if bad:
         exit(1)
 
