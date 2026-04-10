@@ -1,50 +1,97 @@
-#!/bin/bash
-set -uo pipefail
+#!/usr/bin/env python
+import sys
+from argparse import ArgumentParser
+from shutil import which
+from subprocess import *
 
-for arg in "$@"; do
-    [[ "$arg" == '-h' || "$arg" == '--help' ]] && cat << EOF >&2 && exit
-Usage: clone-last REPOSITORY [OUT_DIR]
-Try to find the most recent tag of a git repository. Prompt the user
-to perform a shallow clone of the selected tag or use fzf to select
-some other tag.
-EOF
-done
 
-get_tags() {
-    git -c 'versionsort.suffix=-' \
-        ls-remote --tags --refs --sort='v:refname' "$1" \
-        | cut -d'/' -f3
-}
+def get_tags(url):
+    out = (
+        check_output(
+            [
+                which("git"),
+                "-c",
+                "versionsort.suffix=-",
+                "ls-remote",
+                "--tags",
+                "--refs",
+                "--sort=v:refname",
+                url,
+            ]
+        )
+        .decode("utf8")
+        .rstrip()
+    )
+    if not out:
+        return []
+    tags = [x.split("/")[-1] for x in out.split("\n")]
+    return tags
 
-repo=${1:-}
-if [ -z "$repo" ]; then
-    echo 'No repository given.' >&2
-    exit 1
-fi
 
-tags="$(get_tags "$repo")"
-if [ -z "$tags" ]; then
-    echo "Could not find any tags for '$repo'" >&2
-    exit 1
-fi
+def clone_tag(url, tag, dest=None):
+    args = [which("git"), "clone", "--branch", tag, "--depth", "1", url]
+    if dest is not None:
+        args.append(dest)
+    check_call(args)
 
-tag="$(echo "$tags" | tail -n 1)"
-read -rp "Using tag '$tag'. Proceed? (y/n/q): " inp
-case "$inp" in
-    [Yy]* ) ;;
-    [Qq]* )
-        tag="$(echo "$tags" | fzf --tac --header='Select a tag:')"
-        if [ -z "$tag" ]; then
-            echo 'No tag selected.' >&2
-            exit 1
-        fi ;;
-    * ) exit 0;;
-esac
-echo "Continuing with tag '$tag'."
 
-out_dir=${2:-}
-if [ -n "$out_dir" ]; then
-    git clone --branch "$tag" --depth 1 "$repo" "$out_dir"
-else
-    git clone --branch "$tag" --depth 1 "$repo"
-fi
+def fzf(choices):
+    out = run(
+        [which("fzf"), "--tac"],
+        check=True,
+        capture_output=True,
+        input="\n".join(choices).encode("utf8"),
+    )
+    return out.stdout.decode("utf8").rstrip()
+
+
+if __name__ == "__main__":
+    parser = ArgumentParser(
+        "clone-last",
+        description="""Try to find the most recent tag of a Git repository.
+        Prompt the user to perform a shallow clone of the detected tag or use
+        fzf to select some other tag.""",
+    )
+    parser.add_argument("url", metavar="URL", help="Git repository")
+    parser.add_argument(
+        "dest", nargs="?", metavar="DEST", help="destination folder"
+    )
+    args = parser.parse_args()
+
+    bad = False
+    for dep in ["fzf", "git"]:
+        if not which(dep):
+            print(f"Required executable not found: '{dep}'")
+            bad = True
+    if bad:
+        exit(1)
+
+    try:
+        tags = get_tags(args.url)
+        if not tags:
+            print(f"Could not find any tags for '{args.url}'")
+            exit(1)
+        tag = tags[-1]
+
+        print(f"Found tag '{tag}'")
+        while True:
+            choice = input("Proceed? (y/n/q): ")
+            match choice.lower():
+                case "y":
+                    break
+                case "n":
+                    exit(0)
+                case "q":
+                    try:
+                        tag = fzf(tags)
+                    except CalledProcessError as err:
+                        print("No tag selected")
+                        exit(1)
+                    break
+
+        print(f"Continuing with tag '{tag}'")
+        clone_tag(args.url, tag, args.dest)
+
+    except CalledProcessError as err:
+        print(err, file=sys.stderr)
+        exit(1)
