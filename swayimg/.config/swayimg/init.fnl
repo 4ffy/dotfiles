@@ -83,7 +83,8 @@
   (mode.set_window_background 0xff000000)
   ;; Bindings
   (mode.bind_reset)
-  (local bindings {:Down #(mode.set_abs_scale (- (mode.get_scale) 0.1))
+  (local bindings {:Down #(let [scale (mode.get_scale)]
+                            (mode.set_abs_scale (- scale (* 0.1 scale))))
                    :End #(mode.switch_image :last)
                    :Escape swayimg.exit
                    :Home #(mode.switch_image :first)
@@ -91,7 +92,8 @@
                    :Right #(mode.switch_image :next)
                    :Shift+x #(mode.set_fix_scale :fill)
                    :Shift+z #(mode.set_fix_scale :fit)
-                   :Up #(mode.set_abs_scale (+ 0.1 (mode.get_scale)))
+                   :Up #(let [scale (mode.get_scale)]
+                          (mode.set_abs_scale (+ scale (* 0.1 scale))))
                    :a antialiasing.toggle
                    :f swayimg.toggle_fullscreen
                    :i #(if (text.visible) (text.hide) (text.show))
