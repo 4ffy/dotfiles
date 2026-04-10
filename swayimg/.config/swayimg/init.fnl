@@ -18,7 +18,7 @@
 (fn make-order-handler []
   "Image sort order closure."
   (var order :none)
-  (var orders [:none :alpha :mtime :random])
+  (var orders [:alpha :mtime :random])
   (var orders-idx (collect [k v (pairs orders)] (values v k)))
 
   (fn set-order [new-order]
@@ -37,7 +37,7 @@
   {:order #order : set-order : next-order})
 
 (local order (make-order-handler))
-(order.set-order :none)
+(order.set-order :alpha)
 ;;; I want to be able to set the order on the command line via --execute, and
 ;;; exporting order globally seems to be the only way to do this.
 (set _G.order order)
