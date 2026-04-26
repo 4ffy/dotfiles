@@ -73,6 +73,13 @@
 
 (local timeout (make-timeout-handler))
 
+(fn trash-image [image]
+  (imagelist.remove image.path)
+  (let [status (os.execute (.. "trash -- " image.path))]
+    (if (= 0 status)
+        (text.set_status (.. "Trashed '" image.path "'"))
+        (text.set_status (.. "Could not trash '" image.path "'")))))
+
 ;;; Common settings for both viewer and slideshow (inherits from viewer) mode.
 
 (fn viewer-mode-setup [mode]
@@ -90,6 +97,7 @@
                    :Home #(mode.switch_image :first)
                    :Left #(mode.switch_image :prev)
                    :Right #(mode.switch_image :next)
+                   :Shift+Delete #(trash-image (mode.get_image))
                    :Shift+x #(mode.set_fix_scale :fill)
                    :Shift+z #(mode.set_fix_scale :fit)
                    :Up #(let [scale (mode.get_scale)]
@@ -114,8 +122,10 @@
 (viewer-mode-setup slideshow)
 (slideshow.set_window_background :extend)
 (timeout.set-timeout 5)
-(let [extra-bindings {:Shift+Left #(timeout.set-timeout (- (timeout.current-timeout) 1))
-                      :Shift+Right #(timeout.set-timeout (+ 1 (timeout.current-timeout)))
+(let [extra-bindings {:Shift+Left #(timeout.set-timeout (- (timeout.current-timeout)
+                                                           1))
+                      :Shift+Right #(timeout.set-timeout (+ 1
+                                                            (timeout.current-timeout)))
                       :Shift+s #(swayimg.set_mode :viewer)}]
   (each [key event (pairs extra-bindings)]
     (slideshow.on_key key event)))
