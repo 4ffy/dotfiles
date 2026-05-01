@@ -82,7 +82,7 @@
 
 (fn viewer-mode-setup [mode]
   ;; Settings
-  (mode.on_image_change mode.animation_resume)
+  (mode.on_image_change #(mode.set_animation true))
   (mode.set_default_scale :fit)
   (mode.set_image_background 0xff000000)
   (mode.set_window_background 0xff000000)
