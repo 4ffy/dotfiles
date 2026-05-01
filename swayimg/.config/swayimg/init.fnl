@@ -74,11 +74,9 @@
 (local timeout (make-timeout-handler))
 
 (fn trash-image [image]
-  (imagelist.remove image.path)
-  (let [status (os.execute (.. "trash -- " image.path))]
-    (if (= 0 status)
-        (text.set_status (.. "Trashed '" image.path "'"))
-        (text.set_status (.. "Could not trash '" image.path "'")))))
+  (if (= 0 (os.execute (.. "trash -- " image.path)))
+      (text.set_status (.. "Trashed '" image.path "'"))
+      (text.set_status (.. "Could not trash '" image.path "'"))))
 
 ;;; Common settings for both viewer and slideshow (inherits from viewer) mode.
 
