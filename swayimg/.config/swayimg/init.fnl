@@ -73,8 +73,15 @@
 
 (local timeout (make-timeout-handler))
 
+(fn escape-quote [path]
+  "Escape a single quote in a single-quoted string according to Bash rules. This
+requires terminating the string, inserting a literal single quote, then starting
+a new string."
+  (string.gsub path "'" "'\\''"))
+
 (fn trash-image [image]
-  (if (= 0 (os.execute (.. "trash -- " image.path)))
+  "Move an image to the system trash via trash-cli."
+  (if (= 0 (os.execute (.. "trash -- '" (escape-quote image.path) "'")))
       (text.set_status (.. "Trashed '" image.path "'"))
       (text.set_status (.. "Could not trash '" image.path "'"))))
 
