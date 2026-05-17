@@ -88,6 +88,12 @@ a new string."
       (text.set_status (.. "Trashed '" image.path "'"))
       (text.set_status (.. "Could not trash '" image.path "'"))))
 
+(fn zoom [scalar]
+  "Zoom by scalar relative to the current scale. >1 zooms in, <1 zooms out."
+  (let [mode (. swayimg (swayimg.get_mode))
+        scale (mode.get_scale)]
+    (mode.set_abs_scale (* scale scalar))))
+
 ;;; Common settings for both viewer and slideshow (inherits from viewer) mode.
 
 (fn viewer-mode-setup [mode]
@@ -98,8 +104,9 @@ a new string."
   (mode.set_window_background 0xff000000)
   ;; Bindings
   (mode.bind_reset)
-  (let [key-bindings {:Down #(let [scale (mode.get_scale)]
-                               (mode.set_abs_scale (- scale (* 0.1 scale))))
+  (let [zoom-in-scalar 1.1
+        zoom-out-scalar (/ 1 zoom-in-scalar)
+        key-bindings {:Down #(zoom zoom-out-scalar)
                       :End #(mode.switch_image :last)
                       :Escape swayimg.exit
                       :Home #(mode.switch_image :first)
@@ -108,8 +115,7 @@ a new string."
                       :Shift+Delete #(trash-image (mode.get_image))
                       :Shift+x #(mode.set_fix_scale :fill)
                       :Shift+z #(mode.set_fix_scale :fit)
-                      :Up #(let [scale (mode.get_scale)]
-                             (mode.set_abs_scale (+ scale (* 0.1 scale))))
+                      :Up #(zoom zoom-in-scalar)
                       :a antialiasing.toggle
                       :f swayimg.toggle_fullscreen
                       :i #(if (text.visible) (text.hide) (text.show))
