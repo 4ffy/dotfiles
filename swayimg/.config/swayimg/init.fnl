@@ -15,6 +15,9 @@
 
 ;;; Functions
 
+(fn noop []
+  "Do nothing.")
+
 (fn make-order-handler []
   "Image sort order closure."
   (var order :none)
@@ -95,25 +98,28 @@ a new string."
   (mode.set_window_background 0xff000000)
   ;; Bindings
   (mode.bind_reset)
-  (local bindings {:Down #(let [scale (mode.get_scale)]
-                            (mode.set_abs_scale (- scale (* 0.1 scale))))
-                   :End #(mode.switch_image :last)
-                   :Escape swayimg.exit
-                   :Home #(mode.switch_image :first)
-                   :Left #(mode.switch_image :prev)
-                   :Right #(mode.switch_image :next)
-                   :Shift+Delete #(trash-image (mode.get_image))
-                   :Shift+x #(mode.set_fix_scale :fill)
-                   :Shift+z #(mode.set_fix_scale :fit)
-                   :Up #(let [scale (mode.get_scale)]
-                          (mode.set_abs_scale (+ scale (* 0.1 scale))))
-                   :a antialiasing.toggle
-                   :f swayimg.toggle_fullscreen
-                   :i #(if (text.visible) (text.hide) (text.show))
-                   :s order.next-order
-                   :z #(mode.switch_image :random)})
-  (each [key event (pairs bindings)]
-    (mode.on_key key event)))
+  (let [key-bindings {:Down #(let [scale (mode.get_scale)]
+                               (mode.set_abs_scale (- scale (* 0.1 scale))))
+                      :End #(mode.switch_image :last)
+                      :Escape swayimg.exit
+                      :Home #(mode.switch_image :first)
+                      :Left #(mode.switch_image :prev)
+                      :Right #(mode.switch_image :next)
+                      :Shift+Delete #(trash-image (mode.get_image))
+                      :Shift+x #(mode.set_fix_scale :fill)
+                      :Shift+z #(mode.set_fix_scale :fit)
+                      :Up #(let [scale (mode.get_scale)]
+                             (mode.set_abs_scale (+ scale (* 0.1 scale))))
+                      :a antialiasing.toggle
+                      :f swayimg.toggle_fullscreen
+                      :i #(if (text.visible) (text.hide) (text.show))
+                      :s order.next-order
+                      :z #(mode.switch_image :random)}
+        mouse-bindings {:MouseLeft noop}]
+    (each [event func (pairs key-bindings)]
+      (mode.on_key event func))
+    (each [event func (pairs mouse-bindings)]
+      (mode.on_mouse event func))))
 
 ;;; Viewer settings
 
