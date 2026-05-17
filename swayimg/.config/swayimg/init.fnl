@@ -121,7 +121,9 @@ a new string."
                       :i #(if (text.visible) (text.hide) (text.show))
                       :s order.next-order
                       :z #(mode.switch_image :random)}
-        mouse-bindings {:MouseLeft noop}]
+        mouse-bindings {:MouseLeft noop
+                        :ScrollDown #(zoom zoom-out-scalar)
+                        :ScrollUp #(zoom zoom-in-scalar)}]
     (each [event func (pairs key-bindings)]
       (mode.on_key event func))
     (each [event func (pairs mouse-bindings)]
