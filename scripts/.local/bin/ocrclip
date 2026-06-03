@@ -1,0 +1,112 @@
+#!/usr/bin/env python
+import os
+import pyperclip as clip
+import re
+import sys
+from argparse import ArgumentParser
+from shutil import which
+from subprocess import *
+
+DEPS = ["grim", "slurp", "tesseract"]
+
+
+def get_langs():
+    """Get available languages for tesseract."""
+    out = (
+        check_output([which("tesseract"), "--list-langs"])
+        .rstrip()
+        .decode("utf8")
+    )
+    return out.split("\n")[1:]
+
+
+def ocr(lang):
+    """Use grim, slurp, and tesseract to ocr a region of the screen."""
+
+    region = check_output([which("slurp")]).rstrip()
+
+    grim_args = [which("grim"), "-g", region, "-"]
+    grim = Popen(grim_args, stdout=PIPE, stderr=PIPE)
+
+    tesseract_args = [which("tesseract"), "-", "-", "-l", lang]
+    tesseract = Popen(
+        tesseract_args, stdin=grim.stdout, stdout=PIPE, stderr=PIPE
+    )
+
+    grim.stdout.close()
+
+    out, err = grim.communicate()
+    if grim.returncode != 0:
+        raise CalledProcessError(grim.returncode, grim_args, stderr=err)
+
+    out, err = tesseract.communicate()
+    if tesseract.returncode != 0:
+        raise CalledProcessError(
+            tesseract.returncode, tesseract_args, stderr=err
+        )
+
+    result = out.decode("utf8")
+    return result
+
+
+if __name__ == "__main__":
+    parser = ArgumentParser(
+        "ocrclip", description="OCR text and copy it to the clipboard."
+    )
+    parser.add_argument(
+        "-l",
+        "--lang",
+        metavar="LANG",
+        default="eng",
+        help="OCR language as recognized by tesseract (default: eng)",
+    )
+    parser.add_argument(
+        "-s",
+        "--strip",
+        choices=("spaces", "all"),
+        help="strip whitespace from output",
+    )
+    args = parser.parse_args()
+
+    bad = False
+    for dep in DEPS:
+        if which(dep) is None:
+            print(
+                f"could not find required executable '{dep}'", file=sys.stderr
+            )
+            bad = True
+    if bad:
+        exit(1)
+
+    langs = get_langs()
+    if args.lang not in langs:
+        print(
+            f"could not find OCR data for language '{args.lang}'",
+            f"available languages: {langs}",
+            sep="\n",
+            file=sys.stderr,
+        )
+        exit(1)
+
+    try:
+        text = ocr(args.lang)
+    except CalledProcessError as err:
+        if err.stderr:
+            print(err.stderr.decode("utf8"), file=sys.stderr)
+        print(err, file=sys.stderr)
+        exit(1)
+
+    if not text:
+        exit(0)
+
+    match args.strip:
+        case "all":
+            text = re.sub(r"\s", "", text)
+        case "spaces":
+            # Uhh...
+            text = "\n".join([re.sub(r"\s", "", x) for x in text.split("\n")])
+        case None:
+            pass
+
+    print(text)
+    clip.copy(text)
