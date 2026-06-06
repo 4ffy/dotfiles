@@ -1,0 +1,417 @@
+#!/usr/bin/env python
+import gzip
+import os
+import sys
+from argparse import ArgumentParser
+from collections.abc import Callable
+from concurrent.futures import ThreadPoolExecutor as Executor, as_completed
+from dataclasses import dataclass
+from shutil import which as _which
+from subprocess import *
+
+
+# Classes
+
+type FilterFunc = Callable[[str], bool]
+type ConvertFunc = Callable[[str], None]
+
+
+@dataclass
+class Conversion:
+    """
+    old_ext  extension of input type (including period)
+    new_ext  extension of output type (including period)
+    is_type  function to determine if a file is of the input type
+    convert  function that takes a file of the input type and produces a file of
+             the output type with the same base name and new extension.
+    deps     required external programs
+    """
+
+    old_ext: str
+    new_ext: str
+    is_type: FilterFunc
+    convert: ConvertFunc
+    deps: list[str]
+
+
+@dataclass
+class Args:
+    """
+    method      type of conversion to perform
+    mode        "directory" or "file" mode
+    files       input directory OR list of input files
+    jobs        number of jobs to run in parallel
+    delete      delete input file after successful conversion
+    dry_run     do not actually convert or remove any files
+    keep_going  continue converting other input files upon conversion error
+    recursive   recursively scan input directory
+    sequential  convert files sequentially instead of in parallel
+    """
+
+    method: Conversion
+    mode: str
+    files: list[str]
+    jobs: int
+    delete: bool
+    dry_run: bool
+    keep_going: bool
+    recursive: bool
+    sequential: bool
+
+
+# Conversion methods
+
+
+def which(executable: str) -> str:
+    res = _which(executable)
+    if res is None:
+        raise RuntimeError(f"Executable '{executable}' not found")
+    return res
+
+
+def dummy(file: str) -> None:
+    """Fake conversion for --dry-run."""
+    pass
+
+
+def is_bmp(file: str) -> bool:
+    with open(file, "rb") as f:
+        return f.read(2) == b"BM"
+
+
+def bmp2png(file: str) -> None:
+    out = os.path.splitext(file)[0] + ".png"
+    run([which("magick"), file, out], capture_output=True, check=True)
+
+
+BMP2PNG = Conversion(".bmp", ".png", is_bmp, bmp2png, ["magick"])
+
+
+def is_flac(file: str) -> bool:
+    with open(file, "rb") as f:
+        return f.read(4) == b"fLaC"
+
+
+def flac2mp3(file: str) -> bool:
+    out = os.path.splitext(file)[0] + ".mp3"
+
+    flac_args = [which("flac"), "--decode", "--stdout", "--silent", file]
+    flac = Popen(flac_args, stdout=PIPE, stderr=PIPE)
+
+    lame_args = [which("lame"), "--silent", "-b320k", "-", out]
+    lame = Popen(lame_args, stdin=flac.stdout, stdout=PIPE, stderr=PIPE)
+
+    assert flac.stdout  # Make mypy happy
+    flac.stdout.close()
+
+    _, err = flac.communicate()
+    if flac.returncode != 0:
+        raise CalledProcessError(flac.returncode, flac_args, stderr=err)
+
+    _, err = lame.communicate()
+    if lame.returncode != 0:
+        raise ClalledProcessError(lame.returncode, lame_args, stderr=err)
+
+
+FLAC2MP3 = Conversion(".flac", ".mp3", is_flac, flac2mp3, ["flac", "lame"])
+
+
+def is_mid(file: str) -> bool:
+    with open(file, "rb") as f:
+        return f.read(4) == b"MThd"
+
+
+def mid2mp3(file: str) -> None:
+    out = os.path.splitext(file)[0] + ".mp3"
+
+    fluidsynth_args = [which("fluidsynth"), "-q", "-T", "raw", "-F", "-", file]
+    fluidsynth = Popen(fluidsynth_args, stdout=PIPE, stderr=PIPE)
+
+    lame_args = [which("lame"), "--silent", "-r", "-V0", "-", out]
+    lame = Popen(lame_args, stdin=fluidsynth.stdout, stdout=PIPE, stderr=PIPE)
+
+    assert fluidsynth.stdout  # Make mypy happy
+    fluidsynth.stdout.close()
+
+    _, err = fluidsynth.communicate()
+    if fluidsynth.returncode != 0:
+        raise CalledProcessError(
+            fluidsynth.returncode, fluidsynth_args, stderr=err
+        )
+
+    _, err = lame.communicate()
+    if lame.returncode != 0:
+        raise CalledProcessError(lame.returncode, lame_args, stderr=err)
+
+
+MID2MP3 = Conversion(".mid", ".mp3", is_mid, mid2mp3, ["fluidsynth", "lame"])
+
+
+def is_vgz(file: str) -> bool:
+    try:
+        with gzip.open(file) as f:
+            return f.read(4) == b"Vgm "
+    except gzip.BadGzipFile:
+        return False
+
+
+def vgz2mp3(file: str) -> None:
+    out = os.path.splitext(file)[0] + ".mp3"
+
+    lame_args = [which("lame"), "-V0", "-", out]
+    lame = Popen(
+        lame_args,
+        stdin=PIPE,
+        stdout=DEVNULL,
+        stderr=PIPE,
+    )
+
+    assert lame.stdin  # make mypy happy
+    fd = lame.stdin.fileno()
+
+    vgm2wav_args = [which("vgm2wav"), file, f"/dev/fd/{fd}"]
+    vgm2wav = Popen(
+        vgm2wav_args,
+        pass_fds=[fd],
+        stdout=DEVNULL,
+        stderr=PIPE,
+    )
+
+    _, err = lame.communicate()
+    if lame.returncode != 0:
+        raise CalledProcessError(lame.returncode, lame_args, stderr=err)
+    _, err = vgm2wav.communicate()
+
+    if vgm2wav.returncode != 0:
+        raise CalledProcessError(vgm2wav.returncode, vgm2wav_args, stderr=err)
+
+
+VGZ2MP3 = Conversion(".vgz", ".mp3", is_vgz, vgz2mp3, ["lame", "vgm2wav"])
+
+
+def is_wav(file: str) -> bool:
+    """Determine whether a file is a WAV file based on its header."""
+    with open(file, "rb") as f:
+        return f.read(4) == b"RIFF"
+
+
+def wav2ogg(wav: str) -> None:
+    """Run oggenc on a WAV file."""
+    run(
+        [which("oggenc"), "--quiet", "--quality", "5", wav],
+        capture_output=True,
+        check=True,
+    )
+
+
+WAV2OGG = Conversion(".wav", ".ogg", is_wav, wav2ogg, ["oggenc"])
+
+
+# Functions
+
+
+def find_files(root: str, method: Conversion) -> list[str]:
+    """Find files that match conversion method in root."""
+    res = []
+    for file in [os.path.join(root, x) for x in os.listdir(root)]:
+        if file.lower().endswith(method.old_ext) and method.is_type(file):
+            res.append(file)
+    return res
+
+
+def find_files_recursive(root: str, method: Conversion) -> list[str]:
+    """Recursively find files that match conversion method starting at root."""
+    res = []
+    for path, subdirs, files in os.walk(root):
+        for file in [os.path.join(path, x) for x in files]:
+            if file.lower().endswith(method.old_ext) and method.is_type(file):
+                res.append(file)
+    return res
+
+
+def check_file(file: str, method: Conversion) -> None:
+    """Throw if the given file does not match conversion method."""
+    if not os.path.exists(file):
+        raise RuntimeError(f"File not found: '{file}'")
+    elif not os.path.isfile(file):
+        raise RuntimeError(f"Not a file: '{file}'")
+    elif not file.lower().endswith(method.old_ext) or not method.is_type(file):
+        raise RuntimeError(f"Not a valid '{method.old_ext}' file: '{file}'")
+
+
+def convert(file: str, args: Args) -> None:
+    args.method.convert(file)
+    newname = os.path.splitext(file)[0] + args.method.new_ext
+    if args.delete and not args.dry_run and os.path.exists(newname):
+        os.remove(file)
+
+
+def argparse_positive_int(s: str) -> int:
+    i = int(s)
+    if i < 1:
+        raise ValueError
+    return i
+
+
+def parse_args() -> Args:
+    parser = ArgumentParser(
+        "conv",
+        description="Convert various file types.",
+        epilog="Supported conversions: bmp2png, flac2mp3, vgz2mp3, wav2ogg",
+    )
+    parser.register("type", "positive integer", argparse_positive_int)
+    parser.add_argument(
+        "method", metavar="METHOD", help="type of conversion to perform"
+    )
+    parser.add_argument(
+        "files",
+        metavar="FILE",
+        nargs="*",
+        help="input directory OR list of input files",
+    )
+    parser.add_argument(
+        "-d",
+        "--delete",
+        action="store_true",
+        help="delete input file after successful conversion",
+    )
+    parser.add_argument(
+        "-D",
+        "--dry-run",
+        action="store_true",
+        help="do not actually convert or remove any files",
+    )
+    parser.add_argument(
+        "-j",
+        "--jobs",
+        metavar="N",
+        type="positive integer",
+        default=os.cpu_count(),
+        help="limit parallel jobs (default: nproc)",
+    )
+    parser.add_argument(
+        "-k",
+        "--keep-going",
+        action="store_true",
+        help="continue converting other input files upon conversion error",
+    )
+    parser.add_argument(
+        "-r",
+        "--recursive",
+        action="store_true",
+        help="recursively scan input directory (directory target only)",
+    )
+    parser.add_argument(
+        "-s",
+        "--sequential",
+        action="store_true",
+        help="convert files sequentially instead of in parallel",
+    )
+    args = parser.parse_args()
+
+    args.files = [os.path.abspath(x) for x in args.files]
+
+    mode = (
+        "directory"
+        if len(args.files) == 1 and os.path.isdir(args.files[0])
+        else "file"
+    )
+
+    match args.method:
+        case "bmp2png":
+            method = BMP2PNG
+        case "flac2mp3":
+            method = FLAC2MP3
+        case "mid2mp3":
+            method = MID2MP3
+        case "vgz2mp3":
+            method = VGZ2MP3
+        case "wav2ogg":
+            method = WAV2OGG
+        case _:
+            print(f"Unsupported method: '{args.method}'", file=sys.stderr)
+            exit(1)
+
+    return Args(
+        method,
+        mode,
+        args.files,
+        args.jobs,
+        args.delete,
+        args.dry_run,
+        args.keep_going,
+        args.recursive,
+        args.sequential,
+    )
+
+
+if __name__ == "__main__":
+    args = parse_args()
+
+    bad = False
+    for dep in args.method.deps:
+        if not _which(dep):
+            print(f"Required executable not found: '{dep}'", file=sys.stderr)
+            bad = True
+    if bad:
+        exit(1)
+
+    # If we're in directory mode, we need to scan for the appropriate files. The
+    # root directory exists by construction in parse_args. If we're in file
+    # mode, we need to check that each input file is valid.
+    files = args.files
+    if args.mode == "directory":
+        if args.recursive:
+            files = find_files_recursive(files[0], args.method)
+        else:
+            files = find_files_recursive(files[0], args.method)
+    else:
+        bad = False
+        for file in files:
+            try:
+                check_file(file, args.method)
+            except RuntimeError as err:
+                print(err, file=sys.stderr)
+                bad = True
+        if bad:
+            exit(1)
+    print(f"{len(files)} files found")
+
+    if args.dry_run:
+        args.method.convert = dummy
+
+    if args.sequential:
+        done = 0
+        for file in files:
+            try:
+                convert(file, args)
+                done += 1
+                print(f"{done} / {len(files)}", end="\r")
+
+            except CalledProcessError as err:
+                if err.stderr:
+                    print(err.stderr.decode("utf8"), file=sys.stderr)
+                print(err, file=sys.stderr)
+                if not args.keep_going:
+                    exit(1)
+    else:
+        with Executor(args.jobs) as p:
+            done = 0
+            futures = []
+
+            for file in files:
+                futures.append(p.submit(convert, file, args))
+
+            for future in as_completed(futures):
+                try:
+                    future.result()
+                    done += 1
+                    print(f"{done} / {len(files)}", end="\r")
+
+                except CalledProcessError as err:
+                    if err.stderr:
+                        print(err.stderr.decode("utf8"), file=sys.stderr)
+                    print(err)
+                    if not args.keep_going:
+                        exit(1)
+    print()
