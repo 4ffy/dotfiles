@@ -108,5 +108,8 @@ if __name__ == "__main__":
         case None:
             pass
 
-    print(text)
-    clip.copy(text)
+    if text:
+        print(text)
+        clip.copy(text)
+    else:
+        clip.copy("")
