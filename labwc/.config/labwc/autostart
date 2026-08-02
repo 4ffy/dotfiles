@@ -37,3 +37,7 @@ swaybg -i /usr/share/backgrounds/wallpaper.jpg -m stretch &
 is_laptop || wait_start discord --start-minimized &
 is_laptop || wait_start steam -silent &
 { mpc clear && mpc load main && mpc shuffle; } &
+
+if command -v ibus >/dev/null 2>&1; then
+    ibus start
+fi
