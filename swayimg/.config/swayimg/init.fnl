@@ -11,6 +11,8 @@
 ;;; General settings
 
 (swayimg.on_window_resize #((. (. swayimg swayimg.mode) :reset)))
+(set imagelist.order :alpha)
+(set swayimg.antialiasing true)
 (set text.visible false)
 
 ;;; Functions
@@ -20,61 +22,30 @@
 
 (fn make-order-handler []
   "Image sort order closure."
-  (var order :none)
   (var orders [:alpha :mtime :random])
   (var orders-idx (collect [k v (pairs orders)] (values v k)))
 
   (fn set-order [new-order]
     (when (not (. orders-idx new-order))
       (error "Invalid order."))
-    (set order new-order)
-    (set imagelist.order order)
-    (if (= order :mtime)
+    (set imagelist.order new-order)
+    (if (= imagelist.order :mtime)
         (set imagelist.reverse true)
         (set imagelist.reverse false))
-    (set text.status (.. "Sort: " order)))
+    (set text.status (.. "Sort: " imagelist.order)))
 
   (fn next-order []
-    (set-order (. orders (+ 1 (% (. orders-idx order) (length orders))))))
+    (set-order (. orders
+                  (+ 1 (% (. orders-idx imagelist.order) (length orders))))))
 
-  {:order #order : set-order : next-order})
+  {: set-order : next-order})
 
 (local order (make-order-handler))
-(order.set-order :alpha)
-;;; I want to be able to set the order on the command line via --execute, and
-;;; exporting order globally seems to be the only way to do this.
-(set _G.order order)
 
-(fn make-antialiasing-handler []
-  "Antialiasing toggle closure."
-  (var enabled? true)
-
-  (fn set-enabled [status]
-    (set enabled? status)
-    (set swayimg.antialiasing enabled?)
-    (set text.status (.. "Antialiasing: " (tostring enabled?))))
-
-  {:enabled? #enabled?
-   :enable #(set-enabled true)
-   :disable #(set-enabled false)
-   :toggle #(set-enabled (not enabled?))})
-
-(local antialiasing (make-antialiasing-handler))
-(antialiasing.enable)
-
-(fn make-timeout-handler []
-  "Slideshow timeout closure."
-  (var timeout 1)
-
-  (fn set-timeout [time]
-    "Set slideshow timeout."
-    (set timeout (if (> time 1) time 1))
-    (set slideshow.timeout time)
-    (set text.status (.. "Timeout: " timeout)))
-
-  {: set-timeout :current-timeout #timeout})
-
-(local timeout (make-timeout-handler))
+(fn set-timeout [time]
+  "Set slideshow timeout. Clamp values <1 to 1. Print a status message."
+  (set slideshow.timeout (if (> time 1) time 1))
+  (set text.status (.. "Timeout: " slideshow.timeout)))
 
 (fn escape-quote [path]
   "Escape a single quote in a single-quoted string according to Bash rules. This
@@ -139,11 +110,9 @@ a new string."
 
 (viewer-mode-setup slideshow)
 (slideshow.set_window_background :extend)
-(timeout.set-timeout 5)
-(let [extra-bindings {:Shift+Left #(timeout.set-timeout (- (timeout.current-timeout)
-                                                           1))
-                      :Shift+Right #(timeout.set-timeout (+ 1
-                                                            (timeout.current-timeout)))
+(set slideshow.timeout 5)
+(let [extra-bindings {:Shift+Left #(set-timeout (- slideshow.timeout 1))
+                      :Shift+Right #(set-timeout (+ slideshow.timeout 1))
                       :Shift+s #(set swayimg.mode :viewer)}]
   (each [key event (pairs extra-bindings)]
     (slideshow.on_key key event)))
