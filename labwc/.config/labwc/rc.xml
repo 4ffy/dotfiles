@@ -24,7 +24,7 @@
     <font place="OSD" name="Cantarell" size="12"/>
   </theme>
 
-  <keyboard>
+  <keyboard numlock="yes">
     <!-- Keybinds for controlling labwc -->
     <keybind key="W-S-r">
       <action name="Reconfigure"/>
