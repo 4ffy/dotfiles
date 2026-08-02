@@ -10,8 +10,8 @@
 
 ;;; General settings
 
-(swayimg.on_window_resize #((. (. swayimg (swayimg.get_mode)) :reset)))
-(text.hide)
+(swayimg.on_window_resize #((. (. swayimg swayimg.mode) :reset)))
+(set text.visible false)
 
 ;;; Functions
 
@@ -28,11 +28,11 @@
     (when (not (. orders-idx new-order))
       (error "Invalid order."))
     (set order new-order)
-    (imagelist.set_order order)
+    (set imagelist.order order)
     (if (= order :mtime)
-        (imagelist.enable_reverse true)
-        (imagelist.enable_reverse false))
-    (text.set_status (.. "Sort: " order)))
+        (set imagelist.reverse true)
+        (set imagelist.reverse false))
+    (set text.status (.. "Sort: " order)))
 
   (fn next-order []
     (set-order (. orders (+ 1 (% (. orders-idx order) (length orders))))))
@@ -51,8 +51,8 @@
 
   (fn set-enabled [status]
     (set enabled? status)
-    (swayimg.enable_antialiasing enabled?)
-    (text.set_status (.. "Antialiasing: " (tostring enabled?))))
+    (set swayimg.antialiasing enabled?)
+    (set text.status (.. "Antialiasing: " (tostring enabled?))))
 
   {:enabled? #enabled?
    :enable #(set-enabled true)
@@ -69,8 +69,8 @@
   (fn set-timeout [time]
     "Set slideshow timeout."
     (set timeout (if (> time 1) time 1))
-    (slideshow.set_timeout time)
-    (text.set_status (.. "Timeout: " timeout)))
+    (set slideshow.timeout time)
+    (set text.status (.. "Timeout: " timeout)))
 
   {: set-timeout :current-timeout #timeout})
 
@@ -85,21 +85,20 @@ a new string."
 (fn trash-image [image]
   "Move an image to the system trash via trash-cli."
   (if (= 0 (os.execute (.. "trash -- '" (escape-quote image.path) "'")))
-      (text.set_status (.. "Trashed '" image.path "'"))
-      (text.set_status (.. "Could not trash '" image.path "'"))))
+      (set text.status (.. "Trashed '" image.path "'"))
+      (set text.status (.. "Could not trash '" image.path "'"))))
 
 (fn zoom [scalar]
   "Zoom by scalar relative to the current scale. >1 zooms in, <1 zooms out."
-  (let [mode (. swayimg (swayimg.get_mode))
-        scale (mode.get_scale)]
-    (mode.set_abs_scale (* scale scalar))))
+  (let [mode (. swayimg swayimg.mode)]
+    (mode.set_abs_scale (* mode.scale scalar))))
 
 ;;; Common settings for both viewer and slideshow (inherits from viewer) mode.
 
 (fn viewer-mode-setup [mode]
   ;; Settings
-  (mode.on_image_change #(mode.set_animation true))
-  (mode.set_default_scale :fit)
+  (mode.on_image_change #(set mode.animation true))
+  (set mode.default_scale :fit)
   (mode.set_image_background 0xff000000)
   (mode.set_window_background 0xff000000)
   ;; Bindings
@@ -107,20 +106,20 @@ a new string."
   (let [zoom-in-scalar 1.1
         zoom-out-scalar (/ 1 zoom-in-scalar)
         key-bindings {:Down #(zoom zoom-out-scalar)
-                      :End #(mode.switch_image :last)
+                      :End #(mode.open :last)
                       :Escape swayimg.exit
-                      :Home #(mode.switch_image :first)
-                      :Left #(mode.switch_image :prev)
-                      :Right #(mode.switch_image :next)
+                      :Home #(mode.open :first)
+                      :Left #(mode.open :prev)
+                      :Right #(mode.open :next)
                       :Shift+Delete #(trash-image (mode.get_image))
                       :Shift+x #(mode.set_fix_scale :fill)
                       :Shift+z #(mode.set_fix_scale :fit)
                       :Up #(zoom zoom-in-scalar)
-                      :a antialiasing.toggle
-                      :f swayimg.toggle_fullscreen
-                      :i #(if (text.visible) (text.hide) (text.show))
+                      :a #(set swayimg.antialiasing (not swayimg.antialiasing))
+                      :f #(set swayimg.fullscreen (not swayimg.fullscreen))
+                      :i #(set text.visible (not text.visible))
                       :s order.next-order
-                      :z #(mode.switch_image :random)}
+                      :z #(mode.open :random)}
         mouse-bindings {:MouseLeft noop
                         :ScrollDown #(zoom zoom-out-scalar)
                         :ScrollUp #(zoom zoom-in-scalar)}]
@@ -132,7 +131,7 @@ a new string."
 ;;; Viewer settings
 
 (viewer-mode-setup viewer)
-(let [extra-bindings {:Shift+s #(swayimg.set_mode :slideshow)}]
+(let [extra-bindings {:Shift+s #(set swayimg.mode :slideshow)}]
   (each [key event (pairs extra-bindings)]
     (viewer.on_key key event)))
 
@@ -145,9 +144,9 @@ a new string."
                                                            1))
                       :Shift+Right #(timeout.set-timeout (+ 1
                                                             (timeout.current-timeout)))
-                      :Shift+s #(swayimg.set_mode :viewer)}]
+                      :Shift+s #(set swayimg.mode :viewer)}]
   (each [key event (pairs extra-bindings)]
     (slideshow.on_key key event)))
 
 ;;; Suppress status messages emitted during startup.
-(text.set_status "")
+(set text.status "")
