@@ -1,0 +1,54 @@
+#!/usr/bin/env python
+import math
+import sys
+from argparse import ArgumentParser
+
+
+def get_input():
+    while True:
+        try:
+            s = input("(l/h/q) ")
+            if s.lower() in ["l", "h", "q"]:
+                return s
+        except:
+            return "q"
+
+
+def bsearch(low, high):
+    if low >= high:
+        return
+    tries = math.ceil(math.log2(high - low))
+    while low <= high:
+        tries -= 1
+        mid = low + (high - low) // 2
+        print()
+        print(f"{mid}\t({tries} left)")
+        match get_input():
+            case "l":
+                high = mid - 1
+            case "h":
+                low = mid + 1
+            case "q":
+                return
+    print()
+    print("Search terminated.")
+    return
+
+
+if __name__ == "__main__":
+    parser = ArgumentParser(
+        "bsearch",
+        description="Interactively binary search over a range of numbers.",
+        epilog="""If one argument is passed, it gives the upper bound, and the
+        lower bound is 1. If two arguments are passed, they give the lower and
+        upper bounds, respectively.""",
+    )
+    parser.add_argument("x", type=int, help="first bound")
+    parser.add_argument(
+        "y", type=int, nargs="?", help="second bound (optional)"
+    )
+    args = parser.parse_args()
+    if args.y:
+        bsearch(args.x, args.y)
+    else:
+        bsearch(1, args.x)
