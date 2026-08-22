@@ -1,0 +1,5 @@
+#!/bin/sh
+/usr/bin/gamescope "$@" &
+pid=$!
+trap '/home/cameron/.local/bin/tkill "$pid"' EXIT
+read
