@@ -83,6 +83,8 @@ a new string."
                       :Left #(mode.open :prev)
                       :Right #(mode.open :next)
                       :Shift+Delete #(trash-image (mode.get_image))
+                      :Shift+Down #(zoom 0.5)
+                      :Shift+Up #(zoom 2.0)
                       :Shift+c #(mode.set_fix_scale :real)
                       :Shift+x #(mode.set_fix_scale :fill)
                       :Shift+z #(mode.set_fix_scale :fit)
