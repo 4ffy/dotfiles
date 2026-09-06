@@ -1,0 +1,33 @@
+#!/usr/bin/env python
+import sys
+from argparse import ArgumentParser
+from pathlib import Path
+from shutil import which
+from subprocess import check_call, CalledProcessError
+
+
+def check_dep(dep):
+    res = which(dep)
+    if not res:
+        print(f"required executable not found: '{dep}'")
+        exit(1)
+    return res
+
+
+parser = ArgumentParser(
+    "extract-and-trash",
+    description="Extract an archive file with unar then trash it with trash-cli.",
+)
+parser.add_argument("file", metavar="FILE", help="archive file")
+args = parser.parse_args()
+file = Path(args.file).resolve()
+
+unar = check_dep("unar")
+trash = check_dep("trash")
+
+try:
+    check_call([unar, "-o", file.parent, "-r", file])
+    check_call([trash, "-v", file])
+except CalledProcessError as err:
+    print(err, file=sys.stderr)
+    exit(1)
