@@ -32,6 +32,12 @@
     <keybind key="W-S-e">
       <action name="Exit"/>
     </keybind>
+    <keybind key="W-\">
+      <action name="Execute" command="/home/cameron/.local/bin/rotate-output"/>
+    </keybind>
+    <keybind key="W-S-\">
+      <action name="Execute" command="/home/cameron/.local/bin/rotate-output -t 270"/>
+    </keybind>
     <keybind key="W-KP_0">
       <action name="ShowMenu" menu="root-menu"/>
     </keybind>
