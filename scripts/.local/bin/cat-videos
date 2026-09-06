@@ -1,27 +1,67 @@
-#!/bin/bash
-set -euo pipefail
+#!/usr/bin/env python
+import os
+import sys
+from argparse import ArgumentParser
+from subprocess import *
+from tempfile import NamedTemporaryFile
 
-for arg in "$@"; do
-    [[ "$arg" == '-h' || "$arg" == '--help' ]] && cat << EOF >&2 && exit
-Usage: cat-videos FILE...
-Concatenate videos using ffmpeg. The videos must have the same
-encoding.
-EOF
-done
 
-tmpfile=$(mktemp)
+def concat(videos, dest):
+    with NamedTemporaryFile() as temp:
+        for video in videos:
+            temp.write(f"file '{video}'\n".encode("utf8"))
+        temp.seek(0)
+        check_call(
+            [
+                "ffmpeg",
+                "-f",
+                "concat",
+                "-safe",
+                "0",
+                "-i",
+                temp.name,
+                "-c",
+                "copy",
+                dest,
+            ]
+        )
 
-if [ "$#" -lt 2 ]; then
-    echo "Need at least two arguments." >&2
-    exit 1
-fi
 
-for arg in "$@"; do
-    if [ ! -f "$arg" ]; then
-        echo "File not found: '$arg'" >&2
-        exit 1
-    fi
-    printf "file '%s'\n" "$(realpath "$arg")" >> "$tmpfile"
-done
+if __name__ == "__main__":
+    parser = ArgumentParser(
+        "cat-videos",
+        description="""Concatenate videos using ffmpeg. The videos should be
+        similar i.e. be the same size, format and encoding.""",
+    )
+    parser.add_argument(
+        "videos", metavar="VIDEO", nargs="+", help="input videos"
+    )
+    parser.add_argument(
+        "-o", "--output", metavar="FILE", required=True, help="output filename"
+    )
+    args = parser.parse_args()
 
-ffmpeg -f concat -safe 0 -i "$tmpfile" -c copy out.mp4
+    bad = False
+    for file in args.videos:
+        if not os.path.exists(file):
+            print(f"file not found: '{file}'", file=sys.stderr)
+            bad = True
+            continue
+        if not os.path.isfile(file):
+            print(f"not a file: '{file}'", file=sys.stderr)
+            bad = True
+            continue
+        if not os.access(file, os.R_OK):
+            print(f"file not readable: '{file}'", file=sys.stderr)
+            bad = True
+            continue
+    if bad:
+        exit(1)
+
+    videos = [os.path.abspath(x) for x in args.videos]
+
+    try:
+        concat(videos, args.output)
+    except CalledProcessError as err:
+        print(err, file=sys.stderr)
+        exit(1)
