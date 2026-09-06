@@ -1,0 +1,66 @@
+#!/usr/bin/env python
+import sys
+from argparse import ArgumentParser
+from json import loads
+from shutil import which
+from subprocess import *
+
+
+# Argument parsing.
+parser = ArgumentParser(
+    "rotate-output", description="Output rotation toggle script."
+)
+parser.add_argument(
+    "output",
+    nargs="?",
+    metavar="OUTPUT",
+    help="target output (defaults to first active)",
+)
+parser.add_argument(
+    "-t",
+    "--transform",
+    default="90",
+    metavar="X",
+    help="transformation to toggle as accepted by wlr-randr (defaults to 90° counterclockwise)",
+)
+args = parser.parse_args()
+
+# Dependency check.
+wlr_randr = which("wlr-randr")
+if wlr_randr is None:
+    print("wlr-randr not found", file=sys.stderr)
+    exit(1)
+
+# Get output and status. Find active output if necessary.
+heads = loads(check_output([wlr_randr, "--json"], encoding="utf8"))
+output = None
+transform = None
+if args.output:
+    try:
+        output = args.output
+        transform = next(filter(lambda x: x["name"] == output, heads))[
+            "transform"
+        ]
+    except StopIteration:
+        print(f"no matching output: '{output}'", file=sys.stderr)
+        exit(1)
+else:
+    try:
+        head = next(filter(lambda x: x["enabled"] == True, heads))
+        output = head["name"]
+        transform = head["transform"]
+    except StopIteration:
+        print(f"no enabled outputs?", file=sys.stderr)
+        exit(1)
+
+# Toggle transformation.
+try:
+    if transform == "normal":
+        check_call(
+            [wlr_randr, "--output", output, "--transform", args.transform]
+        )
+    else:
+        check_call([wlr_randr, "--output", output, "--transform=normal"])
+except CalledProcessError as e:
+    print(e, file=sys.stderr)
+    exit(1)
