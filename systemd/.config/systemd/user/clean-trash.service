@@ -1,0 +1,9 @@
+[Unit]
+Description=Delete trash can files over a week old.
+
+[Service]
+Type=oneshot
+ExecStart=trash-empty 7
+
+[Install]
+WantedBy=default.target

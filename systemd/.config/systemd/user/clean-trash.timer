@@ -1,0 +1,10 @@
+[Unit]
+Description=Delete trash can files over a week old
+
+[Timer]
+OnCalendar=daily
+Persistent=True
+RandomizedDelaySec=1h
+
+[Install]
+WantedBy=default.target
