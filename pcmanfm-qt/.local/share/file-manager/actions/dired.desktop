@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Action
+Name=Open in Dired
+Icon=emacs
+Profiles=dired
+
+[X-Action-Profile dired]
+MimeTypes=inode/directory
+Exec=emacsclient --alternate-editor='' --create-frame --eval '(dired "%f")'

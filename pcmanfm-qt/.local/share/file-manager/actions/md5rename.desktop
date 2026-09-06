@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Action
+Name=MD5 rename
+Profiles=md5rename
+
+[X-Action-Profile md5rename]
+MimeTypes=all/allfiles
+Exec=/home/cameron/.local/bin/md5rename %F
