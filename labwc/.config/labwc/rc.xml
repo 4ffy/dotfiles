@@ -161,6 +161,12 @@
         <command>sh -c 'grim -g "$(slurp)" "$HOME/Pictures/Screenshots/$(date +%Y-%m-%d\ %H-%M-%S).png"'</command>
       </action>
     </keybind>
+    <keybind key="W-Print">
+      <action name="Execute" command="/home/cameron/.local/bin/ocrclip -l jpn_vert -s all"/>
+    </keybind>
+    <keybind key="W-S-Print">
+      <action name="Execute" command="/home/cameron/.local/bin/ocrclip -l jpn -s all"/>
+    </keybind>
     <keybind key="XF86Calculator">
       <action name="Execute" command="emacsclient -a '' -c --eval '(full-calc)'"/>
     </keybind>
